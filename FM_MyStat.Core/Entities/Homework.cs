@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FM_MyStat.Core.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FM_MyStat.Core.Entities
 {
-    public class Homework
+    public class Homework : IEntity
     {
         public int Id { get; set; }
         public string Title { get; set; }
