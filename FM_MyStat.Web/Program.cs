@@ -1,7 +1,28 @@
+using FM_MyStat.Core;
+using FM_MyStat.Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
+
+
+string connStr = builder.Configuration.GetConnectionString("DefaultConnection");
+// Database context
+builder.Services.AddDbContext(connStr);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Add core services
+builder.Services.AddCoreServices();
+
+// Add Infastracture services
+builder.Services.AddInfrastructureServices();
+
+// Add mapping services
+builder.Services.AddMapping();
+
+// Add repositories
+builder.Services.AddRepositories();
+
 
 var app = builder.Build();
 
