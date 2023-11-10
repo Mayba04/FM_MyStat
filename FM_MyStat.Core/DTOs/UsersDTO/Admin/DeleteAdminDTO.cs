@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace FM_MyStat.Core.DTOs.UsersDTO.Admin
 {
-    internal class DeleteAdminDTO
+    public class DeleteAdminDTO
     {
+        public int Id { get; set; }
+        public string Email { get; set; } = string.Empty;
     }
 }

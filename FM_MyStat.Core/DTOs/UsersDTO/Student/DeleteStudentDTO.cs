@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace FM_MyStat.Core.DTOs.UsersDTO.Student
 {
-    internal class DeleteStudentDTO
+    public class DeleteStudentDTO
     {
+        public int Id { get; set; }
+        public string Email { get; set; } = string.Empty;
     }
 }
