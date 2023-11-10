@@ -17,6 +17,9 @@ builder.Services.AddCoreServices();
 // Add Infastracture services
 builder.Services.AddInfrastructureServices();
 
+// Add mapping services
+builder.Services.AddMapping();
+
 // Add repositories
 builder.Services.AddRepositories();
 
