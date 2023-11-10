@@ -13,5 +13,9 @@ namespace FM_MyStat.Core
         {
             
         }
+        public static void AddMapping(this IServiceCollection services)
+        {
+            
+        }
     }
 }
