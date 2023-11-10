@@ -36,6 +36,7 @@ namespace FM_MyStat.Core.Services.Users
             this._mapper = mapper;
             this._configuration = configuration;
         }
+
         #region SignIn, SignOut
         public async Task<ServiceResponse> LoginUserAsync(LoginStudentDTO model)
         {

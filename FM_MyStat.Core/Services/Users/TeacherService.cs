@@ -11,17 +11,17 @@ using System.Threading.Tasks;
 
 namespace FM_MyStat.Core.Services.Users
 {
-    public class AdministratorService
+    public class TeacherService
     {
-        private readonly UserManager<Administrator> _userManager;
-        private readonly SignInManager<Administrator> _signInManager;
+        private readonly UserManager<Teacher> _userManager;
+        private readonly SignInManager<Teacher> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly EmailService _emailService;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
-        public AdministratorService(
-                UserManager<Administrator> userManager,
-                SignInManager<Administrator> signInManager,
+        public TeacherService(
+                UserManager<Teacher> userManager,
+                SignInManager<Teacher> signInManager,
                 RoleManager<IdentityRole> roleManager,
                 EmailService emailService,
                 IMapper mapper,
@@ -37,7 +37,7 @@ namespace FM_MyStat.Core.Services.Users
         }
 
         #region SignIn, SignOut
-        public async Task<ServiceResponse> LoginUserAsync(LoginAdministratorDTO model)
+        public async Task<ServiceResponse> LoginUserAsync(LoginTeacherDTO model)
         {
             AppUser? user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
@@ -68,9 +68,9 @@ namespace FM_MyStat.Core.Services.Users
         #endregion
 
         #region Create user, Delete user, Edit password user, Edit main info user
-        public async Task<ServiceResponse> CreateUserAsync(CreateAdministratorDTO model)
+        public async Task<ServiceResponse> CreateUserAsync(CreateTeacherDTO model)
         {
-            AppUser NewUser = _mapper.Map<CreateAdministratorDTO, Administrator>(model);
+            AppUser NewUser = _mapper.Map<CreateTeacherDTO, Teacher>(model);
             IdentityResult result = await _userManager.CreateAsync(NewUser, model.Password);
             if (result.Succeeded)
             {
@@ -81,9 +81,9 @@ namespace FM_MyStat.Core.Services.Users
             return new ServiceResponse(false, "Something went wrong", errors: result.Errors.Select(e => e.Description));
         }
 
-        public async Task<ServiceResponse> DeleteUserAsync(DeleteAdministratorDTO model)
+        public async Task<ServiceResponse> DeleteUserAsync(DeleteTeacherDTO model)
         {
-            Administrator userdelete = await _userManager.FindByIdAsync(model.Id);
+            Teacher userdelete = await _userManager.FindByIdAsync(model.Id);
             if (userdelete == null)
             {
                 return new ServiceResponse(false, "User a was found");
@@ -96,9 +96,9 @@ namespace FM_MyStat.Core.Services.Users
             return new ServiceResponse(false, "something went wrong", errors: result.Errors.Select(e => e.Description));
         }
 
-        public async Task<ServiceResponse> ChangePasswordAsync(EditAdministratorPasswordDTO model)
+        public async Task<ServiceResponse> ChangePasswordAsync(EditTeacherPasswordDTO model)
         {
-            Administrator user = _userManager.FindByIdAsync(model.Id).Result;
+            Teacher user = _userManager.FindByIdAsync(model.Id).Result;
             if (user == null) return new ServiceResponse(false, "User or password incorrect.", errors: new List<string>() { "User or password incorrect." });
 
             IdentityResult result = _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword).Result;
@@ -110,9 +110,9 @@ namespace FM_MyStat.Core.Services.Users
             return new ServiceResponse(false, "Error.", errors: result.Errors.ToList().Select(i => i.Description));
         }
 
-        public async Task<ServiceResponse> ChangeMainInfoUserAsync(EditAdministratorDTO newinfo)
+        public async Task<ServiceResponse> ChangeMainInfoUserAsync(EditTeacherDTO newinfo)
         {
-            Administrator user = await _userManager.FindByIdAsync(newinfo.Id);
+            Teacher user = await _userManager.FindByIdAsync(newinfo.Id);
 
             if (user != null)
             {
@@ -129,7 +129,7 @@ namespace FM_MyStat.Core.Services.Users
         #endregion
 
         #region Confirm email and send token for confirm email
-        public async Task SendConfirmationEmailAsync(Administrator user)
+        public async Task SendConfirmationEmailAsync(Teacher user)
         {
             string token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             byte[] encodedToken = Encoding.UTF8.GetBytes(token);
@@ -143,7 +143,7 @@ namespace FM_MyStat.Core.Services.Users
 
         public async Task<ServiceResponse> ConfirmEmailAsync(string userId, string token)
         {
-            Administrator? user = await _userManager.FindByIdAsync(userId);
+            Teacher? user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
                 return new ServiceResponse(false, "User not found");
