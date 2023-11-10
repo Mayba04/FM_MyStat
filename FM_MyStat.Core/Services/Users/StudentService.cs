@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FM_MyStat.Core.DTOs.UsersDTO.Student;
 using FM_MyStat.Core.Entities.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
@@ -38,17 +39,17 @@ namespace FM_MyStat.Core.Services.Users
         }
 
         #region SignIn, SignOut
-        public async Task<ServiceResponse> LoginUserAsync(LoginStudentDTO model)
+        public async Task<ServiceResponse> LoginStudentAsync(LoginStudentDTO model)
         {
-            AppUser? user = await _userManager.FindByEmailAsync(model.Email);
+            Student? user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
                 return new ServiceResponse(false, "User or password incorect.");
             }
-            SignInResult result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, lockoutOnFailure: true);
+            SignInResult result = await _signInManager.PasswordSignInAsync(user, model.Password, true, lockoutOnFailure: true);
             if (result.Succeeded)
             {
-                await _signInManager.SignInAsync(user, model.RememberMe);
+                await _signInManager.SignInAsync(user, true);
                 return new ServiceResponse(true, "User successfully loged in.");
             }
             if (result.IsNotAllowed)
@@ -69,20 +70,19 @@ namespace FM_MyStat.Core.Services.Users
         #endregion
 
         #region Create user, Delete user, Edit password user, Edit main info user
-        public async Task<ServiceResponse> CreateUserAsync(CreateStudentDTO model)
+        public async Task<ServiceResponse> CreateStudentAsync(CreateStudentDTO model)
         {
-            AppUser NewUser = _mapper.Map<CreateStudentDTO, Student>(model);
+            Student NewUser = _mapper.Map<CreateStudentDTO, Student>(model);
             IdentityResult result = await _userManager.CreateAsync(NewUser, model.Password);
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(NewUser, model.Role);
                 await SendConfirmationEmailAsync(NewUser);
                 return new ServiceResponse(true, "User has been added");
             }
             return new ServiceResponse(false, "Something went wrong", errors: result.Errors.Select(e => e.Description));
         }
 
-        public async Task<ServiceResponse> DeleteUserAsync(DeleteStudentDTO model)
+        public async Task<ServiceResponse> DeleteStudentAsync(DeleteStudentDTO model)
         {
             Student userdelete = await _userManager.FindByIdAsync(model.Id);
             if (userdelete == null)
@@ -111,7 +111,7 @@ namespace FM_MyStat.Core.Services.Users
             return new ServiceResponse(false, "Error.", errors: result.Errors.ToList().Select(i => i.Description));
         }
 
-        public async Task<ServiceResponse> ChangeMainInfoUserAsync(EditStudentDTO newinfo)
+        public async Task<ServiceResponse> ChangeMainInfoStudentAsync(EditStudentDTO newinfo)
         {
             Student user = await _userManager.FindByIdAsync(newinfo.Id);
 
