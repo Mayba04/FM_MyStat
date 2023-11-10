@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FM_MyStat.Core.DTOs.UsersDTO.Admin;
 using FM_MyStat.Core.Entities.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
@@ -37,17 +38,17 @@ namespace FM_MyStat.Core.Services.Users
         }
 
         #region SignIn, SignOut
-        public async Task<ServiceResponse> LoginUserAsync(LoginAdministratorDTO model)
+        public async Task<ServiceResponse> LoginAdminAsync(LoginAdminDTO model)
         {
-            AppUser? user = await _userManager.FindByEmailAsync(model.Email);
+            Administrator? user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
                 return new ServiceResponse(false, "User or password incorect.");
             }
-            SignInResult result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, lockoutOnFailure: true);
+            SignInResult result = await _signInManager.PasswordSignInAsync(user, model.Password, true, lockoutOnFailure: true);
             if (result.Succeeded)
             {
-                await _signInManager.SignInAsync(user, model.RememberMe);
+                await _signInManager.SignInAsync(user, true);
                 return new ServiceResponse(true, "User successfully loged in.");
             }
             if (result.IsNotAllowed)
@@ -68,20 +69,19 @@ namespace FM_MyStat.Core.Services.Users
         #endregion
 
         #region Create user, Delete user, Edit password user, Edit main info user
-        public async Task<ServiceResponse> CreateUserAsync(CreateAdministratorDTO model)
+        public async Task<ServiceResponse> CreateAdminAsync(CreateAdminDTO model)
         {
-            AppUser NewUser = _mapper.Map<CreateAdministratorDTO, Administrator>(model);
+            Administrator NewUser = _mapper.Map<CreateAdminDTO, Administrator>(model);
             IdentityResult result = await _userManager.CreateAsync(NewUser, model.Password);
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(NewUser, model.Role);
                 await SendConfirmationEmailAsync(NewUser);
                 return new ServiceResponse(true, "User has been added");
             }
             return new ServiceResponse(false, "Something went wrong", errors: result.Errors.Select(e => e.Description));
         }
 
-        public async Task<ServiceResponse> DeleteUserAsync(DeleteAdministratorDTO model)
+        public async Task<ServiceResponse> DeleteAdminAsync(DeleteAdminDTO model)
         {
             Administrator userdelete = await _userManager.FindByIdAsync(model.Id);
             if (userdelete == null)
@@ -96,7 +96,7 @@ namespace FM_MyStat.Core.Services.Users
             return new ServiceResponse(false, "something went wrong", errors: result.Errors.Select(e => e.Description));
         }
 
-        public async Task<ServiceResponse> ChangePasswordAsync(EditAdministratorPasswordDTO model)
+        public async Task<ServiceResponse> ChangePasswordAsync(EditAdminPasswordDTO model)
         {
             Administrator user = _userManager.FindByIdAsync(model.Id).Result;
             if (user == null) return new ServiceResponse(false, "User or password incorrect.", errors: new List<string>() { "User or password incorrect." });
@@ -110,7 +110,7 @@ namespace FM_MyStat.Core.Services.Users
             return new ServiceResponse(false, "Error.", errors: result.Errors.ToList().Select(i => i.Description));
         }
 
-        public async Task<ServiceResponse> ChangeMainInfoUserAsync(EditAdministratorDTO newinfo)
+        public async Task<ServiceResponse> ChangeMainInfoAdminAsync(EditAdminDTO newinfo)
         {
             Administrator user = await _userManager.FindByIdAsync(newinfo.Id);
 

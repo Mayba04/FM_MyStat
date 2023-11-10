@@ -8,7 +8,7 @@ namespace FM_MyStat.Core.DTOs.UsersDTO.Student
 {
     public class DeleteStudentDTO
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Email { get; set; } = string.Empty;
     }
 }
