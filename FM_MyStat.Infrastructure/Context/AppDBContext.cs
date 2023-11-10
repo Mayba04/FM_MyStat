@@ -1,5 +1,6 @@
 ﻿using FM_MyStat.Core.Entities;
 using FM_MyStat.Core.Entities.Users;
+using FM_MyStat.Infrastructure.Initializers;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
@@ -27,7 +28,13 @@ namespace FM_MyStat.Infrastructure.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+           ;
 
+            modelBuilder.Entity<Administrator>(E => { E.ToTable("Administrators"); });
+            modelBuilder.Entity<Student>(E => { E.ToTable("Students"); });
+            modelBuilder.Entity<Teacher>(E => { E.ToTable("Teachers"); });
+
+           
         }
     }
 }
