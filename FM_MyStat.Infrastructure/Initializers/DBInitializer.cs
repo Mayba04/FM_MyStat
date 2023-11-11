@@ -1,11 +1,14 @@
-﻿using FM_MyStat.Core.Entities.Users;
+﻿using FM_MyStat.Core.Entities;
+using FM_MyStat.Core.Entities.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Group = FM_MyStat.Core.Entities.Group;
 
 namespace FM_MyStat.Infrastructure.Initializers
 {
@@ -13,20 +16,24 @@ namespace FM_MyStat.Infrastructure.Initializers
     {
         public static void SeedAdministrator(this ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole
-            {
-                Name = "Administrator",
-                NormalizedName = "ADMINISTRATOR"
-            });
+           
 
             var adminUserId = Guid.NewGuid().ToString();
             var adminRoleId = Guid.NewGuid().ToString();
+
+            modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole
+            {
+                Id = adminRoleId,
+                Name = "Administrator",
+                NormalizedName = "ADMINISTRATOR"
+            });
 
             modelBuilder.Entity<Administrator>().HasData(new Administrator
             {
                 Id = adminUserId,
                 FirstName = "John",
                 LastName = "Connor",
+                SurName = "Johnovych",
                 UserName = "admi@gmail.com",
                 Email = "admi@gmail.com",
                 EmailConfirmed = true,
@@ -59,6 +66,7 @@ namespace FM_MyStat.Infrastructure.Initializers
                 Id = teacherId,
                 FirstName = "John",
                 LastName = "Doe",
+                SurName = "Johnovych",
                 UserName = "teacher@gmail.com",
                 Email = "teacher@gmail.com",
                 EmailConfirmed = true,
@@ -70,6 +78,13 @@ namespace FM_MyStat.Infrastructure.Initializers
             {
                 UserId = teacherId,
                 RoleId = teacherRoleId
+            });
+
+            modelBuilder.Entity<Group>().HasData(new Group
+            {
+                Id = 1,
+                Name = "PD116",
+                TeacherId = teacherId
             });
         }
 
@@ -90,11 +105,13 @@ namespace FM_MyStat.Infrastructure.Initializers
                 Id = studentId,
                 FirstName = "John",
                 LastName = "Wick",
+                SurName = "Johnovych",
                 UserName = "student@gmail.com",
                 Email = "student@gmail.com",
                 EmailConfirmed = true,
                 PhoneNumber = "+xx(xxx)xxx-xx-xx",
                 PhoneNumberConfirmed = true,
+                GroupId = 1,
             });
 
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
@@ -103,5 +120,9 @@ namespace FM_MyStat.Infrastructure.Initializers
                 RoleId = studentRoleId
             });
         }
+
+        
+
+        
     }
 }

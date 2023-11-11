@@ -4,6 +4,7 @@ using FM_MyStat.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FM_MyStat.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231111101659_Migration01")]
+    partial class Migration01
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,14 +47,6 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.HasIndex("TeacherId");
 
                     b.ToTable("Groups");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "PD116",
-                            TeacherId = "413fd769-c662-4ad4-a011-a0e26174e60f"
-                        });
                 });
 
             modelBuilder.Entity("FM_MyStat.Core.Entities.Homework", b =>
@@ -128,26 +123,6 @@ namespace FM_MyStat.Infrastructure.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "f0dfcfa0-91b1-4ade-b5ed-8a4c81ef0b97",
-                            Name = "Administrator",
-                            NormalizedName = "ADMINISTRATOR"
-                        },
-                        new
-                        {
-                            Id = "4fc73391-d6d3-43cd-9ed4-84e72a34ef3f",
-                            Name = "Teacher",
-                            NormalizedName = "TEACHER"
-                        },
-                        new
-                        {
-                            Id = "9ac18314-0496-46af-929a-3ceddfc229b7",
-                            Name = "Student",
-                            NormalizedName = "STUDENT"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -302,23 +277,6 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "ad77cdc9-f309-4d3d-95e1-a1f10345b2e9",
-                            RoleId = "f0dfcfa0-91b1-4ade-b5ed-8a4c81ef0b97"
-                        },
-                        new
-                        {
-                            UserId = "413fd769-c662-4ad4-a011-a0e26174e60f",
-                            RoleId = "4fc73391-d6d3-43cd-9ed4-84e72a34ef3f"
-                        },
-                        new
-                        {
-                            UserId = "2fd5c0b1-c3da-44d4-9b1b-cd349e55151c",
-                            RoleId = "9ac18314-0496-46af-929a-3ceddfc229b7"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -375,25 +333,6 @@ namespace FM_MyStat.Infrastructure.Migrations
                         .HasColumnType("nvarchar(64)");
 
                     b.ToTable("Administrators", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "ad77cdc9-f309-4d3d-95e1-a1f10345b2e9",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "1386ffea-bc04-4117-8071-27eeef119112",
-                            Email = "admi@gmail.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            PhoneNumber = "+xx(xxx)xxx-xx-xx",
-                            PhoneNumberConfirmed = true,
-                            SecurityStamp = "6e9ab62a-3db1-48d8-a9b9-35c75418141e",
-                            TwoFactorEnabled = false,
-                            UserName = "admi@gmail.com",
-                            FirstName = "John",
-                            LastName = "Connor",
-                            SurName = "Johnovych"
-                        });
                 });
 
             modelBuilder.Entity("FM_MyStat.Core.Entities.Users.Student", b =>
@@ -424,27 +363,6 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.HasIndex("GroupId");
 
                     b.ToTable("Students", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "2fd5c0b1-c3da-44d4-9b1b-cd349e55151c",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "d3c6b3ca-2024-4c11-b55d-e5f3a3a61288",
-                            Email = "student@gmail.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            PhoneNumber = "+xx(xxx)xxx-xx-xx",
-                            PhoneNumberConfirmed = true,
-                            SecurityStamp = "1b5ef88f-7dbb-43b1-98de-7d0405976128",
-                            TwoFactorEnabled = false,
-                            UserName = "student@gmail.com",
-                            FirstName = "John",
-                            GroupId = 1,
-                            LastName = "Wick",
-                            Rating = 0,
-                            SurName = "Johnovych"
-                        });
                 });
 
             modelBuilder.Entity("FM_MyStat.Core.Entities.Users.Teacher", b =>
@@ -467,25 +385,6 @@ namespace FM_MyStat.Infrastructure.Migrations
                         .HasColumnType("nvarchar(64)");
 
                     b.ToTable("Teachers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "413fd769-c662-4ad4-a011-a0e26174e60f",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "a97dcc5c-49c3-4e79-9745-e03c3607f0bf",
-                            Email = "teacher@gmail.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            PhoneNumber = "+xx(xxx)xxx-xx-xx",
-                            PhoneNumberConfirmed = true,
-                            SecurityStamp = "3093ac9b-1f42-4b85-8d72-72e49ba99e9e",
-                            TwoFactorEnabled = false,
-                            UserName = "teacher@gmail.com",
-                            FirstName = "John",
-                            LastName = "Doe",
-                            SurName = "Johnovych"
-                        });
                 });
 
             modelBuilder.Entity("FM_MyStat.Core.Entities.Group", b =>

@@ -19,9 +19,9 @@ namespace FM_MyStat.Infrastructure.Context
         public AppDBContext(DbContextOptions<AppDBContext> options) : base(options) { }
 
         public DbSet<Administrator> Administrators { get; set; }
-        public DbSet<Student> Students { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
-        public DbSet<Group> Groups { get; set; }
+        public DbSet<Group> Groups { get; set; } 
+        public DbSet<Student> Students { get; set; }
         public DbSet<Homework> Homeworks { get; set; }
         public DbSet<Subject> Subjects { get; set; }
 
@@ -29,12 +29,18 @@ namespace FM_MyStat.Infrastructure.Context
         {
             base.OnModelCreating(modelBuilder);
            ;
+            modelBuilder.Entity<Student>()
+             .HasOne(s => s.Group)
+             .WithMany(g => g.Students)
+             .HasForeignKey(s => s.GroupId)
+             .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Administrator>(E => { E.ToTable("Administrators"); });
-            modelBuilder.Entity<Student>(E => { E.ToTable("Students"); });
             modelBuilder.Entity<Teacher>(E => { E.ToTable("Teachers"); });
-
-           
+            modelBuilder.Entity<Student>(E => { E.ToTable("Students"); });
+            modelBuilder.SeedAdministrator();
+            modelBuilder.SeedTeacher();
+            modelBuilder.SeedStudent();
         }
     }
 }
