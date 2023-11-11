@@ -16,10 +16,5 @@ namespace FM_MyStat.Core.Entities.Users
         public string SurName { get; set; } = string.Empty;
         [Required, MaxLength(64)]
         public string LastName { get; set; } = string.Empty;
-        [Required, MaxLength(16)]
-        public string Phone { get; set; } = string.Empty;
-        public string Photo { get; set; } = string.Empty;
-        [Required, MaxLength(64)]
-        public string Email { get; set; } = string.Empty;
     }
 }
