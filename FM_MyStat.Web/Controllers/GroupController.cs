@@ -11,14 +11,12 @@ namespace FM_MyStat.Web.Controllers
         {
             return View();
         }
-        #region Get All page
+
         public async Task<IActionResult> GetAll()
         {
             return View();
         }
-        #endregion
 
-        #region Create page
         public IActionResult Create()
         {
             return View();
@@ -29,9 +27,7 @@ namespace FM_MyStat.Web.Controllers
         {
             return View(model);
         }
-        #endregion
 
-        #region Update page
         public async Task<IActionResult> Update(int id)
         {
             return View();
@@ -42,9 +38,7 @@ namespace FM_MyStat.Web.Controllers
         {
             return View();
         }
-        #endregion
 
-        #region Delete
         public async Task<IActionResult> Delete(int id)
         {
             return View("Delete");
@@ -55,8 +49,7 @@ namespace FM_MyStat.Web.Controllers
         {
             return RedirectToAction(nameof(GetAll));
         }
-        #endregion
 
     }
 }
-}
+

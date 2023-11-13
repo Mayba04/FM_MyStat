@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FM_MyStat.Core.DTOs.GrouopsDTO;
 using FM_MyStat.Core.Entities;
+using FM_MyStat.Core.Entities.Specifications;
 using FM_MyStat.Core.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -49,7 +50,7 @@ namespace FM_MyStat.Core.Services
 
         public async Task<ServiceResponse> GetByName(string name)
         {
-            var result = await _groupRepo.GetItemBySpec(new GroupSpecification.GetByName(model.Name));
+            var result = await _groupRepo.GetItemBySpec(new GroupSpecification.GetByName(name));
             if (result != null)
             {
                 return new ServiceResponse(false, "Category exists.");

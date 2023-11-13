@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FM_MyStat.Core.DTOs.SubjectsDTO;
 using FM_MyStat.Core.Entities;
+using FM_MyStat.Core.Entities.Specifications;
 using FM_MyStat.Core.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -77,7 +78,7 @@ namespace FM_MyStat.Core.Services
             if (result != null)
             {
                 SubjectDTO subjectDTO = _mapper.Map<SubjectDTO>(result);
-                return _subjectRepo;
+                return subjectDTO;
             }
             return null;
         }

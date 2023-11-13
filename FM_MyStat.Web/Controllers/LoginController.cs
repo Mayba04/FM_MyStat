@@ -4,6 +4,7 @@ using FM_MyStat.Core.DTOs.UsersDTO.Teacher;
 using FM_MyStat.Core.Entities.Users;
 using FM_MyStat.Core.Services;
 using FM_MyStat.Core.Services.Users;
+using FM_MyStat.Core.Validation.User.Admin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -44,7 +45,7 @@ namespace FM_MyStat.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LoginAdmin(LoginAdminDTO model)
         {
-            return await LoginAction(model);
+            return await LoginAction();
         }
 
         [AllowAnonymous] // POST
@@ -52,7 +53,7 @@ namespace FM_MyStat.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LoginStudent(LoginStudentDTO model)
         {
-            return await LoginAction(model);
+            return await LoginAction();
         }
 
         [AllowAnonymous] // POST
@@ -60,43 +61,44 @@ namespace FM_MyStat.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LoginTeacher(LoginTeacherDTO model)
         {
-            return await LoginAction(model);
+            return await LoginAction();
         }
 
-        private async Task<IActionResult> LoginAction<T>(T model) where T : class
+        private async Task<IActionResult> LoginAction() 
         {
-            var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
-            var validator = new LoginUserValidation();
-            var validationResult = validator.Validate(model);
+            return View();
+            //    var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
+            //    var validator = new LoginAdminValidation();
+            //    var validationResult = validator.Validate(model);
 
-            if (validationResult.IsValid)
-            {
-                ServiceResponse result = null;
+            //    if (validationResult.IsValid)
+            //    {
+            //        ServiceResponse result = null;
 
-                if (model is DTOAdminLogin adminModel)
-                {
-                    result = await _adminService.LoginAdminAsync(adminModel);
-                }
-                else if (model is DTOStudentLogin studentModel)
-                {
-                    result = await _studentService.LoginStudentAsync(studentModel);
-                }
-                else if (model is DTOTeacherLogin teacherModel)
-                {
-                    result = await _teacherService.LoginTeacherAsync(teacherModel);
-                }
+            //        if (model is LoginAdminDTO adminModel)
+            //        {
+            //            result = await _adminService.LoginAdminAsync(adminModel);
+            //        }
+            //        else if (model is DTOStudentLogin studentModel)
+            //        {
+            //            result = await _studentService.LoginStudentAsync(studentModel);
+            //        }
+            //        else if (model is DTOTeacherLogin teacherModel)
+            //        {
+            //            result = await _teacherService.LoginTeacherAsync(teacherModel);
+            //        }
 
-                if (result?.Success ?? false)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
+            //        if (result?.Success ?? false)
+            //        {
+            //            return RedirectToAction(nameof(Index));
+            //        }
 
-                ViewBag.AuthError = result?.Message ?? "An error occurred.";
-                return View(model);
-            }
+            //        ViewBag.AuthError = result?.Message ?? "An error occurred.";
+            //        return View(model);
+            //    }
 
-            ViewBag.AuthError = validationResult.Errors[0];
-            return View(model);
+            //    ViewBag.AuthError = validationResult.Errors[0];
+            //    return View(model);
         }
 
     }
