@@ -59,25 +59,25 @@ namespace FM_MyStat.Core.Services
                 return new ServiceResponse
                 {
                     Success = false,
-                    Message = "Category exists."
+                    Message = "Subject exists."
                 };
             }
-            var category = _mapper.Map<SubjectDTO>(result);
+            var subject = _mapper.Map<SubjectDTO>(result);
             return new ServiceResponse
             {
                 Success = true,
-                Message = "Category successfully loaded.",
-                Payload = category
+                Message = "Subject successfully loaded.",
+                Payload = subject
             };
         }
 
-        public async Task<SubjectDTO> GetByName(string NameCategory)
+        public async Task<SubjectDTO> GetByName(string NameSubject)
         {
-            var result = await _subjectRepo.GetItemBySpec(new SubjectSpecification.GetByName(NameCategory));
+            var result = await _subjectRepo.GetItemBySpec(new SubjectSpecification.GetByName(NameSubject));
             if (result != null)
             {
-                SubjectDTO categoryDTO = _mapper.Map<SubjectDTO>(result);
-                return categoryDTO;
+                SubjectDTO subjectDTO = _mapper.Map<SubjectDTO>(result);
+                return _subjectRepo;
             }
             return null;
         }
