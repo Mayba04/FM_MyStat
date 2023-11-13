@@ -18,5 +18,12 @@
 	  <ProjectReference Include="..\FM_MyStat.Core\FM_MyStat.Core.csproj" />
 	  <ProjectReference Include="..\FM_MyStat.Infrastructure\FM_MyStat.Infrastructure.csproj" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Update="Views\Shared\_Layout.cshtml">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	</ItemGroup>
 	
 </Project>

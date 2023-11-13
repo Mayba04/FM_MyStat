@@ -1,16 +1,22 @@
-﻿using FM_MyStat.Web.Models;
+﻿using FM_MyStat.Core.Services.Users;
+using FM_MyStat.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace FM_MyStat.Web.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly AdministratorService _adminService;
+        private readonly StudentService _studentService;
+        private readonly TeacherService _teacherService;
+        public HomeController(AdministratorService adminService, StudentService studentService, TeacherService teacherService)
         {
-            _logger = logger;
+            _adminService = adminService;
+            _studentService = studentService;
+            _teacherService = teacherService;
         }
 
         public IActionResult Index()
@@ -18,15 +24,6 @@ namespace FM_MyStat.Web.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }
