@@ -1,4 +1,4 @@
-﻿using FM_MyStat.Core.DTOs.Homework;
+﻿using FM_MyStat.Core.DTOs.HomeworksDTO;
 using FM_MyStat.Core.Services;
 using System;
 using System.Collections.Generic;

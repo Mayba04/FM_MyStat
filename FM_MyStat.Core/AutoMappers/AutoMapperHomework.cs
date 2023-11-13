@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FM_MyStat.Core.DTOs.Homework;
+using FM_MyStat.Core.DTOs.HomeworksDTO;
 
 namespace FM_MyStat.Core.AutoMappers
 {
