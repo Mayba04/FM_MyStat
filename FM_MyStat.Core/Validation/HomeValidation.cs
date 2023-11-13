@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using FM_MyStat.Core.DTOs.Homework;
+using FM_MyStat.Core.DTOs.HomeworksDTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;

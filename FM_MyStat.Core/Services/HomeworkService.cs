@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using FM_MyStat.Core.DTOs.Homework;
+using FM_MyStat.Core.DTOs.HomeworksDTO;
 using FM_MyStat.Core.Entities;
 using FM_MyStat.Core.Entities.Specifications;
 using FM_MyStat.Core.Interfaces;
