@@ -21,6 +21,7 @@ namespace FM_MyStat.Core
             services.AddTransient<StudentService>();
             services.AddTransient<TeacherService>();
             services.AddTransient<EmailService>();
+            services.AddScoped<ISubjectService, SubjectService>();
             services.AddScoped<IGroupService, GroupService>();
         }
         public static void AddMapping(this IServiceCollection services)
@@ -28,6 +29,7 @@ namespace FM_MyStat.Core
             services.AddAutoMapper(typeof(AutoMapperAdminProfile));
             services.AddAutoMapper(typeof(AutoMapperStudentProfile));
             services.AddAutoMapper(typeof(AutoMapperTeacherProfile));
+            services.AddAutoMapper(typeof(AutoMapperSubjectProfile));
             services.AddAutoMapper(typeof(AutoMapperGroupProfile));
         }
     }
