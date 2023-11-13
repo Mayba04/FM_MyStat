@@ -1,12 +1,29 @@
 using FM_MyStat.Core;
+using FM_MyStat.Core.Entities.Users;
 using FM_MyStat.Infrastructure;
+using FM_MyStat.Infrastructure.Context;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
-string connStr = builder.Configuration.GetConnectionString("DefaultConnection");
+/*string connStr = builder.Configuration.GetConnectionString("DefaultConnection");
 // Database context
-builder.Services.AddDbContext(connStr);
+builder.Services.AddDbContext<AppDBContext>(options =>
+        options.UseSqlServer(connStr));*/
+
+
+
+builder.Services.AddDbContext<AppDBContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+/*builder.Services.AddIdentity<AppUser, IdentityRole>()
+    .AddEntityFrameworkStores<AppDBContext>()
+    .AddDefaultTokenProviders();*/
+
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

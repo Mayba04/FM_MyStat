@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FM_MyStat.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Migration01 : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -216,17 +216,17 @@ namespace FM_MyStat.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    TeacherId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    TeacherId = table.Column<int>(type: "int", nullable: false),
+                    TeacherId1 = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Groups", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Groups_Teachers_TeacherId",
-                        column: x => x.TeacherId,
+                        name: "FK_Groups_Teachers_TeacherId1",
+                        column: x => x.TeacherId1,
                         principalTable: "Teachers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -349,9 +349,9 @@ namespace FM_MyStat.Infrastructure.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Groups_TeacherId",
+                name: "IX_Groups_TeacherId1",
                 table: "Groups",
-                column: "TeacherId");
+                column: "TeacherId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Homeworks_GroupId",

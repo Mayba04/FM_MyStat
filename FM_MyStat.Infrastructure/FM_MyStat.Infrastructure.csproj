@@ -19,9 +19,5 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\FM_MyStat.Core\FM_MyStat.Core.csproj" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Migrations\" />
-	</ItemGroup>
 	
 </Project>

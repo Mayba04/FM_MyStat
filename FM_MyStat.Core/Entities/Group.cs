@@ -15,8 +15,7 @@ namespace FM_MyStat.Core.Entities
         public int Id { get; set; }
         [Required, MaxLength(50)]
         public string Name { get; set; }
-        [Required]
-        public string TeacherId { get; set; }
+        public int TeacherId { get; set; }
         public Teacher Teacher { get; set; }
         public IEnumerable<Student> Students { get; set; }
         public IEnumerable<Homework> Homeworks { get; set; }
