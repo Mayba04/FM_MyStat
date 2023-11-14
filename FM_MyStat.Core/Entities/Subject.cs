@@ -1,4 +1,5 @@
-﻿using FM_MyStat.Core.Entities.Users;
+﻿using FM_MyStat.Core.Entities.Lessons;
+using FM_MyStat.Core.Entities.Users;
 using FM_MyStat.Core.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -13,8 +14,9 @@ namespace FM_MyStat.Core.Entities
     {
         [Key]
         public int Id { get; set; }
-        [Required, MaxLength(64)]
+        [Required, MaxLength(128)]
         public string Name { get; set; }
         public IEnumerable<Teacher> Teachers { get; set; }
+        public IEnumerable<Lesson> Lessons { get; set; }
     }
 }

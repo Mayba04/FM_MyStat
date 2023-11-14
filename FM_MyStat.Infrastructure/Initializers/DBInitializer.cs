@@ -35,7 +35,7 @@ namespace FM_MyStat.Infrastructure.Initializers
                 NormalizedName = "ADMINISTRATOR"
             };
 
-            modelBuilder.Entity<Role>().HasData(role);
+            modelBuilder.Entity<IdentityRole>().HasData(role);
             modelBuilder.Entity<Administrator>().HasData(admin);
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
             {
@@ -95,7 +95,6 @@ namespace FM_MyStat.Infrastructure.Initializers
                 PhoneNumber = "+xx(xxx)xxx-xx-xx",
                 PhoneNumberConfirmed = true
             };
-
             modelBuilder.Entity<IdentityRole>().HasData(role);
             modelBuilder.Entity<Student>().HasData(student);
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>

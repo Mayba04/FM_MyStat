@@ -37,8 +37,8 @@ namespace FM_MyStat.Infrastructure
                 options.Password.RequireNonAlphanumeric = true;
                 options.User.RequireUniqueEmail = true;
             })
-            .AddEntityFrameworkStores<AppDBContext>()
-            .AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<AppDBContext>()
+                .AddDefaultTokenProviders();
 
             services.AddIdentity<Teacher, IdentityRole>(options =>
             {
@@ -52,8 +52,8 @@ namespace FM_MyStat.Infrastructure
                 options.Password.RequireNonAlphanumeric = true;
                 options.User.RequireUniqueEmail = true;
             })
-           .AddEntityFrameworkStores<AppDBContext>()
-           .AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<AppDBContext>()
+                .AddDefaultTokenProviders();
 
             services.AddIdentity<Student, IdentityRole>(options =>
             {
@@ -67,8 +67,8 @@ namespace FM_MyStat.Infrastructure
                 options.Password.RequireNonAlphanumeric = true;
                 options.User.RequireUniqueEmail = true;
             })
-           .AddEntityFrameworkStores<AppDBContext>()
-           .AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<AppDBContext>()
+                .AddDefaultTokenProviders();
 
         }
         public static void AddRepositories(this IServiceCollection services)

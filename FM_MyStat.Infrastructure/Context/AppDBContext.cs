@@ -1,4 +1,6 @@
 ﻿using FM_MyStat.Core.Entities;
+using FM_MyStat.Core.Entities.Homeworks;
+using FM_MyStat.Core.Entities.Lessons;
 using FM_MyStat.Core.Entities.Users;
 using FM_MyStat.Infrastructure.Initializers;
 using Microsoft.AspNetCore.Identity;
@@ -14,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace FM_MyStat.Infrastructure.Context
 {
-    public class AppDBContext : IdentityDbContext // <AppUser, IdentityRole<int>, int>
+    internal class AppDBContext : IdentityDbContext
     {
         public AppDBContext() : base() { }
         public AppDBContext(DbContextOptions<AppDBContext> options) : base(options) { }
@@ -24,14 +26,17 @@ namespace FM_MyStat.Infrastructure.Context
         public DbSet<Group> Groups { get; set; } 
         public DbSet<Student> Students { get; set; }
         public DbSet<Homework> Homeworks { get; set; }
+        public DbSet<HomeworkDone> HomeworksDone { get; set; }
         public DbSet<Subject> Subjects { get; set; }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public DbSet<Lesson> Lessons { get; set; }
+        public DbSet<LessonMark> LessonMarks { get; set; }
+        /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseSqlServer("YourConnectionString");
             }
-        }
+        }*/
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -40,17 +45,63 @@ namespace FM_MyStat.Infrastructure.Context
             modelBuilder.Entity<Teacher>(E => { E.ToTable("Teachers"); });
             modelBuilder.Entity<Student>(E => { E.ToTable("Students"); });
 
+            // For work with users 
             modelBuilder.Entity<Student>().HasBaseType<IdentityUser>();
+            modelBuilder.Entity<Administrator>().HasBaseType<IdentityUser>();
+            modelBuilder.Entity<Teacher>().HasBaseType<IdentityUser>();
+
+            // Links
+            modelBuilder.Entity<Student>()
+                .HasOne(student => student.Group).WithMany(group => group.Students)
+                .HasForeignKey(student => student.GroupId).OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Student>()
-             .HasOne(s => s.Group)
-             .WithMany(g => g.Students)
-             .HasForeignKey(s => s.GroupId)
-             .OnDelete(DeleteBehavior.Restrict);
+                .HasMany(student => student.HomeworksDone).WithOne(homework => homework.Student)
+                .HasForeignKey(homework => homework.StudentId).OnDelete(DeleteBehavior.Restrict);
 
-            //modelBuilder.SeedAdministrator();
-            //modelBuilder.SeedTeacher();
-            //modelBuilder.SeedStudent();
+            modelBuilder.Entity<Student>()
+                .HasMany(student => student.LessonMarks).WithOne(lessonmark => lessonmark.Student)
+                .HasForeignKey(lessonmark => lessonmark.StudentId).OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Group>()
+                .HasOne(group => group.Teacher).WithMany(teacher => teacher.Groups)
+                .HasForeignKey(group => group.TeacherId);
+
+            modelBuilder.Entity<Group>()
+                .HasMany(group => group.Homeworks).WithOne(homework => homework.Group)
+                .HasForeignKey(homework => homework.GroupId);
+
+            modelBuilder.Entity<Group>()
+                .HasMany(group => group.Lessons).WithOne(lesson => lesson.Group)
+                .HasForeignKey(lesson => lesson.GroupId);
+
+            modelBuilder.Entity<Homework>()
+                .HasMany(homework => homework.HomeworksDone).WithOne(homeworkdone => homeworkdone.Homework)
+                .HasForeignKey(homeworkdone => homeworkdone.HomeworkId);
+
+            modelBuilder.Entity<Lesson>()
+                .HasMany(lesson => lesson.LessonMarks).WithOne(lessonmark => lessonmark.Lesson)
+                .HasForeignKey(lessonmark => lessonmark.LessonId);
+
+            modelBuilder.Entity<Lesson>()
+                .HasOne(lesson => lesson.Teacher).WithMany(teacher => teacher.Lessons)
+                .HasForeignKey(lesson => lesson.TeacherId).OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Lesson>()
+                .HasOne(lesson => lesson.Homework).WithOne(homework => homework.Lesson)
+                .HasForeignKey<Lesson>(lesson => lesson.HomeworkId).OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Lesson>()
+                .HasOne(lesson => lesson.Subject).WithMany(subject => subject.Lessons)
+                .HasForeignKey(lesson => lesson.SubjectId);
+
+            modelBuilder.Entity<Teacher>()
+                .HasMany(teacher => teacher.Subjects).WithMany(subject => subject.Teachers);
+
+
+            modelBuilder.SeedAdministrator();
+            modelBuilder.SeedTeacher();
+            modelBuilder.SeedStudent();
         }
     }
 }
