@@ -76,5 +76,37 @@ namespace FM_MyStat.Core.Services.Users
                 Message = "User or password incorrect."
             };
         }
+
+        public async Task<ServiceResponse<string, object>> GetUserRoleAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                return new ServiceResponse<string, object>
+                {
+                    Success = false,
+                    Message = "User not found.",
+                    Errors = new[] { "UserNotFound" } 
+                };
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+            if (roles.Any())
+            {
+                return new ServiceResponse<string, object>
+                {
+                    Success = true,
+                    Message = "User roles found.",
+                    Payload = roles.FirstOrDefault() 
+                };
+            }
+
+            return new ServiceResponse<string, object>
+            {
+                Success = false,
+                Message = "User has no roles.",
+                Errors = new[] { "NoRolesAssigned" } 
+            };
+        }
     }
 }

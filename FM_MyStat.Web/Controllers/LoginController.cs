@@ -35,7 +35,28 @@ namespace FM_MyStat.Web.Controllers
                 ServiceResponse result = await _userService.LoginUserAsync(model);
                 if (result.Success)
                 {
-                    return RedirectToAction(nameof(Login));
+                    var roleResult = await _userService.GetUserRoleAsync(model.Email);
+                    if (roleResult.Payload != null)
+                    {
+                        if (roleResult.Payload == "Administrator")
+                        {
+                            return RedirectToAction("Index", "Admin", model);
+                        }
+                        else if (roleResult.Payload == "Student")
+                        {
+                            return RedirectToAction("Index", "Student", model);
+                        }
+                        else if (roleResult.Payload == "Teachr")
+                        {
+                            return RedirectToAction("Index", "Teachr", model);
+                        }
+                        else 
+                        {
+                            ViewBag.AuthError = result.Message;
+                            return View(model);
+                        }
+                    }
+                   
                 }
 
                 ViewBag.AuthError = result.Message;
