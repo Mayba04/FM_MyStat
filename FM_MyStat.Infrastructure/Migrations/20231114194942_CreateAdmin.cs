@@ -13,22 +13,22 @@ namespace FM_MyStat.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "Administrators",
                 columns: new[] { "Id", "AppUserId" },
-                values: new object[] { 1, "daad4c7c-1bc7-4faa-bbc8-ac3f5166054e" });
+                values: new object[] { 1, "c955347f-562e-4c6c-86f0-34d245998181" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "eb367071-08d3-4e39-8b14-4b513ef7e10d", null, "Administrator", "ADMINISTRATOR" });
+                values: new object[] { "847b5309-a048-41e6-9e40-910b82f73231", null, "Administrator", "ADMINISTRATOR" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "AdministratorId", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "StudentId", "SurName", "TeacherId", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "daad4c7c-1bc7-4faa-bbc8-ac3f5166054e", 0, 1, "bcfd51b7-bdb1-4b22-8b10-fe194fef35a0", "AppUser", "admi@gmail.com", true, "John", "Connor", false, null, null, null, null, "+xx(xxx)xxx-xx-xx", true, "bc83966c-042d-4301-932b-fca53d2f7497", null, "Johnovych", null, false, "admi@gmail.com" });
+                values: new object[] { "c955347f-562e-4c6c-86f0-34d245998181", 0, 1, "f4a169b7-4b63-4da9-aacb-4d69ed6dd803", "AppUser", "admin@example.com", true, "John", "Connor", false, null, "ADMIN@EXAMPLE.COM", "ADMIN@EXAMPLE.COM", "AQAAAAIAAYagAAAAEKFZdHuLenxWeyE5yIG7wN3YjFPZxaXGC+GONydoi3rL1NWG30zw30W2+My7ZErvzg==", "+xx(xxx)xxx-xx-xx", true, "ccc311e1-7312-48e4-9029-5f66d6588967", null, "Johnovych", null, false, "admin@example.com" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
-                values: new object[] { "eb367071-08d3-4e39-8b14-4b513ef7e10d", "daad4c7c-1bc7-4faa-bbc8-ac3f5166054e" });
+                values: new object[] { "847b5309-a048-41e6-9e40-910b82f73231", "c955347f-562e-4c6c-86f0-34d245998181" });
         }
 
         /// <inheritdoc />
@@ -37,17 +37,17 @@ namespace FM_MyStat.Infrastructure.Migrations
             migrationBuilder.DeleteData(
                 table: "AspNetUserRoles",
                 keyColumns: new[] { "RoleId", "UserId" },
-                keyValues: new object[] { "eb367071-08d3-4e39-8b14-4b513ef7e10d", "daad4c7c-1bc7-4faa-bbc8-ac3f5166054e" });
+                keyValues: new object[] { "847b5309-a048-41e6-9e40-910b82f73231", "c955347f-562e-4c6c-86f0-34d245998181" });
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "eb367071-08d3-4e39-8b14-4b513ef7e10d");
+                keyValue: "847b5309-a048-41e6-9e40-910b82f73231");
 
             migrationBuilder.DeleteData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
-                keyValue: "daad4c7c-1bc7-4faa-bbc8-ac3f5166054e");
+                keyValue: "c955347f-562e-4c6c-86f0-34d245998181");
 
             migrationBuilder.DeleteData(
                 table: "Administrators",

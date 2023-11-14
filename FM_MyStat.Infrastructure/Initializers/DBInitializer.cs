@@ -26,19 +26,29 @@ namespace FM_MyStat.Infrastructure.Initializers
                 NormalizedName = "ADMINISTRATOR"
             });
 
-            modelBuilder.Entity<AppUser>().HasData(new AppUser
+            var passwordHasher = new PasswordHasher<AppUser>();
+
+            var adminUser = new AppUser
             {
                 Id = adminUserId,
                 FirstName = "John",
                 LastName = "Connor",
                 SurName = "Johnovych",
-                UserName = "admi@gmail.com",
-                Email = "admi@gmail.com",
+                UserName = "admin@example.com",
+                NormalizedUserName = "ADMIN@EXAMPLE.COM",
+                Email = "admin@example.com",
+                NormalizedEmail = "ADMIN@EXAMPLE.COM",
                 EmailConfirmed = true,
                 PhoneNumber = "+xx(xxx)xxx-xx-xx",
                 PhoneNumberConfirmed = true,
                 AdministratorId = 1,
-            });
+            };
+
+            var hashedPassword = passwordHasher.HashPassword(adminUser, "Qwerty-1");
+
+            adminUser.PasswordHash = hashedPassword;
+
+            modelBuilder.Entity<AppUser>().HasData(adminUser);
 
             modelBuilder.Entity<Administrator>().HasData(new Administrator
             {

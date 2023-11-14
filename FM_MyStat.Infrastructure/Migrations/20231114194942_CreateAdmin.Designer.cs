@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FM_MyStat.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20231114192522_CreateAdmin")]
+    [Migration("20231114194942_CreateAdmin")]
     partial class CreateAdmin
     {
         /// <inheritdoc />
@@ -229,7 +229,7 @@ namespace FM_MyStat.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            AppUserId = "daad4c7c-1bc7-4faa-bbc8-ac3f5166054e"
+                            AppUserId = "c955347f-562e-4c6c-86f0-34d245998181"
                         });
                 });
 
@@ -302,7 +302,7 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "eb367071-08d3-4e39-8b14-4b513ef7e10d",
+                            Id = "847b5309-a048-41e6-9e40-910b82f73231",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -470,8 +470,8 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "daad4c7c-1bc7-4faa-bbc8-ac3f5166054e",
-                            RoleId = "eb367071-08d3-4e39-8b14-4b513ef7e10d"
+                            UserId = "c955347f-562e-4c6c-86f0-34d245998181",
+                            RoleId = "847b5309-a048-41e6-9e40-910b82f73231"
                         });
                 });
 
@@ -554,17 +554,20 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "daad4c7c-1bc7-4faa-bbc8-ac3f5166054e",
+                            Id = "c955347f-562e-4c6c-86f0-34d245998181",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "bcfd51b7-bdb1-4b22-8b10-fe194fef35a0",
-                            Email = "admi@gmail.com",
+                            ConcurrencyStamp = "f4a169b7-4b63-4da9-aacb-4d69ed6dd803",
+                            Email = "admin@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@EXAMPLE.COM",
+                            NormalizedUserName = "ADMIN@EXAMPLE.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKFZdHuLenxWeyE5yIG7wN3YjFPZxaXGC+GONydoi3rL1NWG30zw30W2+My7ZErvzg==",
                             PhoneNumber = "+xx(xxx)xxx-xx-xx",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "bc83966c-042d-4301-932b-fca53d2f7497",
+                            SecurityStamp = "ccc311e1-7312-48e4-9029-5f66d6588967",
                             TwoFactorEnabled = false,
-                            UserName = "admi@gmail.com",
+                            UserName = "admin@example.com",
                             AdministratorId = 1,
                             FirstName = "John",
                             LastName = "Connor",
