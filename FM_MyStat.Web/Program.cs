@@ -14,17 +14,6 @@ string connStr = builder.Configuration.GetConnectionString("DefaultConnection");
 // Database context
 builder.Services.AddDbContext(connStr);
 
-/*builder.Services.AddDbContext<AppDBContext>(options =>
-    {
-        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-    }
-);
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-});*/
-
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
