@@ -9,44 +9,12 @@ using System.Diagnostics;
 
 namespace FM_MyStat.Web.Controllers
 {
-    [Authorize]
+    
     public class HomeController : Controller
     {
-        private readonly UserService _userService;
-
-        public HomeController(UserService userService)
-        {
-            _userService = userService;
-          
-        }
-
         public IActionResult Index()
         {
-            return View();
+            return View(nameof(Index));
         }
-
-        [AllowAnonymous]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(UserLoginDTO model)
-        {
-            var validator = new UserLoginValidation();
-            var validationResult = validator.Validate(model);
-            if (validationResult.IsValid)
-            {
-                ServiceResponse result = await _userService.LoginUserAsync(model);
-                if (result.Success)
-                {
-                    return RedirectToAction(nameof(Login));
-                }
-
-                ViewBag.AuthError = result.Message;
-                return View(model);
-            }
-            ViewBag.AuthError = validationResult.Errors[0];
-            return View(model);
-        }
-
-
     }
 }

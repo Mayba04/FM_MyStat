@@ -18,6 +18,7 @@ namespace FM_MyStat.Core
         public static void AddCoreServices(this IServiceCollection services)
         {
             services.AddTransient<EmailService>();
+            services.AddTransient<UserService>();
             services.AddScoped<IHomeworkService,HomeworkService>();
             services.AddScoped<IHomeworkDoneService,HomeworkDoneService>();
             services.AddScoped<ISubjectService, SubjectService>();
