@@ -14,15 +14,15 @@ namespace FM_MyStat.Core.Services.Users
 {
     public class TeacherService
     {
-        private readonly UserManager<Teacher> _userManager;
-        private readonly SignInManager<Teacher> _signInManager;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly EmailService _emailService;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
         public TeacherService(
-                UserManager<Teacher> userManager,
-                SignInManager<Teacher> signInManager,
+                UserManager<AppUser> userManager,
+                SignInManager<AppUser> signInManager,
                 RoleManager<IdentityRole> roleManager,
                 EmailService emailService,
                 IMapper mapper,
@@ -40,7 +40,7 @@ namespace FM_MyStat.Core.Services.Users
         #region SignIn, SignOut
         public async Task<ServiceResponse> LoginTeacherAsync(LoginTeacherDTO model)
         {
-            Teacher? user = await _userManager.FindByEmailAsync(model.Email);
+            AppUser? user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
                 return new ServiceResponse(false, "User or password incorect.");
@@ -71,7 +71,7 @@ namespace FM_MyStat.Core.Services.Users
         #region Create user, Delete user, Edit password user, Edit main info user
         public async Task<ServiceResponse> CreateTeacherAsync(CreateTeacherDTO model)
         {
-            Teacher NewUser = _mapper.Map<CreateTeacherDTO, Teacher>(model);
+            AppUser NewUser = _mapper.Map<CreateTeacherDTO, AppUser>(model);
             IdentityResult result = await _userManager.CreateAsync(NewUser, model.Password);
             if (result.Succeeded)
             {
@@ -83,7 +83,7 @@ namespace FM_MyStat.Core.Services.Users
 
         public async Task<ServiceResponse> DeleteTeacherAsync(DeleteTeacherDTO model)
         {
-            Teacher userdelete = await _userManager.FindByIdAsync(model.Id);
+            AppUser userdelete = await _userManager.FindByIdAsync(model.Id);
             if (userdelete == null)
             {
                 return new ServiceResponse(false, "User a was found");
@@ -98,7 +98,7 @@ namespace FM_MyStat.Core.Services.Users
 
         public async Task<ServiceResponse> ChangePasswordAsync(EditTeacherPasswordDTO model)
         {
-            Teacher user = _userManager.FindByIdAsync(model.Id).Result;
+            AppUser user = _userManager.FindByIdAsync(model.Id).Result;
             if (user == null) return new ServiceResponse(false, "User or password incorrect.", errors: new List<string>() { "User or password incorrect." });
 
             IdentityResult result = _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword).Result;
@@ -112,7 +112,7 @@ namespace FM_MyStat.Core.Services.Users
 
         public async Task<ServiceResponse> ChangeMainInfoTeacherAsync(EditTeacherDTO newinfo)
         {
-            Teacher user = await _userManager.FindByIdAsync(newinfo.Id);
+            AppUser user = await _userManager.FindByIdAsync(newinfo.Id);
 
             if (user != null)
             {
@@ -129,7 +129,7 @@ namespace FM_MyStat.Core.Services.Users
         #endregion
 
         #region Confirm email and send token for confirm email
-        public async Task SendConfirmationEmailAsync(Teacher user)
+        public async Task SendConfirmationEmailAsync(AppUser user)
         {
             string token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             byte[] encodedToken = Encoding.UTF8.GetBytes(token);
@@ -138,12 +138,12 @@ namespace FM_MyStat.Core.Services.Users
             string url = $"{_configuration["HostSettings:URL"]}/Dashboard/confirmemail?userid={user.Id}&token={validEmailToken}";
 
             string emailBody = $"<h1>Confirm your email</h1> <a href='{url}'>Confirm now!</a>";
-            await _emailService.SendEmailAsync(user.Email, "Email confirmation.", emailBody);
+            //await _emailService.SendEmailAsync(user.Email, "Email confirmation.", emailBody);
         }
 
         public async Task<ServiceResponse> ConfirmEmailAsync(string userId, string token)
         {
-            Teacher? user = await _userManager.FindByIdAsync(userId);
+            AppUser? user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
                 return new ServiceResponse(false, "User not found");

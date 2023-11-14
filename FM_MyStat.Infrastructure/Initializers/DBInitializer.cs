@@ -16,7 +16,7 @@ namespace FM_MyStat.Infrastructure.Initializers
     {
         public static void SeedAdministrator(this ModelBuilder modelBuilder)
         {
-            Administrator admin = new Administrator()
+            /*Administrator admin = new Administrator()
             {
                 Id = Guid.NewGuid().ToString(),
                 FirstName = "John",
@@ -41,12 +41,12 @@ namespace FM_MyStat.Infrastructure.Initializers
             {
                 RoleId = role.Id,
                 UserId = admin.Id,
-            });
+            });*/
         }
 
         public static void SeedTeacher(this ModelBuilder modelBuilder)
         {
-            IdentityRole role = new IdentityRole()
+            /*IdentityRole role = new IdentityRole()
             {
                 Id = Guid.NewGuid().ToString(),
                 Name = "Teacher",
@@ -72,12 +72,12 @@ namespace FM_MyStat.Infrastructure.Initializers
             {
                 UserId = teacher.Id,
                 RoleId = role.Id
-            });
+            });*/
         }
 
         public static void SeedStudent(this ModelBuilder modelBuilder)
         {
-            IdentityRole role = new IdentityRole()
+            /*IdentityRole role = new IdentityRole()
             {
                 Id = Guid.NewGuid().ToString(),
                 Name = "Student",
@@ -101,7 +101,7 @@ namespace FM_MyStat.Infrastructure.Initializers
             {
                 UserId = student.Id,
                 RoleId = role.Id
-            });
+            });*/
         }
     }
 }

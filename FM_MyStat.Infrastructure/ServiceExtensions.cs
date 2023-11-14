@@ -25,7 +25,7 @@ namespace FM_MyStat.Infrastructure
         }
         public static void AddInfrastructureServices(this IServiceCollection services)
         {
-            services.AddIdentity<Administrator, IdentityRole>(options =>
+            services.AddIdentity<AppUser, IdentityRole>(options =>
             {
                 options.SignIn.RequireConfirmedEmail = true;
                 options.Lockout.MaxFailedAccessAttempts = 5;
@@ -39,37 +39,6 @@ namespace FM_MyStat.Infrastructure
             })
                 .AddEntityFrameworkStores<AppDBContext>()
                 .AddDefaultTokenProviders();
-
-            services.AddIdentity<Teacher, IdentityRole>(options =>
-            {
-                options.SignIn.RequireConfirmedEmail = true;
-                options.Lockout.MaxFailedAccessAttempts = 5;
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-                options.Password.RequireDigit = true;
-                options.Password.RequireLowercase = true;
-                options.Password.RequireUppercase = true;
-                options.Password.RequiredLength = 6;
-                options.Password.RequireNonAlphanumeric = true;
-                options.User.RequireUniqueEmail = true;
-            })
-                .AddEntityFrameworkStores<AppDBContext>()
-                .AddDefaultTokenProviders();
-
-            services.AddIdentity<Student, IdentityRole>(options =>
-            {
-                options.SignIn.RequireConfirmedEmail = true;
-                options.Lockout.MaxFailedAccessAttempts = 5;
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-                options.Password.RequireDigit = true;
-                options.Password.RequireLowercase = true;
-                options.Password.RequireUppercase = true;
-                options.Password.RequiredLength = 6;
-                options.Password.RequireNonAlphanumeric = true;
-                options.User.RequireUniqueEmail = true;
-            })
-                .AddEntityFrameworkStores<AppDBContext>()
-                .AddDefaultTokenProviders();
-
         }
         public static void AddRepositories(this IServiceCollection services)
         {

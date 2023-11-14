@@ -35,8 +35,8 @@ namespace FM_MyStat.Infrastructure.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
-                    b.Property<string>("TeacherId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int?>("TeacherId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -100,9 +100,8 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.Property<int?>("Mark")
                         .HasColumnType("int");
 
-                    b.Property<string>("StudentId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -146,9 +145,8 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.Property<int>("SubjectId")
                         .HasColumnType("int");
 
-                    b.Property<string>("TeacherId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("TeacherId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -179,9 +177,8 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.Property<int>("Mark")
                         .HasColumnType("int");
 
-                    b.Property<string>("StudentId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -210,6 +207,62 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.ToTable("Subjects");
                 });
 
+            modelBuilder.Entity("FM_MyStat.Core.Entities.Users.Administrator", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Administrators");
+                });
+
+            modelBuilder.Entity("FM_MyStat.Core.Entities.Users.Student", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("GroupId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
+
+                    b.ToTable("Students");
+                });
+
+            modelBuilder.Entity("FM_MyStat.Core.Entities.Users.Teacher", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Teachers");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -235,26 +288,6 @@ namespace FM_MyStat.Infrastructure.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "21d84c4e-bafe-4224-a2cc-fb42c3aacfac",
-                            Name = "Administrator",
-                            NormalizedName = "ADMINISTRATOR"
-                        },
-                        new
-                        {
-                            Id = "3770762f-229e-4e54-bce1-da7e0af53d75",
-                            Name = "Teacher",
-                            NormalizedName = "TEACHER"
-                        },
-                        new
-                        {
-                            Id = "894c44cc-18ef-4b2f-862f-009f32171600",
-                            Name = "Student",
-                            NormalizedName = "STUDENT"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -292,6 +325,10 @@ namespace FM_MyStat.Infrastructure.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -346,7 +383,9 @@ namespace FM_MyStat.Infrastructure.Migrations
 
                     b.ToTable("AspNetUsers", (string)null);
 
-                    b.UseTptMappingStrategy();
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -409,23 +448,6 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "9593a9a8-1586-449a-8bfd-466134ed10c6",
-                            RoleId = "21d84c4e-bafe-4224-a2cc-fb42c3aacfac"
-                        },
-                        new
-                        {
-                            UserId = "0ad97d02-4eb0-4770-baa6-41aa3a797a2e",
-                            RoleId = "3770762f-229e-4e54-bce1-da7e0af53d75"
-                        },
-                        new
-                        {
-                            UserId = "bbb23101-d5be-4cd1-8706-e53f733761e6",
-                            RoleId = "894c44cc-18ef-4b2f-862f-009f32171600"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -452,8 +474,8 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.Property<int>("SubjectsId")
                         .HasColumnType("int");
 
-                    b.Property<string>("TeachersId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("TeachersId")
+                        .HasColumnType("int");
 
                     b.HasKey("SubjectsId", "TeachersId");
 
@@ -462,65 +484,24 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.ToTable("SubjectTeacher");
                 });
 
-            modelBuilder.Entity("FM_MyStat.Core.Entities.Users.Administrator", b =>
+            modelBuilder.Entity("FM_MyStat.Core.Entities.Users.AppUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<string>("SurName")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.ToTable("Administrators", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "9593a9a8-1586-449a-8bfd-466134ed10c6",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "7bd96a01-5b79-4601-ad65-9ffb04fb4adf",
-                            Email = "admi@gmail.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            PhoneNumber = "+xx(xxx)xxx-xx-xx",
-                            PhoneNumberConfirmed = true,
-                            SecurityStamp = "b8c767c3-834e-4046-82da-61704458ac35",
-                            TwoFactorEnabled = false,
-                            UserName = "admi@gmail.com",
-                            FirstName = "John",
-                            LastName = "Connor",
-                            SurName = "Johnovych"
-                        });
-                });
-
-            modelBuilder.Entity("FM_MyStat.Core.Entities.Users.Student", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<int?>("GroupId")
+                    b.Property<int?>("AdministratorId")
                         .HasColumnType("int");
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
-                    b.Property<int>("Rating")
+                    b.Property<int?>("StudentId")
                         .HasColumnType("int");
 
                     b.Property<string>("SurName")
@@ -528,70 +509,22 @@ namespace FM_MyStat.Infrastructure.Migrations
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
-                    b.HasIndex("GroupId");
+                    b.Property<int?>("TeacherId")
+                        .HasColumnType("int");
 
-                    b.ToTable("Students", (string)null);
+                    b.HasIndex("AdministratorId")
+                        .IsUnique()
+                        .HasFilter("[AdministratorId] IS NOT NULL");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = "bbb23101-d5be-4cd1-8706-e53f733761e6",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "580e0854-0ac2-4bc1-8e22-5bfc4159e7e7",
-                            Email = "student@gmail.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            PhoneNumber = "+xx(xxx)xxx-xx-xx",
-                            PhoneNumberConfirmed = true,
-                            SecurityStamp = "9417f6c4-d976-4056-9a5c-0bb8275e30c6",
-                            TwoFactorEnabled = false,
-                            UserName = "student@gmail.com",
-                            FirstName = "John",
-                            LastName = "Wick",
-                            Rating = 0,
-                            SurName = "Johnovych"
-                        });
-                });
+                    b.HasIndex("StudentId")
+                        .IsUnique()
+                        .HasFilter("[StudentId] IS NOT NULL");
 
-            modelBuilder.Entity("FM_MyStat.Core.Entities.Users.Teacher", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+                    b.HasIndex("TeacherId")
+                        .IsUnique()
+                        .HasFilter("[TeacherId] IS NOT NULL");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<string>("SurName")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.ToTable("Teachers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "0ad97d02-4eb0-4770-baa6-41aa3a797a2e",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "b1e2e5ce-42a7-4b9d-9963-2e0196e0f369",
-                            Email = "teacher@gmail.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            PhoneNumber = "+xx(xxx)xxx-xx-xx",
-                            PhoneNumberConfirmed = true,
-                            SecurityStamp = "79433f0d-f427-4ed4-ad13-ac0b81514950",
-                            TwoFactorEnabled = false,
-                            UserName = "teacher@gmail.com",
-                            FirstName = "John",
-                            LastName = "Doe",
-                            SurName = "Johnovych"
-                        });
+                    b.HasDiscriminator().HasValue("AppUser");
                 });
 
             modelBuilder.Entity("FM_MyStat.Core.Entities.Group", b =>
@@ -686,6 +619,16 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.Navigation("Student");
                 });
 
+            modelBuilder.Entity("FM_MyStat.Core.Entities.Users.Student", b =>
+                {
+                    b.HasOne("FM_MyStat.Core.Entities.Group", "Group")
+                        .WithMany("Students")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Group");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -752,38 +695,25 @@ namespace FM_MyStat.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("FM_MyStat.Core.Entities.Users.Administrator", b =>
+            modelBuilder.Entity("FM_MyStat.Core.Entities.Users.AppUser", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
-                        .WithOne()
-                        .HasForeignKey("FM_MyStat.Core.Entities.Users.Administrator", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+                    b.HasOne("FM_MyStat.Core.Entities.Users.Administrator", "Administrator")
+                        .WithOne("AppUser")
+                        .HasForeignKey("FM_MyStat.Core.Entities.Users.AppUser", "AdministratorId");
 
-            modelBuilder.Entity("FM_MyStat.Core.Entities.Users.Student", b =>
-                {
-                    b.HasOne("FM_MyStat.Core.Entities.Group", "Group")
-                        .WithMany("Students")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                    b.HasOne("FM_MyStat.Core.Entities.Users.Student", "Student")
+                        .WithOne("AppUser")
+                        .HasForeignKey("FM_MyStat.Core.Entities.Users.AppUser", "StudentId");
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
-                        .WithOne()
-                        .HasForeignKey("FM_MyStat.Core.Entities.Users.Student", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("FM_MyStat.Core.Entities.Users.Teacher", "Teacher")
+                        .WithOne("AppUser")
+                        .HasForeignKey("FM_MyStat.Core.Entities.Users.AppUser", "TeacherId");
 
-                    b.Navigation("Group");
-                });
+                    b.Navigation("Administrator");
 
-            modelBuilder.Entity("FM_MyStat.Core.Entities.Users.Teacher", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
-                        .WithOne()
-                        .HasForeignKey("FM_MyStat.Core.Entities.Users.Teacher", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Student");
+
+                    b.Navigation("Teacher");
                 });
 
             modelBuilder.Entity("FM_MyStat.Core.Entities.Group", b =>
@@ -813,8 +743,15 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.Navigation("Lessons");
                 });
 
+            modelBuilder.Entity("FM_MyStat.Core.Entities.Users.Administrator", b =>
+                {
+                    b.Navigation("AppUser");
+                });
+
             modelBuilder.Entity("FM_MyStat.Core.Entities.Users.Student", b =>
                 {
+                    b.Navigation("AppUser");
+
                     b.Navigation("HomeworksDone");
 
                     b.Navigation("LessonMarks");
@@ -822,6 +759,8 @@ namespace FM_MyStat.Infrastructure.Migrations
 
             modelBuilder.Entity("FM_MyStat.Core.Entities.Users.Teacher", b =>
                 {
+                    b.Navigation("AppUser");
+
                     b.Navigation("Groups");
 
                     b.Navigation("Lessons");

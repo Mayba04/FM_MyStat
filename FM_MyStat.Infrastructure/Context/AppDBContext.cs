@@ -21,36 +21,35 @@ namespace FM_MyStat.Infrastructure.Context
         public AppDBContext() : base() { }
         public AppDBContext(DbContextOptions<AppDBContext> options) : base(options) { }
 
+        public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<Administrator> Administrators { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
-        public DbSet<Group> Groups { get; set; } 
         public DbSet<Student> Students { get; set; }
+        public DbSet<Group> Groups { get; set; } 
         public DbSet<Homework> Homeworks { get; set; }
         public DbSet<HomeworkDone> HomeworksDone { get; set; }
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Lesson> Lessons { get; set; }
         public DbSet<LessonMark> LessonMarks { get; set; }
-        /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer("YourConnectionString");
-            }
-        }*/
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Administrator>(E => { E.ToTable("Administrators"); });
-            modelBuilder.Entity<Teacher>(E => { E.ToTable("Teachers"); });
-            modelBuilder.Entity<Student>(E => { E.ToTable("Students"); });
-
-            // For work with users 
-            modelBuilder.Entity<Student>().HasBaseType<IdentityUser>();
-            modelBuilder.Entity<Administrator>().HasBaseType<IdentityUser>();
-            modelBuilder.Entity<Teacher>().HasBaseType<IdentityUser>();
 
             // Links
+            modelBuilder.Entity<AppUser>()
+                .HasOne(user => user.Student).WithOne(student => student.AppUser)
+                .HasForeignKey<AppUser>(user => user.StudentId);
+            
+            modelBuilder.Entity<AppUser>()
+                .HasOne(user => user.Teacher).WithOne(teacher => teacher.AppUser)
+                .HasForeignKey<AppUser>(user => user.TeacherId);
+
+            modelBuilder.Entity<AppUser>()
+                .HasOne(user => user.Administrator).WithOne(administrator => administrator.AppUser)
+                .HasForeignKey<AppUser>(user => user.AdministratorId);
+
             modelBuilder.Entity<Student>()
                 .HasOne(student => student.Group).WithMany(group => group.Students)
                 .HasForeignKey(student => student.GroupId).OnDelete(DeleteBehavior.Restrict);
@@ -99,9 +98,9 @@ namespace FM_MyStat.Infrastructure.Context
                 .HasMany(teacher => teacher.Subjects).WithMany(subject => subject.Teachers);
 
 
-            modelBuilder.SeedAdministrator();
-            modelBuilder.SeedTeacher();
-            modelBuilder.SeedStudent();
+            //modelBuilder.SeedAdministrator();
+            //modelBuilder.SeedTeacher();
+            //modelBuilder.SeedStudent();
         }
     }
 }

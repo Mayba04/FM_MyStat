@@ -19,7 +19,7 @@ namespace FM_MyStat.Core.Entities.Lessons
         public string Description { get; set; }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
-        public string TeacherId { get; set; }
+        public int TeacherId { get; set; }
         public Teacher Teacher { get; set; }
         public int? HomeworkId { get; set; }
         public Homework? Homework { get; set; }
