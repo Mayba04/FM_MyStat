@@ -1,4 +1,6 @@
-﻿using FM_MyStat.Core.Entities.Users;
+﻿using FM_MyStat.Core.Entities.Homeworks;
+using FM_MyStat.Core.Entities.Lessons;
+using FM_MyStat.Core.Entities.Users;
 using FM_MyStat.Core.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -13,12 +15,12 @@ namespace FM_MyStat.Core.Entities
     {
         [Key]
         public int Id { get; set; }
-        [Required, MaxLength(50)]
+        [Required, MaxLength(128)]
         public string Name { get; set; }
-        [Required]
-        public string TeacherId { get; set; }
-        public Teacher Teacher { get; set; }
+        public int? TeacherId { get; set; }
+        public Teacher? Teacher { get; set; }
         public IEnumerable<Student> Students { get; set; }
         public IEnumerable<Homework> Homeworks { get; set; }
+        public IEnumerable<Lesson> Lessons { get; set; }
     }
 }

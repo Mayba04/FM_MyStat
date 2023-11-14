@@ -1,10 +1,10 @@
 ﻿using FM_MyStat.Core.Entities.Users;
-using FM_MyStat.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FM_MyStat.Core.Entities.Homeworks;
 
 namespace FM_MyStat.Core.DTOs.GrouopsDTO
 {

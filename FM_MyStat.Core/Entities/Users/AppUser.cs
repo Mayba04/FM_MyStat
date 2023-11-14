@@ -16,5 +16,11 @@ namespace FM_MyStat.Core.Entities.Users
         public string SurName { get; set; } = string.Empty;
         [Required, MaxLength(64)]
         public string LastName { get; set; } = string.Empty;
+        public int? StudentId { get; set; }
+        public Student? Student { get; set; }
+        public int? TeacherId { get; set; }
+        public Teacher? Teacher { get; set; }
+        public int? AdministratorId { get; set; }
+        public Administrator? Administrator { get; set; }
     }
 }

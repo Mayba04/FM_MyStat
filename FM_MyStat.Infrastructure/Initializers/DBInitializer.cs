@@ -12,25 +12,13 @@ using Group = FM_MyStat.Core.Entities.Group;
 
 namespace FM_MyStat.Infrastructure.Initializers
 {
-    internal static class DBInitializer
+    public static class DBInitializer
     {
         public static void SeedAdministrator(this ModelBuilder modelBuilder)
         {
-           
-
-            var adminUserId = Guid.NewGuid().ToString();
-            var adminRoleId = Guid.NewGuid().ToString();
-
-            modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole
+            /*Administrator admin = new Administrator()
             {
-                Id = adminRoleId,
-                Name = "Administrator",
-                NormalizedName = "ADMINISTRATOR"
-            });
-
-            modelBuilder.Entity<Administrator>().HasData(new Administrator
-            {
-                Id = adminUserId,
+                Id = Guid.NewGuid().ToString(),
                 FirstName = "John",
                 LastName = "Connor",
                 SurName = "Johnovych",
@@ -38,32 +26,36 @@ namespace FM_MyStat.Infrastructure.Initializers
                 Email = "admi@gmail.com",
                 EmailConfirmed = true,
                 PhoneNumber = "+xx(xxx)xxx-xx-xx",
-                PhoneNumberConfirmed = true,
-            });
+                PhoneNumberConfirmed = true
+            };
+            IdentityRole role = new IdentityRole()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "Administrator",
+                NormalizedName = "ADMINISTRATOR"
+            };
 
+            modelBuilder.Entity<IdentityRole>().HasData(role);
+            modelBuilder.Entity<Administrator>().HasData(admin);
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
             {
-                RoleId = adminRoleId,
-                UserId = adminUserId
-            });
+                RoleId = role.Id,
+                UserId = admin.Id,
+            });*/
         }
 
         public static void SeedTeacher(this ModelBuilder modelBuilder)
         {
-            var teacherId = Guid.NewGuid().ToString();
-            var teacherRoleId = Guid.NewGuid().ToString();
-
-            modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole
+            /*IdentityRole role = new IdentityRole()
             {
-                Id = teacherRoleId,
+                Id = Guid.NewGuid().ToString(),
                 Name = "Teacher",
                 NormalizedName = "TEACHER"
-            });
+            };
 
-
-            modelBuilder.Entity<Teacher>().HasData(new Teacher
+            Teacher teacher = new Teacher()
             {
-                Id = teacherId,
+                Id = Guid.NewGuid().ToString(),
                 FirstName = "John",
                 LastName = "Doe",
                 SurName = "Johnovych",
@@ -72,37 +64,28 @@ namespace FM_MyStat.Infrastructure.Initializers
                 EmailConfirmed = true,
                 PhoneNumber = "+xx(xxx)xxx-xx-xx",
                 PhoneNumberConfirmed = true,
-            });
+            };
 
+            modelBuilder.Entity<Teacher>().HasData(teacher);
+            modelBuilder.Entity<IdentityRole>().HasData(role);
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
             {
-                UserId = teacherId,
-                RoleId = teacherRoleId
-            });
-
-            modelBuilder.Entity<Group>().HasData(new Group
-            {
-                Id = 1,
-                Name = "PD116",
-                TeacherId = teacherId
-            });
+                UserId = teacher.Id,
+                RoleId = role.Id
+            });*/
         }
 
         public static void SeedStudent(this ModelBuilder modelBuilder)
         {
-            var studentId = Guid.NewGuid().ToString();
-            var studentRoleId = Guid.NewGuid().ToString();
-
-            modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole
+            /*IdentityRole role = new IdentityRole()
             {
-                Id = studentRoleId,
+                Id = Guid.NewGuid().ToString(),
                 Name = "Student",
                 NormalizedName = "STUDENT"
-            });
-
-            modelBuilder.Entity<Student>().HasData(new Student
+            };
+            Student student = new Student()
             {
-                Id = studentId,
+                Id = Guid.NewGuid().ToString(),
                 FirstName = "John",
                 LastName = "Wick",
                 SurName = "Johnovych",
@@ -110,19 +93,15 @@ namespace FM_MyStat.Infrastructure.Initializers
                 Email = "student@gmail.com",
                 EmailConfirmed = true,
                 PhoneNumber = "+xx(xxx)xxx-xx-xx",
-                PhoneNumberConfirmed = true,
-                GroupId = 1,
-            });
-
+                PhoneNumberConfirmed = true
+            };
+            modelBuilder.Entity<IdentityRole>().HasData(role);
+            modelBuilder.Entity<Student>().HasData(student);
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
             {
-                UserId = studentId,
-                RoleId = studentRoleId
-            });
+                UserId = student.Id,
+                RoleId = role.Id
+            });*/
         }
-
-        
-
-        
     }
 }

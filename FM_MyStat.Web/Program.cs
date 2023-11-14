@@ -1,5 +1,11 @@
 using FM_MyStat.Core;
+using FM_MyStat.Core.Entities.Users;
 using FM_MyStat.Infrastructure;
+using FM_MyStat.Infrastructure.Context;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
