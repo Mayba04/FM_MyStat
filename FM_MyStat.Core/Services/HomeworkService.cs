@@ -54,27 +54,27 @@ namespace FM_MyStat.Core.Services
 
         public async Task<ServiceResponse> GetByName(HomeworkDTO model)
         {
-            var result = await _homeworkRepo.GetItemBySpec(new HomeworkSpecification.GetByName(model.Title));
+            var result = await _homeworkRepo.GetItemBySpec(new HomeworkSpecification.GetByTitle(model.Title));
             if (result != null)
             {
                 return new ServiceResponse
                 {
                     Success = false,
-                    Message = "Category exists."
+                    Message = "Homework exists."
                 };
             }
             var category = _mapper.Map<HomeworkDTO>(result);
             return new ServiceResponse
             {
                 Success = true,
-                Message = "Category successfully loaded.",
+                Message = "Homework successfully loaded.",
                 Payload = category
             };
         }
 
         public async Task<HomeworkDTO> GetByName(string NameHomework)
         {
-            var result = await _homeworkRepo.GetItemBySpec(new HomeworkSpecification.GetByName(NameHomework));
+            var result = await _homeworkRepo.GetItemBySpec(new HomeworkSpecification.GetByTitle(NameHomework));
             if (result != null)
             {
                 HomeworkDTO categoryDTO = _mapper.Map<HomeworkDTO>(result);

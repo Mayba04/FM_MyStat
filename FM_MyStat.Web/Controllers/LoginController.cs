@@ -4,7 +4,6 @@ using FM_MyStat.Core.DTOs.UsersDTO.Teacher;
 using FM_MyStat.Core.Entities.Users;
 using FM_MyStat.Core.Services;
 using FM_MyStat.Core.Services.Users;
-using FM_MyStat.Core.Validation.User.Admin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

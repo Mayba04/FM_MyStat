@@ -1,4 +1,7 @@
-﻿using FM_MyStat.Core.Services.Users;
+﻿using FM_MyStat.Core.DTOs.UsersDTO.User;
+using FM_MyStat.Core.Services;
+using FM_MyStat.Core.Services.Users;
+using FM_MyStat.Core.Validation.User;
 using FM_MyStat.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,19 +12,39 @@ namespace FM_MyStat.Web.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        private readonly AdministratorService _adminService;
-        private readonly StudentService _studentService;
-        private readonly TeacherService _teacherService;
-        public HomeController(AdministratorService adminService, StudentService studentService, TeacherService teacherService)
+        private readonly UserService _userService;
+
+        public HomeController(UserService userService)
         {
-            _adminService = adminService;
-            _studentService = studentService;
-            _teacherService = teacherService;
+            _userService = userService;
+          
         }
 
         public IActionResult Index()
         {
             return View();
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(UserLoginDTO model)
+        {
+            var validator = new UserLoginValidation();
+            var validationResult = validator.Validate(model);
+            if (validationResult.IsValid)
+            {
+                ServiceResponse result = await _userService.LoginUserAsync(model);
+                if (result.Success)
+                {
+                    return RedirectToAction(nameof(Login));
+                }
+
+                ViewBag.AuthError = result.Message;
+                return View(model);
+            }
+            ViewBag.AuthError = validationResult.Errors[0];
+            return View(model);
         }
 
 

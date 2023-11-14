@@ -17,11 +17,9 @@ namespace FM_MyStat.Core
     {
         public static void AddCoreServices(this IServiceCollection services)
         {
-            services.AddTransient<AdministratorService>();
-            services.AddTransient<StudentService>();
-            services.AddTransient<TeacherService>();
             services.AddTransient<EmailService>();
-            services.AddTransient<HomeworkService>();
+            services.AddScoped<IHomeworkService,HomeworkService>();
+            services.AddScoped<IHomeworkDoneService,HomeworkDoneService>();
             services.AddScoped<ISubjectService, SubjectService>();
             services.AddScoped<IGroupService, GroupService>();
         }
@@ -30,7 +28,9 @@ namespace FM_MyStat.Core
             services.AddAutoMapper(typeof(AutoMapperAdminProfile));
             services.AddAutoMapper(typeof(AutoMapperStudentProfile));
             services.AddAutoMapper(typeof(AutoMapperTeacherProfile));
+            services.AddAutoMapper(typeof(AutoMapperUserProfile));
             services.AddAutoMapper(typeof(AutoMapperHomework));
+            services.AddAutoMapper(typeof(AutoMapperHomeworkDone));
             services.AddAutoMapper(typeof(AutoMapperSubjectProfile));
             services.AddAutoMapper(typeof(AutoMapperGroupProfile));
         }
