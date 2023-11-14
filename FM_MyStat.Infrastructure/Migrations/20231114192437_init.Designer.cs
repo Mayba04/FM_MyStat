@@ -4,6 +4,7 @@ using FM_MyStat.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FM_MyStat.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231114192437_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -221,13 +224,6 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Administrators");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AppUserId = "daad4c7c-1bc7-4faa-bbc8-ac3f5166054e"
-                        });
                 });
 
             modelBuilder.Entity("FM_MyStat.Core.Entities.Users.Student", b =>
@@ -295,14 +291,6 @@ namespace FM_MyStat.Infrastructure.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "eb367071-08d3-4e39-8b14-4b513ef7e10d",
-                            Name = "Administrator",
-                            NormalizedName = "ADMINISTRATOR"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -463,13 +451,6 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "daad4c7c-1bc7-4faa-bbc8-ac3f5166054e",
-                            RoleId = "eb367071-08d3-4e39-8b14-4b513ef7e10d"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -547,26 +528,6 @@ namespace FM_MyStat.Infrastructure.Migrations
                         .HasFilter("[TeacherId] IS NOT NULL");
 
                     b.HasDiscriminator().HasValue("AppUser");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "daad4c7c-1bc7-4faa-bbc8-ac3f5166054e",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "bcfd51b7-bdb1-4b22-8b10-fe194fef35a0",
-                            Email = "admi@gmail.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            PhoneNumber = "+xx(xxx)xxx-xx-xx",
-                            PhoneNumberConfirmed = true,
-                            SecurityStamp = "bc83966c-042d-4301-932b-fca53d2f7497",
-                            TwoFactorEnabled = false,
-                            UserName = "admi@gmail.com",
-                            AdministratorId = 1,
-                            FirstName = "John",
-                            LastName = "Connor",
-                            SurName = "Johnovych"
-                        });
                 });
 
             modelBuilder.Entity("FM_MyStat.Core.Entities.Group", b =>
