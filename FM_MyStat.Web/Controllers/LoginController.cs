@@ -46,9 +46,9 @@ namespace FM_MyStat.Web.Controllers
                         {
                             return RedirectToAction("Index", "Student", model);
                         }
-                        else if (roleResult.Payload == "Teachr")
+                        else if (roleResult.Payload == "Teacher")
                         {
-                            return RedirectToAction("Index", "Teachr", model);
+                            return RedirectToAction("Index", "Teacher", model);
                         }
                         else 
                         {
