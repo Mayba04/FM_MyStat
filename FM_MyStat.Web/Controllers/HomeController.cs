@@ -14,7 +14,7 @@ namespace FM_MyStat.Web.Controllers
     {
         public IActionResult Index()
         {
-            return View(nameof(Index));
+            return RedirectToAction("Index", "Login");
         }
     }
 }

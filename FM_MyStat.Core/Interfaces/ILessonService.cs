@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace FM_MyStat.Core.Interfaces
 {
-    internal interface ILessonsService
+    internal interface ILessonService
     {
         Task<List<LessonsDTO>> GetAll();
         Task<LessonsDTO?> Get(int id);

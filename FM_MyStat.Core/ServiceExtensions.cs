@@ -3,6 +3,8 @@ using FM_MyStat.Core.AutoMappers.Student;
 using FM_MyStat.Core.AutoMappers.Users;
 using FM_MyStat.Core.Interfaces;
 using FM_MyStat.Core.Services;
+using FM_MyStat.Core.Services.HomeworkServices;
+using FM_MyStat.Core.Services.LessonServices;
 using FM_MyStat.Core.Services.Users;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -24,7 +26,7 @@ namespace FM_MyStat.Core
             services.AddTransient<AdministratorService>();
 
             services.AddScoped<ILessonMarkService, LessonMarkService>();
-            services.AddScoped<ILessonsService, LessonsService>();
+            services.AddScoped<ILessonService, LessonService>();
             services.AddScoped<IHomeworkService,HomeworkService>();
             services.AddScoped<IHomeworkDoneService,HomeworkDoneService>();
             services.AddScoped<ISubjectService, SubjectService>();
