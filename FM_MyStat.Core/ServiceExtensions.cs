@@ -19,6 +19,7 @@ namespace FM_MyStat.Core
         {
             services.AddTransient<EmailService>();
             services.AddTransient<UserService>();
+            services.AddScoped<IStudentService,StudentService>();
             services.AddScoped<IHomeworkService,HomeworkService>();
             services.AddScoped<IHomeworkDoneService,HomeworkDoneService>();
             services.AddScoped<ISubjectService, SubjectService>();
