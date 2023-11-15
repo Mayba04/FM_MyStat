@@ -17,12 +17,6 @@ namespace FM_MyStat.Core.Validation.User
             RuleFor(r => r.SurName).MinimumLength(2).NotEmpty().MaximumLength(12);
             RuleFor(r => r.Email).NotEmpty().WithMessage("Filed must not be empty")
                   .EmailAddress().WithMessage("Invalid email format.");
-            RuleFor(r => r.PhoneNumber).NotEmpty().MinimumLength(11).MaximumLength(12);
-            RuleFor(r => r.Password).NotEmpty().WithMessage("Filed must not be empty")
-              .MinimumLength(6).WithMessage("Password must be at least 6 characters");
-            RuleFor(r => r.ConfirmPassword).NotEmpty().WithMessage("Filed must not be empty").
-                MinimumLength(6).WithMessage("Password must be at least 6 characters").
-                Equal(p => p.Password).WithMessage("The verification password is incorrect");
         }
 
 

@@ -41,20 +41,20 @@ namespace FM_MyStat.Core.Services.Users
         #endregion
 
         #region Create admin, Delete admin, Edit password admin, Edit main info admin
-        public async Task<ServiceResponse> CreateAdministratorAsync(CreateAdminDTO model)
+        public async Task<ServiceResponse> CreateAdministratorAsync(CreateUserDTO model)
         {
-            CreateUserDTO NewUserAppUser = _mapper.Map<CreateAdminDTO, CreateUserDTO>(model);
-            NewUserAppUser.Role = "Administrator";
-            ServiceResponse result = await _userService.CreateUserAsync(NewUserAppUser);
+            model.Role = "Administrator";
+            ServiceResponse result = await _userService.CreateUserAsync(model);
             if(!result.Success)
             {
                 return result;
             }
-            ServiceResponse<UserDTO, object> appUserResponse = await _userService.GetUserByEmail(model.Email);
+            ServiceResponse<AppUser?, string> appUserResponse = await _userService.GetAppUserByEmail(model.Email);
             if(appUserResponse.Success)
             {
-                Administrator administrator = _mapper.Map<CreateAdminDTO, Administrator>(model);
+                Administrator administrator = _mapper.Map<CreateAdminDTO, Administrator>(new CreateAdminDTO());
                 administrator.AppUserId = appUserResponse.Payload.Id;
+                administrator.AppUser = appUserResponse.Payload;
                 await _adminRepo.Insert(administrator);
                 return new ServiceResponse(true, "Administrator was added");
             }

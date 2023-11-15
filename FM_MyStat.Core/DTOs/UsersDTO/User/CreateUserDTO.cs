@@ -13,10 +13,7 @@ namespace FM_MyStat.Core.DTOs.UsersDTO.User
         public string SurName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
-        public string PhoneNumber { get; set; } = string.Empty;
         public string Role { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
-        public string ConfirmPassword { get; set; } = string.Empty;
         public int? StudentId { get; set; }
         public int? TeacherId { get; set; }
         public int? AdministratorId { get; set; }

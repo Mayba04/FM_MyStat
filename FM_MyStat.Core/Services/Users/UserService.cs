@@ -73,6 +73,13 @@ namespace FM_MyStat.Core.Services.Users
         #endregion
 
         #region Get users mapped
+        public async Task<ServiceResponse<AppUser?, string>>GetAppUserByEmail(string email)
+        {
+            AppUser? user = await this._userManager.FindByEmailAsync(email);
+            return (user != null) ?
+                new ServiceResponse<AppUser?, string>(true, "User succesfully loaded", user) :
+                new ServiceResponse<AppUser?, string>(false, "User not found");
+        }
         public async Task<List<IdentityRole>> GetAllRolesAsync()
         {
             List<IdentityRole> roles = await _roleManager.Roles.ToListAsync();
@@ -127,7 +134,7 @@ namespace FM_MyStat.Core.Services.Users
         public async Task<ServiceResponse> CreateUserAsync(CreateUserDTO model)
         {
             AppUser NewUser = _mapper.Map<CreateUserDTO, AppUser>(model);
-            IdentityResult result = await _userManager.CreateAsync(NewUser, model.Password);
+            IdentityResult result = await _userManager.CreateAsync(NewUser, "Qwerty-1");
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(NewUser, model.Role);

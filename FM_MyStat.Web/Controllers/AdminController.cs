@@ -96,14 +96,14 @@ namespace FM_MyStat.Web.Controllers
         #endregion
 
         #region Create admin page
-        public async Task<IActionResult> CreateUser()
+        public async Task<IActionResult> Create()
         {
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateUser(CreateAdminDTO model)
+        public async Task<IActionResult> Create(CreateAdminDTO model)
         {
             CreateUserValidation validaor = new CreateUserValidation();
             ValidationResult validationResult = await validaor.ValidateAsync(model);
