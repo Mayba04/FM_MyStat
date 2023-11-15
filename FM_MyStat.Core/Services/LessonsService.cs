@@ -16,18 +16,18 @@ namespace FM_MyStat.Core.Services
     public class LessonsService: ILessonsService
     {
         private readonly IMapper _mapper;
-        private readonly IRepository<Lesson> _lessonskRepo;
+        private readonly IRepository<Lesson> _lessonsRepo;
 
         public LessonsService(IMapper mapper, IRepository<Lesson> lessonRepo)
         {
-            _lessonskRepo = lessonRepo;
+            _lessonsRepo = lessonRepo;
             _mapper = mapper;
         }
 
         public async Task Create(CreateLessonsDTO model)
         {
-            await _lessonskRepo.Insert(_mapper.Map<Lesson>(model));
-            await _lessonskRepo.Save();
+            await _lessonsRepo.Insert(_mapper.Map<Lesson>(model));
+            await _lessonsRepo.Save();
         }
 
         public async Task Delete(int id)
@@ -35,14 +35,14 @@ namespace FM_MyStat.Core.Services
             var model = await Get(id);
             if (model == null) return;
 
-            await _lessonskRepo.Delete(model.Id);
-            await _lessonskRepo.Save();
+            await _lessonsRepo.Delete(model.Id);
+            await _lessonsRepo.Save();
         }
 
         public async Task<LessonsDTO?> Get(int id)
         {
             if (id < 0) return null;
-            var category = await _lessonskRepo.GetByID(id);
+            var category = await _lessonsRepo.GetByID(id);
             if (category == null) return null;
             return _mapper.Map<LessonsDTO?>(category);
 
@@ -50,13 +50,13 @@ namespace FM_MyStat.Core.Services
 
         public async Task<List<LessonsDTO>> GetAll()
         {
-            var result = await _lessonskRepo.GetAll();
+            var result = await _lessonsRepo.GetAll();
             return _mapper.Map<List<LessonsDTO>>(result);
         }
 
         public async Task<ServiceResponse> GetByName(LessonsDTO model)
         {
-            var result = await _lessonskRepo.GetItemBySpec(new LessonsSpecification.GetByName(model.Name));
+            var result = await _lessonsRepo.GetItemBySpec(new LessonsSpecification.GetByName(model.Name));
             if (result != null)
             {
                 return new ServiceResponse
@@ -76,7 +76,7 @@ namespace FM_MyStat.Core.Services
 
         public async Task<LessonsDTO> GetByName(string NameHomework)
         {
-            var result = await _lessonskRepo.GetItemBySpec(new LessonsSpecification.GetByName(NameHomework));
+            var result = await _lessonsRepo.GetItemBySpec(new LessonsSpecification.GetByName(NameHomework));
             if (result != null)
             {
                 LessonsDTO categoryDTO = _mapper.Map<LessonsDTO>(result);
@@ -85,15 +85,10 @@ namespace FM_MyStat.Core.Services
             return null;
         }
 
-        public Task<LessonsDTO> GetByName(int Id)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task Update(EditLessonsDTO model)
         {
-            await _lessonskRepo.Update(_mapper.Map<Lesson>(model));
-            await _lessonskRepo.Save();
+            await _lessonsRepo.Update(_mapper.Map<Lesson>(model));
+            await _lessonsRepo.Save();
         }
 
         
