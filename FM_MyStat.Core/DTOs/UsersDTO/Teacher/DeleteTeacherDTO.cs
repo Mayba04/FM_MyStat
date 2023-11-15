@@ -8,7 +8,7 @@ namespace FM_MyStat.Core.DTOs.UsersDTO.Teacher
 {
     public class DeleteTeacherDTO
     {
-        public string Id { get; set; }
-        public string Email { get; set; } = string.Empty;
+        public int Id { get; set; }
+        public string? AppUserId { get; set; }
     }
 }
