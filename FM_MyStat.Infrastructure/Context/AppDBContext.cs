@@ -48,7 +48,7 @@ namespace FM_MyStat.Infrastructure.Context
 
             modelBuilder.Entity<AppUser>()
                 .HasOne(user => user.Administrator).WithOne(administrator => administrator.AppUser)
-                .HasForeignKey<AppUser>(user => user.AdministratorId);
+                .HasForeignKey<Administrator>(administrator => administrator.AppUserId);
 
             modelBuilder.Entity<Student>()
                 .HasOne(student => student.Group).WithMany(group => group.Students)

@@ -49,13 +49,13 @@ namespace FM_MyStat.Core.Services.Users
             {
                 return result;
             }
-            ServiceResponse<AppUser?, string> appUserResponse = await _userService.GetAppUserByEmail(model.Email);
+            ServiceResponse<UserDTO, object> appUserResponse = await _userService.GetUserByEmail(model.Email);
             if(appUserResponse.Success)
             {
                 Administrator administrator = _mapper.Map<CreateAdminDTO, Administrator>(new CreateAdminDTO());
                 administrator.AppUserId = appUserResponse.Payload.Id;
-                administrator.AppUser = appUserResponse.Payload;
                 await _adminRepo.Insert(administrator);
+                await _adminRepo.Save();
                 return new ServiceResponse(true, "Administrator was added");
             }
             return new ServiceResponse(true, "Something went wrong");
