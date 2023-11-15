@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FM_MyStat.Core.DTOs.UsersDTO.User
 {
-    public class DeleteUserDTOteUser
+    public class DeleteUserDTOUser
     {
         public string FirstName { get; set; } = string.Empty;
         public string SurName { get; set; } = string.Empty;
