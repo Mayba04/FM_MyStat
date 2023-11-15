@@ -21,11 +21,13 @@ namespace FM_MyStat.Core.Services.Users
 
         public AdministratorService(
                 UserService userService,
-                IRepository<Administrator> adminRepo
+                IRepository<Administrator> adminRepo,
+                IMapper mapper
             )
         {
             this._userService = userService;
             this._adminRepo = adminRepo;
+            this._mapper = mapper;
         }
         #region SignIn, SignOut
         public async Task<ServiceResponse> LoginAdministratorAsync(UserLoginDTO model)
@@ -78,8 +80,8 @@ namespace FM_MyStat.Core.Services.Users
         public async Task<ServiceResponse<List<AdminDTO>, object>> GetAllAsync()
         {
             ServiceResponse<List<UserDTO>, object> serviceResponse = await this._userService.GetAllAsync();
-            List<UserDTO> result = (List<UserDTO>)serviceResponse.Payload.Select(u => u.Role == "Administrator");
-            List<AdminDTO> mappedUsers = result.Select(u => _mapper.Map<UserDTO, AdminDTO>(u)).ToList();
+            List<UserDTO> result = serviceResponse.Payload.Where(u => u.Role == "Administrator").ToList();
+            List<AdminDTO> mappedUsers = result.Select(_mapper.Map<UserDTO, AdminDTO>).ToList();
             return new ServiceResponse<List<AdminDTO>, object>(true, "", payload: mappedUsers);
         }
 

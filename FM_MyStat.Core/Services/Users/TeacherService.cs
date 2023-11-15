@@ -20,11 +20,13 @@ namespace FM_MyStat.Core.Services.Users
 
         public TeacherService(
                 UserService userService,
-                IRepository<Teacher> adminRepo
+                IRepository<Teacher> adminRepo,
+                IMapper mapper
             )
         {
             this._userService = userService;
             this._teacherRepo = adminRepo;
+            this._mapper = mapper;
         }
         #region SignIn, SignOut
         public async Task<ServiceResponse> LoginTeacherAsync(UserLoginDTO model)
@@ -77,7 +79,7 @@ namespace FM_MyStat.Core.Services.Users
         public async Task<ServiceResponse<List<TeacherDTO>, object>> GetAllAsync()
         {
             ServiceResponse<List<UserDTO>, object> serviceResponse = await this._userService.GetAllAsync();
-            List<UserDTO> result = (List<UserDTO>)serviceResponse.Payload.Select(u => u.Role == "Teacher");
+            List<UserDTO> result = serviceResponse.Payload.Where(u => u.Role == "Teacher").ToList();
             List<TeacherDTO> mappedUsers = result.Select(u => _mapper.Map<UserDTO, TeacherDTO>(u)).ToList();
             return new ServiceResponse<List<TeacherDTO>, object>(true, "", payload: mappedUsers);
         }

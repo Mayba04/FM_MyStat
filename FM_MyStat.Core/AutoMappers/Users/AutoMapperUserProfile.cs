@@ -26,6 +26,10 @@ namespace FM_MyStat.Core.AutoMappers.Users
             CreateMap<CreateAdminDTO, CreateUserDTO>().ReverseMap();
             CreateMap<CreateTeacherDTO, CreateUserDTO>().ReverseMap();
             CreateMap<CreateStudentDTO, CreateUserDTO>().ReverseMap();
+
+            CreateMap<UserDTO, AdminDTO>().ReverseMap();
+            CreateMap<UserDTO, TeacherDTO>().ReverseMap();
+            CreateMap<UserDTO, StudentDTO>().ReverseMap();
         }
     }
 }
