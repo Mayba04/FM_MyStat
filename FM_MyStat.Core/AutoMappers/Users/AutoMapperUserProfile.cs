@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FM_MyStat.Core.DTOs.UsersDTO.Admin;
 using FM_MyStat.Core.DTOs.UsersDTO.User;
 using FM_MyStat.Core.Entities.Users;
 using System;
@@ -16,7 +17,12 @@ namespace FM_MyStat.Core.AutoMappers.Users
             CreateMap<UserDTO, AppUser>().ReverseMap();
             CreateMap<EditUserDTO, AppUser>().ReverseMap();
             CreateMap<CreateUserDTO, AppUser>().ForMember(dst => dst.UserName, act => act.MapFrom(src => src.Email));
-            CreateMap<AppUser, CreateUserDTO>();
+            CreateMap<CreateUserDTO, AppUser>();
+            CreateMap<DeleteUserDTO, AppUser>().ReverseMap();
+
+            /// ......
+            CreateMap<CreateAdminDTO, CreateUserDTO>().ReverseMap();
+            CreateMap<DeleteAdminDTO, DeleteUserDTO>().ReverseMap();
         }
     }
 }
