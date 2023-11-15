@@ -22,6 +22,11 @@ namespace FM_MyStat.Web.Controllers
 
         public IActionResult Index()
         {
+            bool userAuthenticated = HttpContext.User.Identity.IsAuthenticated;
+            if (userAuthenticated)
+            {
+                return RedirectToAction("Index", "Admin");
+            }
             return View(nameof(Login));
         }
 

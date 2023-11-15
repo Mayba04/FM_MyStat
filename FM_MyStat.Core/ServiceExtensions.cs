@@ -21,6 +21,7 @@ namespace FM_MyStat.Core
             services.AddTransient<UserService>();
             services.AddTransient<StudentService>();
             services.AddTransient<TeacherService>();
+            services.AddTransient<AdministratorService>();
 
             services.AddScoped<ILessonMarkService, LessonMarkService>();
             services.AddScoped<ILessonsService, LessonsService>();

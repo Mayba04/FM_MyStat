@@ -1,7 +1,9 @@
-﻿using FM_MyStat.Core.DTOs.UsersDTO.Admin;
+﻿using FluentValidation.Results;
+using FM_MyStat.Core.DTOs.UsersDTO.Admin;
 using FM_MyStat.Core.DTOs.UsersDTO.User;
 using FM_MyStat.Core.Services;
 using FM_MyStat.Core.Services.Users;
+using FM_MyStat.Core.Validation.User;
 using FM_MyStat.Web.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -76,7 +78,7 @@ namespace FM_MyStat.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePasswordInfo(EditUserPasswordDTO model)
         {
-            UpdatePasswordValidation validator = new EditPasswordValidation();
+            EditPasswordValidation validator = new EditPasswordValidation();
             ValidationResult validationResult = await validator.ValidateAsync(model);
             if (validationResult.IsValid)
             {
@@ -123,7 +125,7 @@ namespace FM_MyStat.Web.Controllers
         #region Delete user page
         public async Task<IActionResult> DeleteUser(string id)
         {
-            ServiceResponse<DeleteAdminDTO, object> result = await _administratorService.GetDeleteUserDtoByIdAsync(id);
+            ServiceResponse<DeleteUserDTO, object> result = await _administratorService.GetDeleteUserDtoByIdAsync(id);
             if (result.Success)
             {
                 return View(result.Payload);
