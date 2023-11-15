@@ -39,7 +39,7 @@
                     <a href="#" class="nav-link active">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
-                            Users
+                            Admins
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
@@ -47,18 +47,70 @@
                         <li class="nav-item">
                             <a asp-controller="Dashboard"  asp-action="GetAll" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>All users</p>
+                                <p>All admins</p>
                             </a>
                         </li>
-                        @if (@User.IsInRole("Administrator"))
-                        {   
+                         
+                        
                         <li class="nav-item">
                             <a asp-controller="Dashboard" asp-action="AddNew" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Add new</p>
+                                <p>Add new admin</p>
                             </a>
                         </li>
-                        }
+                        
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link active">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            Teachers
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-controller="Dashboard" asp-action="GetAll" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>All teachers</p>
+                            </a>
+                        </li>
+                         
+                        
+                            <li class="nav-item">
+                                <a asp-controller="Dashboard" asp-action="AddNew" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Add new teacher</p>
+                                </a>
+                            </li>
+                        
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link active">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            Students
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-controller="Dashboard" asp-action="GetAll" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>All students</p>
+                            </a>
+                        </li>
+                         
+                        
+                            <li class="nav-item">
+                                <a asp-controller="Dashboard" asp-action="AddNew" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Add new student</p>
+                                </a>
+                            </li>
+                        
                     </ul>
                 </li>
                 <li class="nav-item">
@@ -76,15 +128,15 @@
                                 <p>All categories</p>
                             </a>
                         </li>
-                        @if (@User.IsInRole("Administrator"))
-                        {
+                         
+                        
                             <li class="nav-item">
                                 <a asp-controller="Category" asp-action="AddNew" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Add new</p>
                                 </a>
                             </li>
-                        }
+                        
                     </ul>
                 </li>
                 <li class="nav-item">
@@ -102,15 +154,15 @@
                                 <p>All post</p>
                             </a>
                         </li>
-                        @if (@User.IsInRole("Administrator"))
-                        {
+                         
+                        
                             <li class="nav-item">
                                 <a asp-controller="Post" asp-action="AddPost" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Add new</p>
                                 </a>
                             </li>
-                        }
+                        
                     </ul>
                 </li>
             </ul>
