@@ -12,8 +12,6 @@ namespace FM_MyStat.Core.DTOs.GrouopsDTO
     public class EditGroupDTO
     {
         public string Name { get; set; }
-        public Teacher Teacher { get; set; }
-        public IEnumerable<Student> Students { get; set; }
-        public IEnumerable<Homework> Homeworks { get; set; }
+        public int? TeacherId { get; set; }
     }
 }

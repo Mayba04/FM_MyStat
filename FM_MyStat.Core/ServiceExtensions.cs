@@ -19,6 +19,11 @@ namespace FM_MyStat.Core
         {
             services.AddTransient<EmailService>();
             services.AddTransient<UserService>();
+            services.AddTransient<StudentService>();
+            services.AddTransient<TeacherService>();
+
+            services.AddScoped<ILessonMarkService, LessonMarkService>();
+            services.AddScoped<ILessonsService, LessonsService>();
             services.AddScoped<IHomeworkService,HomeworkService>();
             services.AddScoped<IHomeworkDoneService,HomeworkDoneService>();
             services.AddScoped<ISubjectService, SubjectService>();
@@ -34,6 +39,8 @@ namespace FM_MyStat.Core
             services.AddAutoMapper(typeof(AutoMapperHomeworkDone));
             services.AddAutoMapper(typeof(AutoMapperSubjectProfile));
             services.AddAutoMapper(typeof(AutoMapperGroupProfile));
+            services.AddAutoMapper(typeof(AutoMapperLessons));
+            services.AddAutoMapper(typeof(AutoMapperLessonMark));
         }
     }
 }

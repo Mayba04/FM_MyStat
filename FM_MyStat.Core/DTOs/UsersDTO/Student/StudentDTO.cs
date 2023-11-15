@@ -1,4 +1,7 @@
-﻿using System;
+﻿using FM_MyStat.Core.Entities.Homeworks;
+using FM_MyStat.Core.Entities.Lessons;
+using FM_MyStat.Core.Entities.Users;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,12 +12,9 @@ namespace FM_MyStat.Core.DTOs.UsersDTO.Student
 {
     public class StudentDTO
     {
-        public string Id { get; set; } = string.Empty;
-        public string FirstName { get; set; } = string.Empty;
-        public string LastName { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;    
-        public string PhoneNumber { get; set; } = string.Empty;
+        public int Id { get; set; }
+        public string? AppUserId { get; set; }
         public int Rating { get; set; }
-        public int GroupId { get; set; }
+        public int? GroupId { get; set; }
     }
 }
