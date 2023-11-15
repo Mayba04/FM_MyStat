@@ -73,6 +73,17 @@ namespace FM_MyStat.Core.Services.Users
             return await this._userService.ChangeMainInfoUserAsync(newinfo);
         }
         #endregion
+
+        public async Task<ServiceResponse<List<TeacherDTO>, object>> GetAllAsync()
+        {
+            ServiceResponse<List<UserDTO>, object> serviceResponse = await this._userService.GetAllAsync();
+            List<UserDTO> result = (List<UserDTO>)serviceResponse.Payload.Select(u => u.Role == "Teacher");
+            List<TeacherDTO> mappedUsers = result.Select(u => _mapper.Map<UserDTO, TeacherDTO>(u)).ToList();
+            return new ServiceResponse<List<TeacherDTO>, object>(true, "", payload: mappedUsers);
+        }
+
+        public async Task<ServiceResponse<EditUserDTO, object>> GetEditUserDtoByIdAsync(string Id) => await this._userService.GetEditUserDtoByIdAsync(Id);
+        public async Task<ServiceResponse<DeleteUserDTO, object>> GetDeleteUserDtoByIdAsync(string Id) => await this._userService.GetDeleteUserDtoByIdAsync(Id);
     }
 }
 
