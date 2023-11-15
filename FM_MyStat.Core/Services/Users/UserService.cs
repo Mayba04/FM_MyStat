@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FM_MyStat.Core.DTOs.UsersDTO.Admin;
 using FM_MyStat.Core.DTOs.UsersDTO.User;
 using FM_MyStat.Core.Entities.Users;
 using Microsoft.AspNetCore.Identity;
