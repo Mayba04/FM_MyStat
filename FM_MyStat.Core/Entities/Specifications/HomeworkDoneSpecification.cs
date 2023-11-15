@@ -9,13 +9,13 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace FM_MyStat.Core.Entities.Specifications
 {
-    public class HomeworkSpecification
+    public class HomeworkDoneSpecification
     {
-        public class GetByTitle : Specification<Homework>
+        public class GetByDescription : Specification<HomeworkDone>
         {
-            public GetByTitle(string title)
+            public GetByDescription(string description)
             {
-                Query.Where(x => x.Title == title);
+                Query.Where(x => x.Description == description);
             }
         }
     }

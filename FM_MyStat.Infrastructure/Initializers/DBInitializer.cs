@@ -16,33 +16,54 @@ namespace FM_MyStat.Infrastructure.Initializers
     {
         public static void SeedAdministrator(this ModelBuilder modelBuilder)
         {
-            /*Administrator admin = new Administrator()
+            var adminUserId = Guid.NewGuid().ToString();
+            var adminRoleId = Guid.NewGuid().ToString();
+
+            modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = adminRoleId,
+                Name = "Administrator",
+                NormalizedName = "ADMINISTRATOR"
+            });
+
+            var passwordHasher = new PasswordHasher<AppUser>();
+
+            var adminUser = new AppUser
+            {
+                Id = adminUserId,
                 FirstName = "John",
                 LastName = "Connor",
                 SurName = "Johnovych",
-                UserName = "admi@gmail.com",
-                Email = "admi@gmail.com",
+                UserName = "admin@example.com",
+                NormalizedUserName = "ADMIN@EXAMPLE.COM",
+                Email = "admin@example.com",
+                NormalizedEmail = "ADMIN@EXAMPLE.COM",
                 EmailConfirmed = true,
                 PhoneNumber = "+xx(xxx)xxx-xx-xx",
-                PhoneNumberConfirmed = true
-            };
-            IdentityRole role = new IdentityRole()
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = "Administrator",
-                NormalizedName = "ADMINISTRATOR"
+                PhoneNumberConfirmed = true,
+                AdministratorId = 1,
             };
 
-            modelBuilder.Entity<IdentityRole>().HasData(role);
-            modelBuilder.Entity<Administrator>().HasData(admin);
+            var hashedPassword = passwordHasher.HashPassword(adminUser, "Qwerty-1");
+
+            adminUser.PasswordHash = hashedPassword;
+
+            modelBuilder.Entity<AppUser>().HasData(adminUser);
+
+            modelBuilder.Entity<Administrator>().HasData(new Administrator
+            {
+                Id=1,
+                AppUserId = adminUserId
+            });
+
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
             {
-                RoleId = role.Id,
-                UserId = admin.Id,
-            });*/
+                RoleId = adminRoleId,
+                UserId = adminUserId
+            });
         }
+
+        
 
         public static void SeedTeacher(this ModelBuilder modelBuilder)
         {

@@ -98,7 +98,7 @@ namespace FM_MyStat.Infrastructure.Context
                 .HasMany(teacher => teacher.Subjects).WithMany(subject => subject.Teachers);
 
 
-            //modelBuilder.SeedAdministrator();
+            modelBuilder.SeedAdministrator();
             //modelBuilder.SeedTeacher();
             //modelBuilder.SeedStudent();
         }
