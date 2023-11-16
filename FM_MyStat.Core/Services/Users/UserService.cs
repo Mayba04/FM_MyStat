@@ -180,6 +180,9 @@ namespace FM_MyStat.Core.Services.Users
                 user.LastName = newinfo.LastName;
                 user.Email = newinfo.Email;
                 user.PhoneNumber = newinfo.PhoneNumber;
+                user.AdministratorId = newinfo.AdministratorId;
+                user.TeacherId = newinfo.TeacherId;
+                user.StudentId = newinfo.StudentId;
 
                 IdentityResult result = await _userManager.UpdateAsync(user);
 

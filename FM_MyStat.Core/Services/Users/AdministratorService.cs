@@ -73,12 +73,18 @@ namespace FM_MyStat.Core.Services.Users
             }
             return new ServiceResponse(false, "Something went wrong");
         }
-        public async Task<ServiceResponse> DeleteAdministratorAsync(DeleteAdminDTO model)
+        public async Task<ServiceResponse> DeleteAdministratorAsync(DeleteUserDTO model)
         {
-            await _adminRepo.Delete(model.Id);
-            DeleteUserDTO deleteUserDTO = _mapper.Map<DeleteAdminDTO, DeleteUserDTO>(model);
-            ServiceResponse response = await _userService.DeleteUserAsync(deleteUserDTO);
-            return response;
+
+            Administrator? deletesadmin = await _adminRepo.GetItemBySpec(new AdministratorSpecification.GetByAppUserId(model.Id));
+            if (deletesadmin != null)
+            {
+                await _adminRepo.Delete(deletesadmin.Id);
+                await _adminRepo.Save();
+                ServiceResponse response = await _userService.DeleteUserAsync(model);
+                return response;
+            }
+            return new ServiceResponse(false, "Something went wrong");
         }
         public async Task<ServiceResponse> ChangePasswordAsync(EditUserPasswordDTO model)
         {

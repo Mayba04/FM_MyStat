@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FM_MyStat.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20231114194942_CreateAdmin")]
-    partial class CreateAdmin
+    [Migration("20231116074307_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -219,9 +219,13 @@ namespace FM_MyStat.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AppUserId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AppUserId")
+                        .IsUnique()
+                        .HasFilter("[AppUserId] IS NOT NULL");
 
                     b.ToTable("Administrators");
 
@@ -229,7 +233,7 @@ namespace FM_MyStat.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            AppUserId = "c955347f-562e-4c6c-86f0-34d245998181"
+                            AppUserId = "31992405-74d4-488a-b3c2-6433b315e034"
                         });
                 });
 
@@ -242,7 +246,7 @@ namespace FM_MyStat.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AppUserId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("GroupId")
                         .HasColumnType("int");
@@ -251,6 +255,10 @@ namespace FM_MyStat.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AppUserId")
+                        .IsUnique()
+                        .HasFilter("[AppUserId] IS NOT NULL");
 
                     b.HasIndex("GroupId");
 
@@ -266,9 +274,13 @@ namespace FM_MyStat.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AppUserId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AppUserId")
+                        .IsUnique()
+                        .HasFilter("[AppUserId] IS NOT NULL");
 
                     b.ToTable("Teachers");
                 });
@@ -302,7 +314,7 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "847b5309-a048-41e6-9e40-910b82f73231",
+                            Id = "1a9bf1fa-5bb1-49dd-9d33-a8744046d694",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -470,8 +482,8 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "c955347f-562e-4c6c-86f0-34d245998181",
-                            RoleId = "847b5309-a048-41e6-9e40-910b82f73231"
+                            UserId = "31992405-74d4-488a-b3c2-6433b315e034",
+                            RoleId = "1a9bf1fa-5bb1-49dd-9d33-a8744046d694"
                         });
                 });
 
@@ -537,35 +549,23 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.Property<int?>("TeacherId")
                         .HasColumnType("int");
 
-                    b.HasIndex("AdministratorId")
-                        .IsUnique()
-                        .HasFilter("[AdministratorId] IS NOT NULL");
-
-                    b.HasIndex("StudentId")
-                        .IsUnique()
-                        .HasFilter("[StudentId] IS NOT NULL");
-
-                    b.HasIndex("TeacherId")
-                        .IsUnique()
-                        .HasFilter("[TeacherId] IS NOT NULL");
-
                     b.HasDiscriminator().HasValue("AppUser");
 
                     b.HasData(
                         new
                         {
-                            Id = "c955347f-562e-4c6c-86f0-34d245998181",
+                            Id = "31992405-74d4-488a-b3c2-6433b315e034",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f4a169b7-4b63-4da9-aacb-4d69ed6dd803",
+                            ConcurrencyStamp = "fcb36528-6a45-4616-adb3-49cab1c96bbf",
                             Email = "admin@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@EXAMPLE.COM",
                             NormalizedUserName = "ADMIN@EXAMPLE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKFZdHuLenxWeyE5yIG7wN3YjFPZxaXGC+GONydoi3rL1NWG30zw30W2+My7ZErvzg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEA4R9JlUBkBeC/mYfPibaGnSzpgKzBwU6cO7jJrXQJt/25WZgA8ClxV8qHh8mCkaRA==",
                             PhoneNumber = "+xx(xxx)xxx-xx-xx",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "ccc311e1-7312-48e4-9029-5f66d6588967",
+                            SecurityStamp = "2d64c263-270a-4c1e-9145-d62073a22cea",
                             TwoFactorEnabled = false,
                             UserName = "admin@example.com",
                             AdministratorId = 1,
@@ -667,14 +667,41 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.Navigation("Student");
                 });
 
+            modelBuilder.Entity("FM_MyStat.Core.Entities.Users.Administrator", b =>
+                {
+                    b.HasOne("FM_MyStat.Core.Entities.Users.AppUser", "AppUser")
+                        .WithOne("Administrator")
+                        .HasForeignKey("FM_MyStat.Core.Entities.Users.Administrator", "AppUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("AppUser");
+                });
+
             modelBuilder.Entity("FM_MyStat.Core.Entities.Users.Student", b =>
                 {
+                    b.HasOne("FM_MyStat.Core.Entities.Users.AppUser", "AppUser")
+                        .WithOne("Student")
+                        .HasForeignKey("FM_MyStat.Core.Entities.Users.Student", "AppUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("FM_MyStat.Core.Entities.Group", "Group")
                         .WithMany("Students")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.Navigation("AppUser");
+
                     b.Navigation("Group");
+                });
+
+            modelBuilder.Entity("FM_MyStat.Core.Entities.Users.Teacher", b =>
+                {
+                    b.HasOne("FM_MyStat.Core.Entities.Users.AppUser", "AppUser")
+                        .WithOne("Teacher")
+                        .HasForeignKey("FM_MyStat.Core.Entities.Users.Teacher", "AppUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -743,27 +770,6 @@ namespace FM_MyStat.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("FM_MyStat.Core.Entities.Users.AppUser", b =>
-                {
-                    b.HasOne("FM_MyStat.Core.Entities.Users.Administrator", "Administrator")
-                        .WithOne("AppUser")
-                        .HasForeignKey("FM_MyStat.Core.Entities.Users.AppUser", "AdministratorId");
-
-                    b.HasOne("FM_MyStat.Core.Entities.Users.Student", "Student")
-                        .WithOne("AppUser")
-                        .HasForeignKey("FM_MyStat.Core.Entities.Users.AppUser", "StudentId");
-
-                    b.HasOne("FM_MyStat.Core.Entities.Users.Teacher", "Teacher")
-                        .WithOne("AppUser")
-                        .HasForeignKey("FM_MyStat.Core.Entities.Users.AppUser", "TeacherId");
-
-                    b.Navigation("Administrator");
-
-                    b.Navigation("Student");
-
-                    b.Navigation("Teacher");
-                });
-
             modelBuilder.Entity("FM_MyStat.Core.Entities.Group", b =>
                 {
                     b.Navigation("Homeworks");
@@ -791,15 +797,8 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.Navigation("Lessons");
                 });
 
-            modelBuilder.Entity("FM_MyStat.Core.Entities.Users.Administrator", b =>
-                {
-                    b.Navigation("AppUser");
-                });
-
             modelBuilder.Entity("FM_MyStat.Core.Entities.Users.Student", b =>
                 {
-                    b.Navigation("AppUser");
-
                     b.Navigation("HomeworksDone");
 
                     b.Navigation("LessonMarks");
@@ -807,11 +806,18 @@ namespace FM_MyStat.Infrastructure.Migrations
 
             modelBuilder.Entity("FM_MyStat.Core.Entities.Users.Teacher", b =>
                 {
-                    b.Navigation("AppUser");
-
                     b.Navigation("Groups");
 
                     b.Navigation("Lessons");
+                });
+
+            modelBuilder.Entity("FM_MyStat.Core.Entities.Users.AppUser", b =>
+                {
+                    b.Navigation("Administrator");
+
+                    b.Navigation("Student");
+
+                    b.Navigation("Teacher");
                 });
 #pragma warning restore 612, 618
         }

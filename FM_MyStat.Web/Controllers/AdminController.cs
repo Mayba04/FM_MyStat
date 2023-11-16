@@ -18,7 +18,7 @@ namespace FM_MyStat.Web.Controllers
         {
             this._administratorService = administratorService;
         }
-        public IActionResult Index(UserLoginDTO model)
+        public IActionResult Index()
         {
             return View();
         }
@@ -123,7 +123,7 @@ namespace FM_MyStat.Web.Controllers
         #endregion
 
         #region Delete user page
-        public async Task<IActionResult> DeleteUser(string id)
+        public async Task<IActionResult> Delete(string id)
         {
             ServiceResponse<DeleteUserDTO, object> result = await _administratorService.GetDeleteUserDtoByIdAsync(id);
             if (result.Success)
@@ -135,7 +135,7 @@ namespace FM_MyStat.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteUser(DeleteAdminDTO model)
+        public async Task<IActionResult> Delete(DeleteUserDTO model)
         {
             ServiceResponse result = await _administratorService.DeleteAdministratorAsync(model);
             if (!result.Success)

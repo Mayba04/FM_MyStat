@@ -9,7 +9,7 @@
 
 @{
     var user = await UserManager.GetUserAsync(User);
-    var email = await UserManager.GetEmailAsync(user);
+    //var email = await UserManager.GetEmailAsync(user);
 }
 @{
     <!-- DataTables -->
@@ -73,8 +73,8 @@
                                             <td>@item.EmailConfirmed</td>
                                             <td>@item.LockedOut</td>
                                             <td>@item.PhoneNumber</td>
-                                            <td><a asp-controller="Dashboard" asp-action="EditUser" asp-route-id="@item.Id" class="btn btn-block btn-warning btn-sm">Edit</a></td>
-                                            <td><a asp-controller="Dashboard" asp-action="DeleteUser" asp-route-id="@item.Id" class="btn btn-block btn-danger btn-sm">Delete</a></td>
+                                            <td><a asp-controller="Admin" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-block btn-warning btn-sm">Edit</a></td>
+                                            <td><a asp-controller="Admin" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-block btn-danger btn-sm">Delete</a></td>
                                         </tr>
                                     }
                                 </tbody>
