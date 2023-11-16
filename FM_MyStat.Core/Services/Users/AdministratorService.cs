@@ -94,6 +94,7 @@ namespace FM_MyStat.Core.Services.Users
         {
             return await this._userService.ChangeMainInfoUserAsync(newinfo);
         }
+        public async Task<ServiceResponse> EditAdministratorAsync(EditUserDTO model) => await _userService.EditUserAsync(model);
         #endregion
 
         public async Task<ServiceResponse<List<AdminDTO>, object>> GetAllAsync()

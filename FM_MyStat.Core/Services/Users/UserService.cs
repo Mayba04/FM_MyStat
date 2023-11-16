@@ -3,6 +3,7 @@ using FM_MyStat.Core.DTOs.UsersDTO.Admin;
 using FM_MyStat.Core.DTOs.UsersDTO.User;
 using FM_MyStat.Core.Entities.Users;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -191,6 +192,33 @@ namespace FM_MyStat.Core.Services.Users
                     new ServiceResponse(false, "Something went wrong", errors: result.Errors.Select(e => e.Description));
             }
             return new ServiceResponse(false, "Not found user");
+        }
+        public async Task<ServiceResponse> EditUserAsync(EditUserDTO model)
+        {
+            AppUser? user = await _userManager.FindByIdAsync(model.Id);
+            if (user == null)
+            {
+                return new ServiceResponse(false, "User not found.", errors: new List<string>() { "User not found." });
+            }
+
+            if (user.Email != model.Email)
+            {
+                user.EmailConfirmed = false;
+                user.Email = model.Email;
+                user.UserName = model.Email;
+                await SendConfirmationEmailAsync(user);
+            }
+
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.PhoneNumber = model.PhoneNumber;
+
+            IdentityResult result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded)
+            {
+                return new ServiceResponse(true, "User successfully updated.");
+            }
+            return new ServiceResponse(false, "Something went wrong", errors: result.Errors.Select(e => e.Description));
         }
         #endregion
 

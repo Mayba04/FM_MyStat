@@ -6,7 +6,9 @@ using FM_MyStat.Core.Services.Users;
 using FM_MyStat.Core.Validation.User;
 using FM_MyStat.Web.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace FM_MyStat.Web.Controllers
 {
@@ -146,6 +148,35 @@ namespace FM_MyStat.Web.Controllers
         }
         #endregion
 
-        
+        #region Edit other user page
+        public async Task<IActionResult> Edit(string id)
+        {
+
+            ServiceResponse<EditUserDTO, object> result = await _administratorService.GetEditUserDtoByIdAsync(id);
+            if (result.Success)
+            {
+                return View(result.Payload);
+            }
+            return View(nameof(Index));
+        }
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditUserDTO model)
+        {
+            ValidationResult validationResult = await new EditUserValidation().ValidateAsync(model);
+            if (validationResult.IsValid)
+            {
+                ServiceResponse result = await _administratorService.EditAdministratorAsync(model);
+                if (result.Success)
+                {
+                    return View(nameof(Index));
+                }
+                return View(nameof(Index));
+            }
+            ViewBag.AuthError = validationResult.Errors.FirstOrDefault();
+            return View(nameof(Edit));
+        }
+        #endregion
     }
 }
