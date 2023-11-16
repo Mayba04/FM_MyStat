@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FM_MyStat.Core.DTOs.UsersDTO.Admin;
 using FM_MyStat.Core.DTOs.UsersDTO.User;
+using FM_MyStat.Core.Entities.Specifications;
 using FM_MyStat.Core.Entities.Users;
 using FM_MyStat.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -56,9 +57,21 @@ namespace FM_MyStat.Core.Services.Users
                 administrator.AppUserId = appUserResponse.Payload.Id;
                 await _adminRepo.Insert(administrator);
                 await _adminRepo.Save();
-                return new ServiceResponse(true, "Administrator was added");
+                Administrator? admin = await _adminRepo.GetItemBySpec(new AdministratorSpecification.GetByAppUserId(appUserResponse.Payload.Id));
+                if(admin != null)
+                {
+                    EditUserDTO editUserDTO = _mapper.Map<UserDTO, EditUserDTO>(appUserResponse.Payload);
+                    editUserDTO.AdministratorId = admin.Id;
+                    ServiceResponse response = await _userService.ChangeMainInfoUserAsync(editUserDTO);
+                    if(response.Success)
+                    {
+                        return new ServiceResponse(true, "Administrator was added");
+                    }
+                    return new ServiceResponse(false, "Something went wrong");
+                }
+                return new ServiceResponse(false, "Something went wrong");
             }
-            return new ServiceResponse(true, "Something went wrong");
+            return new ServiceResponse(false, "Something went wrong");
         }
         public async Task<ServiceResponse> DeleteAdministratorAsync(DeleteAdminDTO model)
         {
