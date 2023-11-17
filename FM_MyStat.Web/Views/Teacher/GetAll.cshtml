@@ -1,0 +1,94 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@using Microsoft.AspNetCore.Identity;
+@using FM_MyStat.Core.DTOs.UsersDTO.Teacher;
+@using FM_MyStat.Core.Entities.Users;
+@model List<TeacherDTO>
+@inject UserManager<AppUser> UserManager
+
+@{
+    var user = await UserManager.GetUserAsync(User);
+    //var email = await UserManager.GetEmailAsync(user);
+}
+@{
+    <!-- DataTables -->
+    <link rel="stylesheet" href="~/assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>All users</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Users</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">User list with minimal information</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="example2" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Email</th>
+                                        <th>FirstName</th>
+                                        <th>SurName</th>
+                                        <th>LastName</th>
+                                        <th>EmailConfirmed</th>
+                                        <th>LockedOut</th>
+                                        <th>PhoneNumber</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@item.Email</td>
+                                            <td>@item.FirstName</td>
+                                            <td>@item.SurName</td>
+                                            <td>@item.LastName</td>
+                                            <td>@item.EmailConfirmed</td>
+                                            <td>@item.LockedOut</td>
+                                            <td>@item.PhoneNumber</td>
+                                            <td><a asp-controller="Teacher" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-block btn-warning btn-sm">Edit</a></td>
+                                            <td><a asp-controller="Teacher" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-block btn-danger btn-sm">Delete</a></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+            <!-- /.col -->
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+</div>
+<!-- /.content -->

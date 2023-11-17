@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace FM_MyStat.Infrastructure.Migrations
 {
     /// <inheritdoc />
@@ -410,22 +412,39 @@ namespace FM_MyStat.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "1a9bf1fa-5bb1-49dd-9d33-a8744046d694", null, "Administrator", "ADMINISTRATOR" });
+                values: new object[,]
+                {
+                    { "55f12c96-1ffa-4df4-a51a-f698f3684754", null, "Administrator", "ADMINISTRATOR" },
+                    { "7e3803d0-835e-426b-87e7-324a96418385", null, "Teacher", "TEACHER" }
+                });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "AdministratorId", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "StudentId", "SurName", "TeacherId", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "31992405-74d4-488a-b3c2-6433b315e034", 0, 1, "fcb36528-6a45-4616-adb3-49cab1c96bbf", "AppUser", "admin@example.com", true, "John", "Connor", false, null, "ADMIN@EXAMPLE.COM", "ADMIN@EXAMPLE.COM", "AQAAAAIAAYagAAAAEA4R9JlUBkBeC/mYfPibaGnSzpgKzBwU6cO7jJrXQJt/25WZgA8ClxV8qHh8mCkaRA==", "+xx(xxx)xxx-xx-xx", true, "2d64c263-270a-4c1e-9145-d62073a22cea", null, "Johnovych", null, false, "admin@example.com" });
+                values: new object[,]
+                {
+                    { "1cb05c24-1824-41e3-b571-5623ec775ed9", 0, 1, "bc0300ba-1f45-477a-aa2a-e20235e9c320", "AppUser", "teacher@email.com", true, "John", "Connor", false, null, "TEACHER@EMAIL.COM", "TEACHER@EMAIL.COM", "AQAAAAIAAYagAAAAEDxPqJoqzV0EqAF6X/kuWY5RKv+vDJ1ixVX1+ny9dEuzqRbBa6hhWx1vYp81hQ2dnA==", "+xx(xxx)xxx-xx-xx", true, "ccfd15d9-159b-4d17-86da-1c01c976ca3b", null, "Johnovych", null, false, "teacher@email.com" },
+                    { "6008a4da-826e-4178-905f-1e26ed25c54c", 0, 1, "d0bfb2fc-d8a3-49d1-9ca0-31c45c5bf6b2", "AppUser", "admin@email.com", true, "John", "Connor", false, null, "ADMIN@EMAIL.COM", "ADMIN@EMAIL.COM", "AQAAAAIAAYagAAAAEHEq7Z9Ohkk+Cwxf0nevKQEKPE21PR3BbCsM51nntmR2xy79Iaxt22KUsTnC1Askcg==", "+xx(xxx)xxx-xx-xx", true, "61dd298c-9f50-4f8a-a0be-a5aee468afe2", null, "Johnovych", null, false, "admin@email.com" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Administrators",
                 columns: new[] { "Id", "AppUserId" },
-                values: new object[] { 1, "31992405-74d4-488a-b3c2-6433b315e034" });
+                values: new object[] { 1, "6008a4da-826e-4178-905f-1e26ed25c54c" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
-                values: new object[] { "1a9bf1fa-5bb1-49dd-9d33-a8744046d694", "31992405-74d4-488a-b3c2-6433b315e034" });
+                values: new object[,]
+                {
+                    { "7e3803d0-835e-426b-87e7-324a96418385", "1cb05c24-1824-41e3-b571-5623ec775ed9" },
+                    { "55f12c96-1ffa-4df4-a51a-f698f3684754", "6008a4da-826e-4178-905f-1e26ed25c54c" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Teachers",
+                columns: new[] { "Id", "AppUserId" },
+                values: new object[] { 2, "1cb05c24-1824-41e3-b571-5623ec775ed9" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Administrators_AppUserId",

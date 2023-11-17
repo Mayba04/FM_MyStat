@@ -1,25 +1,24 @@
 ﻿using FluentValidation.Results;
 using FM_MyStat.Core.DTOs.UsersDTO.Admin;
+using FM_MyStat.Core.DTOs.UsersDTO.Teacher;
 using FM_MyStat.Core.DTOs.UsersDTO.User;
 using FM_MyStat.Core.Services;
 using FM_MyStat.Core.Services.Users;
 using FM_MyStat.Core.Validation.User;
 using FM_MyStat.Web.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace FM_MyStat.Web.Controllers
 {
     [Authorize(Roles = "Administrator")]
-    public class AdminController : Controller
+    public class TeacherController : Controller
     {
-        private readonly AdministratorService _administratorService;
+        private readonly TeacherService _teacherService;
 
-        public AdminController(AdministratorService administratorService)
+        public TeacherController(TeacherService teacherService)
         {
-            this._administratorService = administratorService;
+            this._teacherService = teacherService;
         }
         public IActionResult Index()
         {
@@ -30,7 +29,7 @@ namespace FM_MyStat.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> LogOut()
         {
-            ServiceResponse response = await _administratorService.SignOutAsync();
+            ServiceResponse response = await _teacherService.SignOutAsync();
             if (response.Success == true)
             {
                 return RedirectToAction("Index", "Login");
@@ -42,7 +41,7 @@ namespace FM_MyStat.Web.Controllers
         #region Get all users page
         public async Task<IActionResult> GetAll()
         {
-            ServiceResponse<List<AdminDTO>, object> result = await _administratorService.GetAllAsync();
+            ServiceResponse<List<TeacherDTO>, object> result = await _teacherService.GetAllAsync();
             return View(result.Payload);
         }
         #endregion
@@ -50,12 +49,12 @@ namespace FM_MyStat.Web.Controllers
         #region Profile page
         public async Task<IActionResult> Profile(string Id)
         {
-            ServiceResponse<EditUserDTO, object> result = await _administratorService.GetEditUserDtoByIdAsync(Id);
+            ServiceResponse<EditUserDTO, object> result = await _teacherService.GetEditUserDtoByIdAsync(Id);
             if (result.Success)
             {
-                UpdateProfileAdminVM profile = new UpdateProfileAdminVM()
+                UpdateProfileTeacherVM profile = new UpdateProfileTeacherVM()
                 {
-                    AdminInfo = result.Payload,
+                    TeacherInfo = result.Payload,
                 };
                 return View(profile);
             }
@@ -69,16 +68,16 @@ namespace FM_MyStat.Web.Controllers
             ValidationResult validationResult = await validator.ValidateAsync(model);
             if (validationResult.IsValid)
             {
-                ServiceResponse result = await _administratorService.ChangeMainInfoAdministratorAsync(model);
+                ServiceResponse result = await _teacherService.ChangeMainInfoTeacherAsync(model);
                 if (result.Success)
                 {
-                    return View("Profile", new UpdateProfileAdminVM() { AdminInfo = model });
+                    return View("Profile", new UpdateProfileTeacherVM() { TeacherInfo = model });
                 }
                 ViewBag.UserUpdateError = result.Errors.FirstOrDefault();
-                return View("Profile", new UpdateProfileAdminVM() { AdminInfo = model });
+                return View("Profile", new UpdateProfileTeacherVM() { TeacherInfo = model });
             }
             ViewBag.UserUpdateError = validationResult.Errors[0];
-            return View("Profile", new UpdateProfileAdminVM() { AdminInfo = model });
+            return View("Profile", new UpdateProfileTeacherVM() { TeacherInfo = model });
         }
 
         [HttpPost]
@@ -89,16 +88,16 @@ namespace FM_MyStat.Web.Controllers
             ValidationResult validationResult = await validator.ValidateAsync(model);
             if (validationResult.IsValid)
             {
-                ServiceResponse result = await _administratorService.ChangePasswordAsync(model);
+                ServiceResponse result = await _teacherService.ChangePasswordAsync(model);
                 if (result.Success)
                 {
                     return RedirectToAction(nameof(SignIn));
                 }
                 ViewBag.UpdatePasswordError = result.Errors;
-                return View(new UpdateProfileAdminVM() { AdminInfo = _administratorService.GetEditUserDtoByIdAsync(model.Id).Result.Payload });
+                return View(new UpdateProfileTeacherVM() { TeacherInfo = _teacherService.GetEditUserDtoByIdAsync(model.Id).Result.Payload });
             }
             ViewBag.UpdatePasswordError = validationResult.Errors[0];
-            return View(new UpdateProfileAdminVM() { AdminInfo = _administratorService.GetEditUserDtoByIdAsync(model.Id).Result.Payload });
+            return View(new UpdateProfileTeacherVM() { TeacherInfo = _teacherService.GetEditUserDtoByIdAsync(model.Id).Result.Payload });
         }
         #endregion
 
@@ -116,7 +115,7 @@ namespace FM_MyStat.Web.Controllers
             ValidationResult validationResult = await validaor.ValidateAsync(model);
             if (validationResult.IsValid)
             {
-                ServiceResponse response = await _administratorService.CreateAdministratorAsync(model);
+                ServiceResponse response = await _teacherService.CreateTeacherAsync(model);
                 if (response.Success)
                 {
                     return RedirectToAction(nameof(Index));
@@ -132,7 +131,7 @@ namespace FM_MyStat.Web.Controllers
         #region Delete user page
         public async Task<IActionResult> Delete(string id)
         {
-            ServiceResponse<DeleteUserDTO, object> result = await _administratorService.GetDeleteUserDtoByIdAsync(id);
+            ServiceResponse<DeleteUserDTO, object> result = await _teacherService.GetDeleteUserDtoByIdAsync(id);
             if (result.Success)
             {
                 return View(result.Payload);
@@ -144,7 +143,7 @@ namespace FM_MyStat.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(DeleteUserDTO model)
         {
-            ServiceResponse result = await _administratorService.DeleteAdministratorAsync(model);
+            ServiceResponse result = await _teacherService.DeleteTeacherAsync(model);
             if (!result.Success)
             {
                 ViewBag.GetAllError = result.Errors.FirstOrDefault();
@@ -157,7 +156,7 @@ namespace FM_MyStat.Web.Controllers
         public async Task<IActionResult> Edit(string id)
         {
 
-            ServiceResponse<EditUserDTO, object> result = await _administratorService.GetEditUserDtoByIdAsync(id);
+            ServiceResponse<EditUserDTO, object> result = await _teacherService.GetEditUserDtoByIdAsync(id);
             if (result.Success)
             {
                 return View(result.Payload);
@@ -172,7 +171,7 @@ namespace FM_MyStat.Web.Controllers
             ValidationResult validationResult = await new EditUserValidation().ValidateAsync(model);
             if (validationResult.IsValid)
             {
-                ServiceResponse result = await _administratorService.EditAdministratorAsync(model);
+                ServiceResponse result = await _teacherService.EditTeacherAsync(model);
                 if (result.Success)
                 {
                     return View(nameof(Index));

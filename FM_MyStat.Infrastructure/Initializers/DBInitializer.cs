@@ -34,10 +34,10 @@ namespace FM_MyStat.Infrastructure.Initializers
                 FirstName = "John",
                 LastName = "Connor",
                 SurName = "Johnovych",
-                UserName = "admin@example.com",
-                NormalizedUserName = "ADMIN@EXAMPLE.COM",
-                Email = "admin@example.com",
-                NormalizedEmail = "ADMIN@EXAMPLE.COM",
+                UserName = "admin@email.com",
+                NormalizedUserName = "ADMIN@EMAIL.COM",
+                Email = "admin@email.com",
+                NormalizedEmail = "ADMIN@EMAIL.COM",
                 EmailConfirmed = true,
                 PhoneNumber = "+xx(xxx)xxx-xx-xx",
                 PhoneNumberConfirmed = true,
@@ -67,33 +67,51 @@ namespace FM_MyStat.Infrastructure.Initializers
 
         public static void SeedTeacher(this ModelBuilder modelBuilder)
         {
-            /*IdentityRole role = new IdentityRole()
+            var teacherUserId = Guid.NewGuid().ToString();
+            var teacherRoleId = Guid.NewGuid().ToString();
+
+            modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = teacherRoleId,
                 Name = "Teacher",
                 NormalizedName = "TEACHER"
-            };
+            });
 
-            Teacher teacher = new Teacher()
+            var passwordHasher = new PasswordHasher<AppUser>();
+
+            var adminUser = new AppUser
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = teacherUserId,
                 FirstName = "John",
-                LastName = "Doe",
+                LastName = "Connor",
                 SurName = "Johnovych",
-                UserName = "teacher@gmail.com",
-                Email = "teacher@gmail.com",
+                UserName = "teacher@email.com",
+                NormalizedUserName = "TEACHER@EMAIL.COM",
+                Email = "teacher@email.com",
+                NormalizedEmail = "TEACHER@EMAIL.COM",
                 EmailConfirmed = true,
                 PhoneNumber = "+xx(xxx)xxx-xx-xx",
                 PhoneNumberConfirmed = true,
+                TeacherId = 1,
             };
 
-            modelBuilder.Entity<Teacher>().HasData(teacher);
-            modelBuilder.Entity<IdentityRole>().HasData(role);
+            var hashedPassword = passwordHasher.HashPassword(adminUser, "Qwerty-1");
+
+            adminUser.PasswordHash = hashedPassword;
+
+            modelBuilder.Entity<AppUser>().HasData(adminUser);
+
+            modelBuilder.Entity<Teacher>().HasData(new Teacher
+            {
+                Id = 1,
+                AppUserId = teacherUserId
+            });
+
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
             {
-                UserId = teacher.Id,
-                RoleId = role.Id
-            });*/
+                RoleId = teacherRoleId,
+                UserId = teacherUserId
+            });
         }
 
         public static void SeedStudent(this ModelBuilder modelBuilder)

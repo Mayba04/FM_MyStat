@@ -14,11 +14,11 @@ namespace FM_MyStat.Core.Entities.Specifications
 {
     public class TeacherSpecification: AbstractValidator<TeacherDTO>
     {
-        public class GetById : Specification<Teacher>
+        public class GetByAppUserId : Specification<Teacher>
         {
-            public GetById(int Id)
+            public GetByAppUserId(string Id)
             {
-                Query.Where(x => x.Id == Id);
+                Query.Where(a => a.AppUserId == Id);
             }
         }
     }
