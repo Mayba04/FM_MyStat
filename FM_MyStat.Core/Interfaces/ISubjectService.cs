@@ -14,8 +14,8 @@ namespace FM_MyStat.Core.Interfaces
         Task<SubjectDTO?> Get(int id);
         Task<ServiceResponse> GetByName(SubjectDTO model);
         Task<SubjectDTO> GetByName(string NameSubject);
-        Task Create(SubjectDTO model);
-        Task Update(SubjectDTO model);
+        Task Create(CreateSubjectDTO model);
+        Task Update(EditSubjectDTO model);
         Task Delete(int id);
 
     }
