@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FM_MyStat.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20231116074307_init")]
+    [Migration("20231117173520_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -233,7 +233,7 @@ namespace FM_MyStat.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            AppUserId = "31992405-74d4-488a-b3c2-6433b315e034"
+                            AppUserId = "6008a4da-826e-4178-905f-1e26ed25c54c"
                         });
                 });
 
@@ -283,6 +283,13 @@ namespace FM_MyStat.Infrastructure.Migrations
                         .HasFilter("[AppUserId] IS NOT NULL");
 
                     b.ToTable("Teachers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 2,
+                            AppUserId = "1cb05c24-1824-41e3-b571-5623ec775ed9"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -314,9 +321,15 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1a9bf1fa-5bb1-49dd-9d33-a8744046d694",
+                            Id = "55f12c96-1ffa-4df4-a51a-f698f3684754",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
+                        },
+                        new
+                        {
+                            Id = "7e3803d0-835e-426b-87e7-324a96418385",
+                            Name = "Teacher",
+                            NormalizedName = "TEACHER"
                         });
                 });
 
@@ -482,8 +495,13 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "31992405-74d4-488a-b3c2-6433b315e034",
-                            RoleId = "1a9bf1fa-5bb1-49dd-9d33-a8744046d694"
+                            UserId = "6008a4da-826e-4178-905f-1e26ed25c54c",
+                            RoleId = "55f12c96-1ffa-4df4-a51a-f698f3684754"
+                        },
+                        new
+                        {
+                            UserId = "1cb05c24-1824-41e3-b571-5623ec775ed9",
+                            RoleId = "7e3803d0-835e-426b-87e7-324a96418385"
                         });
                 });
 
@@ -554,20 +572,41 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "31992405-74d4-488a-b3c2-6433b315e034",
+                            Id = "6008a4da-826e-4178-905f-1e26ed25c54c",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fcb36528-6a45-4616-adb3-49cab1c96bbf",
-                            Email = "admin@example.com",
+                            ConcurrencyStamp = "d0bfb2fc-d8a3-49d1-9ca0-31c45c5bf6b2",
+                            Email = "admin@email.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            NormalizedEmail = "ADMIN@EXAMPLE.COM",
-                            NormalizedUserName = "ADMIN@EXAMPLE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEA4R9JlUBkBeC/mYfPibaGnSzpgKzBwU6cO7jJrXQJt/25WZgA8ClxV8qHh8mCkaRA==",
+                            NormalizedEmail = "ADMIN@EMAIL.COM",
+                            NormalizedUserName = "ADMIN@EMAIL.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHEq7Z9Ohkk+Cwxf0nevKQEKPE21PR3BbCsM51nntmR2xy79Iaxt22KUsTnC1Askcg==",
                             PhoneNumber = "+xx(xxx)xxx-xx-xx",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "2d64c263-270a-4c1e-9145-d62073a22cea",
+                            SecurityStamp = "61dd298c-9f50-4f8a-a0be-a5aee468afe2",
                             TwoFactorEnabled = false,
-                            UserName = "admin@example.com",
+                            UserName = "admin@email.com",
+                            AdministratorId = 1,
+                            FirstName = "John",
+                            LastName = "Connor",
+                            SurName = "Johnovych"
+                        },
+                        new
+                        {
+                            Id = "1cb05c24-1824-41e3-b571-5623ec775ed9",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "bc0300ba-1f45-477a-aa2a-e20235e9c320",
+                            Email = "teacher@email.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "TEACHER@EMAIL.COM",
+                            NormalizedUserName = "TEACHER@EMAIL.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDxPqJoqzV0EqAF6X/kuWY5RKv+vDJ1ixVX1+ny9dEuzqRbBa6hhWx1vYp81hQ2dnA==",
+                            PhoneNumber = "+xx(xxx)xxx-xx-xx",
+                            PhoneNumberConfirmed = true,
+                            SecurityStamp = "ccfd15d9-159b-4d17-86da-1c01c976ca3b",
+                            TwoFactorEnabled = false,
+                            UserName = "teacher@email.com",
                             AdministratorId = 1,
                             FirstName = "John",
                             LastName = "Connor",

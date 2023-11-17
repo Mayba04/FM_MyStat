@@ -71,19 +71,18 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a asp-controller="Dashboard" asp-action="GetAll" class="nav-link">
+                            <a asp-controller="Teacher" asp-action="GetAll" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>All teachers</p>
                             </a>
                         </li>
-                         
-                        
-                            <li class="nav-item">
-                                <a asp-controller="Dashboard" asp-action="AddNew" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Add new teacher</p>
-                                </a>
-                            </li>
+    
+                        <li class="nav-item">
+                        <a asp-controller="Teacher" asp-action="Create" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Add new teacher</p>
+                            </a>
+                        </li>
                         
                     </ul>
                 </li>

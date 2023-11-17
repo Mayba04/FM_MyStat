@@ -69,7 +69,7 @@ namespace FM_MyStat.Core.Services.Users
         public async Task<ServiceResponse> SignOutAsync()
         {
             await _signInManager.SignOutAsync();
-            return new ServiceResponse(true);
+            return new ServiceResponse(true, "false");
         }
         #endregion
 

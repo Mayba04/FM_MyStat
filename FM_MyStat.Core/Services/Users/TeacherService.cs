@@ -2,6 +2,7 @@ using AutoMapper;
 using FM_MyStat.Core.DTOs.UsersDTO.Admin;
 using FM_MyStat.Core.DTOs.UsersDTO.Teacher;
 using FM_MyStat.Core.DTOs.UsersDTO.User;
+using FM_MyStat.Core.Entities.Specifications;
 using FM_MyStat.Core.Entities.Users;
 using FM_MyStat.Core.Interfaces;
 using System;
@@ -20,12 +21,12 @@ namespace FM_MyStat.Core.Services.Users
 
         public TeacherService(
                 UserService userService,
-                IRepository<Teacher> adminRepo,
+                IRepository<Teacher> teacherRepo,
                 IMapper mapper
             )
         {
             this._userService = userService;
-            this._teacherRepo = adminRepo;
+            this._teacherRepo = teacherRepo;
             this._mapper = mapper;
         }
         #region SignIn, SignOut
@@ -40,11 +41,10 @@ namespace FM_MyStat.Core.Services.Users
         #endregion
 
         #region Create admin, Delete admin, Edit password admin, Edit main info admin
-        public async Task<ServiceResponse> CreateTeacherAsync(CreateTeacherDTO model)
+        public async Task<ServiceResponse> CreateTeacherAsync(CreateUserDTO model)
         {
-            CreateUserDTO NewUserAppUser = _mapper.Map<CreateTeacherDTO, CreateUserDTO>(model);
-            NewUserAppUser.Role = "Teacher";
-            ServiceResponse result = await _userService.CreateUserAsync(NewUserAppUser);
+            model.Role = "Teacher";
+            ServiceResponse result = await _userService.CreateUserAsync(model);
             if (!result.Success)
             {
                 return result;
@@ -52,35 +52,54 @@ namespace FM_MyStat.Core.Services.Users
             ServiceResponse<UserDTO, object> appUserResponse = await _userService.GetUserByEmail(model.Email);
             if (appUserResponse.Success)
             {
-                Teacher teacher = _mapper.Map<CreateTeacherDTO, Teacher>(model);
+                Teacher teacher = _mapper.Map<CreateTeacherDTO, Teacher>(new CreateTeacherDTO());
                 teacher.AppUserId = appUserResponse.Payload.Id;
                 await _teacherRepo.Insert(teacher);
-                return new ServiceResponse(true, "Teacher was added");
+                await _teacherRepo.Save();
+                Teacher? teacherAdd = await _teacherRepo.GetItemBySpec(new TeacherSpecification.GetByAppUserId(appUserResponse.Payload.Id));
+                if (teacherAdd != null)
+                {
+                    EditUserDTO editUserDTO = _mapper.Map<UserDTO, EditUserDTO>(appUserResponse.Payload);
+                    editUserDTO.TeacherId = teacherAdd.Id;
+                    ServiceResponse response = await _userService.ChangeMainInfoUserAsync(editUserDTO);
+                    if (response.Success)
+                    {
+                        return new ServiceResponse(true, "Teacher was added");
+                    }
+                    return new ServiceResponse(false, "Something went wrong");
+                }
+                return new ServiceResponse(false, "Something went wrong");
             }
-            return new ServiceResponse(true, "Something went wrong");
+            return new ServiceResponse(false, "Something went wrong");
         }
-        public async Task<ServiceResponse> DeleteTeacherAsync(DeleteTeacherDTO model)
+        public async Task<ServiceResponse> DeleteTeacherAsync(DeleteUserDTO model)
         {
-            await _teacherRepo.Delete(model.Id);
-            DeleteUserDTO deleteUserDTO = _mapper.Map<DeleteTeacherDTO, DeleteUserDTO>(model);
-            ServiceResponse response = await _userService.DeleteUserAsync(deleteUserDTO);
-            return response;
+            Teacher? deleteteacher = await _teacherRepo.GetItemBySpec(new TeacherSpecification.GetByAppUserId(model.Id));
+            if (deleteteacher != null)
+            {
+                await _teacherRepo.Delete(deleteteacher.Id);
+                await _teacherRepo.Save();
+                ServiceResponse response = await _userService.DeleteUserAsync(model);
+                return response;
+            }
+            return new ServiceResponse(false, "Something went wrong");
         }
         public async Task<ServiceResponse> ChangePasswordAsync(EditUserPasswordDTO model)
         {
             return await this._userService.ChangePasswordAsync(model);
         }
-        public async Task<ServiceResponse> ChangeMainInfoAdministratorAsync(EditUserDTO newinfo)
+        public async Task<ServiceResponse> ChangeMainInfoTeacherAsync(EditUserDTO newinfo)
         {
             return await this._userService.ChangeMainInfoUserAsync(newinfo);
         }
+        public async Task<ServiceResponse> EditTeacherAsync(EditUserDTO model) => await _userService.EditUserAsync(model);
         #endregion
 
         public async Task<ServiceResponse<List<TeacherDTO>, object>> GetAllAsync()
         {
             ServiceResponse<List<UserDTO>, object> serviceResponse = await this._userService.GetAllAsync();
             List<UserDTO> result = serviceResponse.Payload.Where(u => u.Role == "Teacher").ToList();
-            List<TeacherDTO> mappedUsers = result.Select(u => _mapper.Map<UserDTO, TeacherDTO>(u)).ToList();
+            List<TeacherDTO> mappedUsers = result.Select(_mapper.Map<UserDTO, TeacherDTO>).ToList();
             return new ServiceResponse<List<TeacherDTO>, object>(true, "", payload: mappedUsers);
         }
 
