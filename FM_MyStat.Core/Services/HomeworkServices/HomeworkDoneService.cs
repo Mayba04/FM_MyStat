@@ -9,9 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FM_MyStat.Core.Services
+namespace FM_MyStat.Core.Services.HomeworkServices
 {
-    public class HomeworkDoneService: IHomeworkDoneService
+    public class HomeworkDoneService : IHomeworkDoneService
     {
         private readonly IMapper _mapper;
         private readonly IRepository<HomeworkDone> _homeworkDoneRepo;

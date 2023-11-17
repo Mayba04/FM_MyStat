@@ -40,15 +40,15 @@ namespace FM_MyStat.Infrastructure.Context
             // Links
             modelBuilder.Entity<AppUser>()
                 .HasOne(user => user.Student).WithOne(student => student.AppUser)
-                .HasForeignKey<AppUser>(user => user.StudentId);
+                .HasForeignKey<Student>(student => student.AppUserId).OnDelete(DeleteBehavior.Restrict);
             
             modelBuilder.Entity<AppUser>()
                 .HasOne(user => user.Teacher).WithOne(teacher => teacher.AppUser)
-                .HasForeignKey<AppUser>(user => user.TeacherId);
+                .HasForeignKey<Teacher>(teacher => teacher.AppUserId).OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<AppUser>()
                 .HasOne(user => user.Administrator).WithOne(administrator => administrator.AppUser)
-                .HasForeignKey<AppUser>(user => user.AdministratorId);
+                .HasForeignKey<Administrator>(administrator => administrator.AppUserId).OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Student>()
                 .HasOne(student => student.Group).WithMany(group => group.Students)

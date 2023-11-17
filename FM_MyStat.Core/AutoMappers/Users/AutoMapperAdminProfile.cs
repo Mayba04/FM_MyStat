@@ -14,9 +14,12 @@ namespace FM_MyStat.Core.AutoMappers.Users
         public AutoMapperAdminProfile()
         {
             CreateMap<AdminDTO, AppUser>().ReverseMap();
+            CreateMap<AdminDTO, Administrator>().ReverseMap();
             CreateMap<EditAdminDTO, AppUser>().ReverseMap();
             CreateMap<EditAdminDTO, AppUser>().ReverseMap();
             CreateMap<CreateAdminDTO, AppUser>().ForMember(dst => dst.UserName, act => act.MapFrom(src => src.Email));
+
+            CreateMap<CreateAdminDTO, Administrator>().ReverseMap();
         }
     }
 }

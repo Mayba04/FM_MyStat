@@ -10,9 +10,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FM_MyStat.Core.Services
+namespace FM_MyStat.Core.Services.LessonServices
 {
-    public class LessonMarkService: ILessonMarkService
+    public class LessonMarkService : ILessonMarkService
     {
         private readonly IMapper _mapper;
         private readonly IRepository<LessonMark> _lessonsMarkRepo;

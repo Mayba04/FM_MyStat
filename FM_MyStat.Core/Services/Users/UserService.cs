@@ -3,6 +3,7 @@ using FM_MyStat.Core.DTOs.UsersDTO.Admin;
 using FM_MyStat.Core.DTOs.UsersDTO.User;
 using FM_MyStat.Core.Entities.Users;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -73,6 +74,13 @@ namespace FM_MyStat.Core.Services.Users
         #endregion
 
         #region Get users mapped
+        public async Task<ServiceResponse<AppUser?, string>>GetAppUserByEmail(string email)
+        {
+            AppUser? user = await this._userManager.FindByEmailAsync(email);
+            return (user != null) ?
+                new ServiceResponse<AppUser?, string>(true, "User succesfully loaded", user) :
+                new ServiceResponse<AppUser?, string>(false, "User not found");
+        }
         public async Task<List<IdentityRole>> GetAllRolesAsync()
         {
             List<IdentityRole> roles = await _roleManager.Roles.ToListAsync();
@@ -127,7 +135,7 @@ namespace FM_MyStat.Core.Services.Users
         public async Task<ServiceResponse> CreateUserAsync(CreateUserDTO model)
         {
             AppUser NewUser = _mapper.Map<CreateUserDTO, AppUser>(model);
-            IdentityResult result = await _userManager.CreateAsync(NewUser, model.Password);
+            IdentityResult result = await _userManager.CreateAsync(NewUser, "Qwerty-1");
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(NewUser, model.Role);
@@ -173,6 +181,9 @@ namespace FM_MyStat.Core.Services.Users
                 user.LastName = newinfo.LastName;
                 user.Email = newinfo.Email;
                 user.PhoneNumber = newinfo.PhoneNumber;
+                user.AdministratorId = newinfo.AdministratorId;
+                user.TeacherId = newinfo.TeacherId;
+                user.StudentId = newinfo.StudentId;
 
                 IdentityResult result = await _userManager.UpdateAsync(user);
 
@@ -181,6 +192,33 @@ namespace FM_MyStat.Core.Services.Users
                     new ServiceResponse(false, "Something went wrong", errors: result.Errors.Select(e => e.Description));
             }
             return new ServiceResponse(false, "Not found user");
+        }
+        public async Task<ServiceResponse> EditUserAsync(EditUserDTO model)
+        {
+            AppUser? user = await _userManager.FindByIdAsync(model.Id);
+            if (user == null)
+            {
+                return new ServiceResponse(false, "User not found.", errors: new List<string>() { "User not found." });
+            }
+
+            if (user.Email != model.Email)
+            {
+                user.EmailConfirmed = false;
+                user.Email = model.Email;
+                user.UserName = model.Email;
+                await SendConfirmationEmailAsync(user);
+            }
+
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.PhoneNumber = model.PhoneNumber;
+
+            IdentityResult result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded)
+            {
+                return new ServiceResponse(true, "User successfully updated.");
+            }
+            return new ServiceResponse(false, "Something went wrong", errors: result.Errors.Select(e => e.Description));
         }
         #endregion
 

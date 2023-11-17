@@ -11,14 +11,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FM_MyStat.Core.Services
+namespace FM_MyStat.Core.Services.LessonServices
 {
-    public class LessonsService: ILessonsService
+    public class LessonService : ILessonService
     {
         private readonly IMapper _mapper;
         private readonly IRepository<Lesson> _lessonsRepo;
 
-        public LessonsService(IMapper mapper, IRepository<Lesson> lessonRepo)
+        public LessonService(IMapper mapper, IRepository<Lesson> lessonRepo)
         {
             _lessonsRepo = lessonRepo;
             _mapper = mapper;
@@ -91,6 +91,6 @@ namespace FM_MyStat.Core.Services
             await _lessonsRepo.Save();
         }
 
-        
+
     }
 }

@@ -1,10 +1,14 @@
-﻿using FM_MyStat.Core.DTOs.UsersDTO.Admin;
+﻿using FluentValidation.Results;
+using FM_MyStat.Core.DTOs.UsersDTO.Admin;
 using FM_MyStat.Core.DTOs.UsersDTO.User;
 using FM_MyStat.Core.Services;
 using FM_MyStat.Core.Services.Users;
+using FM_MyStat.Core.Validation.User;
 using FM_MyStat.Web.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace FM_MyStat.Web.Controllers
 {
@@ -16,7 +20,7 @@ namespace FM_MyStat.Web.Controllers
         {
             this._administratorService = administratorService;
         }
-        public IActionResult Index(UserLoginDTO model)
+        public IActionResult Index()
         {
             return View();
         }
@@ -76,7 +80,7 @@ namespace FM_MyStat.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePasswordInfo(EditUserPasswordDTO model)
         {
-            UpdatePasswordValidation validator = new EditPasswordValidation();
+            EditPasswordValidation validator = new EditPasswordValidation();
             ValidationResult validationResult = await validator.ValidateAsync(model);
             if (validationResult.IsValid)
             {
@@ -94,14 +98,14 @@ namespace FM_MyStat.Web.Controllers
         #endregion
 
         #region Create admin page
-        public async Task<IActionResult> CreateUser()
+        public async Task<IActionResult> Create()
         {
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateUser(CreateAdminDTO model)
+        public async Task<IActionResult> Create(CreateAdminDTO model)
         {
             CreateUserValidation validaor = new CreateUserValidation();
             ValidationResult validationResult = await validaor.ValidateAsync(model);
@@ -121,9 +125,9 @@ namespace FM_MyStat.Web.Controllers
         #endregion
 
         #region Delete user page
-        public async Task<IActionResult> DeleteUser(string id)
+        public async Task<IActionResult> Delete(string id)
         {
-            ServiceResponse<DeleteAdminDTO, object> result = await _administratorService.GetDeleteUserDtoByIdAsync(id);
+            ServiceResponse<DeleteUserDTO, object> result = await _administratorService.GetDeleteUserDtoByIdAsync(id);
             if (result.Success)
             {
                 return View(result.Payload);
@@ -133,7 +137,7 @@ namespace FM_MyStat.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteUser(DeleteAdminDTO model)
+        public async Task<IActionResult> Delete(DeleteUserDTO model)
         {
             ServiceResponse result = await _administratorService.DeleteAdministratorAsync(model);
             if (!result.Success)
@@ -144,6 +148,35 @@ namespace FM_MyStat.Web.Controllers
         }
         #endregion
 
-        
+        #region Edit other user page
+        public async Task<IActionResult> Edit(string id)
+        {
+
+            ServiceResponse<EditUserDTO, object> result = await _administratorService.GetEditUserDtoByIdAsync(id);
+            if (result.Success)
+            {
+                return View(result.Payload);
+            }
+            return View(nameof(Index));
+        }
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditUserDTO model)
+        {
+            ValidationResult validationResult = await new EditUserValidation().ValidateAsync(model);
+            if (validationResult.IsValid)
+            {
+                ServiceResponse result = await _administratorService.EditAdministratorAsync(model);
+                if (result.Success)
+                {
+                    return View(nameof(Index));
+                }
+                return View(nameof(Index));
+            }
+            ViewBag.AuthError = validationResult.Errors.FirstOrDefault();
+            return View(nameof(Edit));
+        }
+        #endregion
     }
 }

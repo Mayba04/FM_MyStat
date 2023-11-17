@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using FM_MyStat.Core.DTOs.UsersDTO.Admin;
+using FM_MyStat.Core.DTOs.UsersDTO.Student;
+using FM_MyStat.Core.DTOs.UsersDTO.Teacher;
 using FM_MyStat.Core.DTOs.UsersDTO.User;
 using FM_MyStat.Core.Entities.Users;
 using System;
@@ -20,8 +22,17 @@ namespace FM_MyStat.Core.AutoMappers.Users
             CreateMap<CreateUserDTO, AppUser>();
             CreateMap<DeleteUserDTO, AppUser>().ReverseMap();
 
+            CreateMap<UserDTO, EditUserDTO>().ReverseMap();
+
             /// ......
             CreateMap<CreateAdminDTO, CreateUserDTO>().ReverseMap();
+            CreateMap<CreateTeacherDTO, CreateUserDTO>().ReverseMap();
+            CreateMap<CreateStudentDTO, CreateUserDTO>().ReverseMap();
+
+            CreateMap<UserDTO, AdminDTO>().ReverseMap();
+            CreateMap<UserDTO, TeacherDTO>().ReverseMap();
+            CreateMap<UserDTO, StudentDTO>().ReverseMap();
+
             CreateMap<DeleteAdminDTO, DeleteUserDTO>().ReverseMap();
         }
     }
