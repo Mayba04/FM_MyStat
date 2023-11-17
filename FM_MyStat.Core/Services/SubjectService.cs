@@ -22,7 +22,7 @@ namespace FM_MyStat.Core.Services
             _mapper = mapper;
         }
 
-        public async Task Create(SubjectDTO model)
+        public async Task Create(CreateSubjectDTO model)
         {
             await _subjectRepo.Insert(_mapper.Map<Subject>(model));
             await _subjectRepo.Save();
@@ -83,7 +83,7 @@ namespace FM_MyStat.Core.Services
             return null;
         }
 
-        public async Task Update(SubjectDTO model)
+        public async Task Update(EditSubjectDTO model)
         {
             await _subjectRepo.Update(_mapper.Map<Subject>(model));
             await _subjectRepo.Save();

@@ -9,7 +9,7 @@ namespace FM_MyStat.Core.DTOs.SubjectsDTO
 {
     public class CreateSubjectDTO
     {
+        public int Id { get; set; }
         public string Name { get; set; }
-        public IEnumerable<Teacher> Teachers { get; set; }
     }
 }
