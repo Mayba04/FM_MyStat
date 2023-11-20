@@ -1,6 +1,7 @@
 using AutoMapper;
 using FM_MyStat.Core.DTOs.UsersDTO.Student;
 using FM_MyStat.Core.DTOs.UsersDTO.User;
+using FM_MyStat.Core.Entities;
 using FM_MyStat.Core.Entities.Users;
 using FM_MyStat.Core.Interfaces;
 using System;
@@ -15,17 +16,20 @@ namespace FM_MyStat.Core.Services.Users
     {
         private readonly UserService _userService;
         private readonly IRepository<Student> _studentRepo;
+        private readonly IRepository<Group> _groupRepo;
         private readonly IMapper _mapper;
 
         public StudentService(
                 UserService userService,
                 IRepository<Student> StudentRepo,
-                IMapper mapper
+                IMapper mapper,
+                IRepository<Group> groupRepo
             )
         {
             this._userService = userService;
             this._studentRepo = StudentRepo;
             this._mapper = mapper;
+            this._groupRepo = groupRepo;
         }
         #region SignIn, SignOut
         public async Task<ServiceResponse> LoginStudentAsync(UserLoginDTO model)
@@ -53,6 +57,7 @@ namespace FM_MyStat.Core.Services.Users
             {
                 Student student = _mapper.Map<CreateStudentDTO, Student>(model);
                 student.AppUserId = appUserResponse.Payload.Id;
+                student.Rating = model.Rating;
                 await _studentRepo.Insert(student);
                 return new ServiceResponse(true, "Student was added");
             }
@@ -74,12 +79,18 @@ namespace FM_MyStat.Core.Services.Users
             return await this._userService.ChangeMainInfoUserAsync(newinfo);
         }
         #endregion
-
+        
         public async Task<ServiceResponse<List<StudentDTO>, object>> GetAllAsync()
         {
             ServiceResponse<List<UserDTO>, object> serviceResponse = await this._userService.GetAllAsync();
             List<UserDTO> result = serviceResponse.Payload.Where(u => u.Role == "Student").ToList();
             List<StudentDTO> mappedUsers = result.Select(u => _mapper.Map<UserDTO, StudentDTO>(u)).ToList();
+            for (int i = 0; i < mappedUsers.Count(); i++)
+            {
+                Student student = await _studentRepo.GetByID(result[i].StudentId);
+                mappedUsers[i].Rating = student.Rating;
+                mappedUsers[i].Group = (await _groupRepo.GetByID(student.GroupId)).Name;
+            }
             return new ServiceResponse<List<StudentDTO>, object>(true, "", payload: mappedUsers);
         }
 

@@ -100,7 +100,7 @@ namespace FM_MyStat.Infrastructure.Context
 
             modelBuilder.SeedAdministrator();
             modelBuilder.SeedTeacher();
-            //modelBuilder.SeedStudent();
+            modelBuilder.SeedStudent();
         }
     }
 }

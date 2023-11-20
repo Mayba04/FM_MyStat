@@ -116,31 +116,59 @@ namespace FM_MyStat.Infrastructure.Initializers
 
         public static void SeedStudent(this ModelBuilder modelBuilder)
         {
-            /*IdentityRole role = new IdentityRole()
+            var studentUserId = Guid.NewGuid().ToString();
+            var studentRoleId = Guid.NewGuid().ToString();
+
+            modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = studentRoleId,
                 Name = "Student",
                 NormalizedName = "STUDENT"
-            };
-            Student student = new Student()
+            });
+
+            var passwordHasher = new PasswordHasher<AppUser>();
+
+            var adminUser = new AppUser
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = studentUserId,
                 FirstName = "John",
-                LastName = "Wick",
+                LastName = "Connor",
                 SurName = "Johnovych",
-                UserName = "student@gmail.com",
-                Email = "student@gmail.com",
+                UserName = "student@email.com",
+                NormalizedUserName = "STUDENT@EMAIL.COM",
+                Email = "student@email.com",
+                NormalizedEmail = "STUDENT@EMAIL.COM",
                 EmailConfirmed = true,
                 PhoneNumber = "+xx(xxx)xxx-xx-xx",
-                PhoneNumberConfirmed = true
+                PhoneNumberConfirmed = true,
+                StudentId = 1,
             };
-            modelBuilder.Entity<IdentityRole>().HasData(role);
-            modelBuilder.Entity<Student>().HasData(student);
+
+            var hashedPassword = passwordHasher.HashPassword(adminUser, "Qwerty-1");
+
+            adminUser.PasswordHash = hashedPassword;
+
+            modelBuilder.Entity<AppUser>().HasData(adminUser);
+
+            modelBuilder.Entity<Group>().HasData(new Group 
+            { 
+                Id = 1,
+                Name = "suicide terrorists",
+                TeacherId = 1
+            });
+
+            modelBuilder.Entity<Student>().HasData(new Student
+            {
+                Id = 1,
+                GroupId = 1,
+                AppUserId = studentUserId
+            });
+
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
             {
-                UserId = student.Id,
-                RoleId = role.Id
-            });*/
+                RoleId = studentRoleId,
+                UserId = studentUserId
+            });
         }
     }
 }
