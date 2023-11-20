@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FM_MyStat.Core.DTOs.GrouopsDTO;
 using FM_MyStat.Core.DTOs.UsersDTO.Admin;
 using FM_MyStat.Core.DTOs.UsersDTO.User;
 using FM_MyStat.Core.Entities.Users;
@@ -110,6 +111,13 @@ namespace FM_MyStat.Core.Services.Users
         public async Task<ServiceResponse<UserDTO, object>>GetUserByEmail(string email)
         {
             AppUser? user = await this._userManager.FindByEmailAsync(email);
+            return (user != null) ?
+                new ServiceResponse<UserDTO, object>(true, "User succesfully loaded", payload: _mapper.Map<AppUser, UserDTO>(user)) :
+                new ServiceResponse<UserDTO, object>(false, "User not found");
+        }
+        public async Task<ServiceResponse<UserDTO, object>> GetUserById(string id)
+        {
+            AppUser? user = await this._userManager.FindByIdAsync(id);
             return (user != null) ?
                 new ServiceResponse<UserDTO, object>(true, "User succesfully loaded", payload: _mapper.Map<AppUser, UserDTO>(user)) :
                 new ServiceResponse<UserDTO, object>(false, "User not found");

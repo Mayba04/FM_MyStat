@@ -1,7 +1,9 @@
 using AutoMapper;
+using FM_MyStat.Core.DTOs.GrouopsDTO;
 using FM_MyStat.Core.DTOs.UsersDTO.Admin;
 using FM_MyStat.Core.DTOs.UsersDTO.Teacher;
 using FM_MyStat.Core.DTOs.UsersDTO.User;
+using FM_MyStat.Core.Entities;
 using FM_MyStat.Core.Entities.Specifications;
 using FM_MyStat.Core.Entities.Users;
 using FM_MyStat.Core.Interfaces;
@@ -105,6 +107,12 @@ namespace FM_MyStat.Core.Services.Users
 
         public async Task<ServiceResponse<EditUserDTO, object>> GetEditUserDtoByIdAsync(string Id) => await this._userService.GetEditUserDtoByIdAsync(Id);
         public async Task<ServiceResponse<DeleteUserDTO, object>> GetDeleteUserDtoByIdAsync(string Id) => await this._userService.GetDeleteUserDtoByIdAsync(Id);
+
+        public async Task<ServiceResponse<List<GroupDTO>, object>> GetAllGroupsByIdAsync(string Id)
+        {
+            Teacher? teacher = await _teacherRepo.GetByID(_userService.GetUserById(Id));
+            List<GroupDTO> mappedGroups = teacher.Groups.Select(u => _mapper.Map<Group, GroupDTO>(u)).ToList();
+            return new ServiceResponse<List<GroupDTO>, object>(true, "", payload: mappedGroups);
+        }
     }
 }
-

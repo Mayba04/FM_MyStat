@@ -181,6 +181,7 @@ namespace FM_MyStat.Web.Controllers
             ViewBag.AuthError = validationResult.Errors.FirstOrDefault();
             return View(nameof(Edit));
         }
+        
         #endregion
     }
 }
