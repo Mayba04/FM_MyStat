@@ -61,22 +61,18 @@ namespace FM_MyStat.Web.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
-            var categoryDto = await _subjectService.Get(id);
+            var subjectDto = await _subjectService.Get(id);
 
-            if (categoryDto == null)
+            if (subjectDto == null)
             {
                 ViewBag.AuthError = "Subject not found.";
                 return RedirectToAction(nameof(GetAll));
             }
 
-            ViewBag.CategoryName = categoryDto.Name;
-            ViewBag.CategoryId = categoryDto.Id;
-
-            return View("Delete");
+            return View(subjectDto);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> DeleteSubject(int Id)
         {
             await _subjectService.Delete(Id);
@@ -109,7 +105,7 @@ namespace FM_MyStat.Web.Controllers
             if (validationResult.IsValid)
             {
                 await _subjectService.Update(model);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(GetAll));
             }
             ViewBag.AuthError = validationResult.Errors[0];
             return View(model);
