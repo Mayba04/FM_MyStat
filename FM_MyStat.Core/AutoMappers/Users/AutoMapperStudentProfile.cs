@@ -13,6 +13,7 @@ namespace FM_MyStat.Core.AutoMappers.Student
     {
         public AutoMapperStudentProfile()
         {
+            CreateMap<CreateStudentDTO, Entities.Users.Student>();
             CreateMap<StudentDTO, AppUser>().ReverseMap();
             CreateMap<EditStudentDTO, AppUser>().ReverseMap();
             CreateMap<AppUser, EditStudentDTO>().ReverseMap();

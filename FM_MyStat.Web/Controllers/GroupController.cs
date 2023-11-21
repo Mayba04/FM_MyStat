@@ -91,8 +91,6 @@ namespace FM_MyStat.Web.Controllers
 
             return View(groupDto);
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteGroup(int Id)
         {
             await _groupService.Delete(Id);
@@ -101,4 +99,3 @@ namespace FM_MyStat.Web.Controllers
 
     }
 }
-

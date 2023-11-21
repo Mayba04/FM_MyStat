@@ -19,7 +19,7 @@ namespace FM_MyStat.Core.AutoMappers.Users
             CreateMap<UserDTO, AppUser>().ReverseMap();
             CreateMap<EditUserDTO, AppUser>().ReverseMap();
             CreateMap<CreateUserDTO, AppUser>().ForMember(dst => dst.UserName, act => act.MapFrom(src => src.Email));
-            CreateMap<CreateUserDTO, AppUser>();
+            //CreateMap<CreateUserDTO, AppUser>();
             CreateMap<DeleteUserDTO, AppUser>().ReverseMap();
 
             CreateMap<UserDTO, EditUserDTO>().ReverseMap();
