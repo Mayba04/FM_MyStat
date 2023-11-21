@@ -56,24 +56,18 @@ namespace FM_MyStat.Web.Controllers
 
         public async Task<IActionResult> Update(int id)
         {
-            var result = await _groupService.Get(id);
-            if (result != null)
+            var result = await _groupService.GetEditGroupDTO(id);
+            if (result.Success)
             {
-                return View(result);
+                return View(result.Payload);
             }
-            ViewBag.AuthError = "An error occurred";
+            ViewBag.AuthError = result.Errors.FirstOrDefault();
             return RedirectToAction(nameof(GetAll));
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update(EditGroupDTO model)
         {
-            var result = await _groupService.GetByName(model.Name);
-            if (result != null)
-            {
-                ViewBag.AuthError = "Groups exists.";
-                return View(model);
-            }
             var validator = new EditGroupValidation();
             var validationResult = await validator.ValidateAsync(model);
             if (validationResult.IsValid)
@@ -81,7 +75,7 @@ namespace FM_MyStat.Web.Controllers
                 await _groupService.Update(model);
                 return RedirectToAction(nameof(GetAll));
             }
-            ViewBag.AuthError = validationResult.Errors[0];
+            ViewBag.AuthError = validationResult.Errors.FirstOrDefault();
             return View(model);
         }
 

@@ -3,6 +3,7 @@ using FM_MyStat.Core.DTOs.GrouopsDTO;
 using FM_MyStat.Core.Entities;
 using FM_MyStat.Core.Entities.Specifications;
 using FM_MyStat.Core.Interfaces;
+using Org.BouncyCastle.Ocsp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,6 +64,16 @@ namespace FM_MyStat.Core.Services
         {
             await _groupRepo.Update(_mapper.Map<Group>(model));
             await _groupRepo.Save();
+        }
+
+        public async Task<ServiceResponse<EditGroupDTO, object>> GetEditGroupDTO(int id)
+        {
+            Group? group = await _groupRepo.GetByID(id);
+            if (group != null)
+            {
+                return new ServiceResponse<EditGroupDTO, object>(true, "", payload: _mapper.Map<Group, EditGroupDTO>(group));
+            }
+            return new ServiceResponse<EditGroupDTO, object>(false, "", errors: new string[] { "Group not found!"});
         }
     }
 }
