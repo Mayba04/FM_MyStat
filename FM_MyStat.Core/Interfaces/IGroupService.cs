@@ -16,5 +16,6 @@ namespace FM_MyStat.Core.Interfaces
         Task Create(CreateGroupDTO model);
         Task Update(EditGroupDTO model);
         Task Delete(int id);
+        Task<ServiceResponse<EditGroupDTO, object>> GetEditGroupDTO(int id);
     }
 }
