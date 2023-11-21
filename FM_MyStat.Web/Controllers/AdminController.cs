@@ -16,10 +16,12 @@ namespace FM_MyStat.Web.Controllers
     public class AdminController : Controller
     {
         private readonly AdministratorService _administratorService;
+        private readonly UserService _userService;
 
-        public AdminController(AdministratorService administratorService)
+        public AdminController(AdministratorService administratorService, UserService userService)
         {
             this._administratorService = administratorService;
+            _userService = userService;
         }
         public IActionResult Index()
         {
@@ -47,60 +49,6 @@ namespace FM_MyStat.Web.Controllers
         }
         #endregion
 
-        #region Profile page
-        public async Task<IActionResult> Profile(string Id)
-        {
-            ServiceResponse<EditUserDTO, object> result = await _administratorService.GetEditUserDtoByIdAsync(Id);
-            if (result.Success)
-            {
-                UpdateProfileAdminVM profile = new UpdateProfileAdminVM()
-                {
-                    AdminInfo = result.Payload,
-                };
-                return View(profile);
-            }
-            return View();
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ChangeMainInfo(EditUserDTO model)
-        {
-            EditUserValidation validator = new EditUserValidation();
-            ValidationResult validationResult = await validator.ValidateAsync(model);
-            if (validationResult.IsValid)
-            {
-                ServiceResponse result = await _administratorService.ChangeMainInfoAdministratorAsync(model);
-                if (result.Success)
-                {
-                    return View("Profile", new UpdateProfileAdminVM() { AdminInfo = model });
-                }
-                ViewBag.UserUpdateError = result.Errors.FirstOrDefault();
-                return View("Profile", new UpdateProfileAdminVM() { AdminInfo = model });
-            }
-            ViewBag.UserUpdateError = validationResult.Errors[0];
-            return View("Profile", new UpdateProfileAdminVM() { AdminInfo = model });
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ChangePasswordInfo(EditUserPasswordDTO model)
-        {
-            EditPasswordValidation validator = new EditPasswordValidation();
-            ValidationResult validationResult = await validator.ValidateAsync(model);
-            if (validationResult.IsValid)
-            {
-                ServiceResponse result = await _administratorService.ChangePasswordAsync(model);
-                if (result.Success)
-                {
-                    return RedirectToAction(nameof(SignIn));
-                }
-                ViewBag.UpdatePasswordError = result.Errors;
-                return View(new UpdateProfileAdminVM() { AdminInfo = _administratorService.GetEditUserDtoByIdAsync(model.Id).Result.Payload });
-            }
-            ViewBag.UpdatePasswordError = validationResult.Errors[0];
-            return View(new UpdateProfileAdminVM() { AdminInfo = _administratorService.GetEditUserDtoByIdAsync(model.Id).Result.Payload });
-        }
-        #endregion
 
         #region Create admin page
         public async Task<IActionResult> Create()
@@ -183,5 +131,65 @@ namespace FM_MyStat.Web.Controllers
             return View(nameof(Edit));
         }
         #endregion
+
+
+        public async Task<IActionResult> Profile(string Id)
+        {
+            var result = await _userService.GetEditUserDtoByIdAsync(Id);
+            if (result.Success)
+            {
+                UpdateProfileVM profile = new UpdateProfileVM()
+                {
+                    UserInfo = (EditUserDTO)result.Payload
+                };
+                return View(profile);
+            }
+            return View();
+        }
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public async Task<IActionResult> Profiles(EditUserPasswordDTO model)
+        {
+
+            var validator = new EditPasswordValidation();// model.GetType();
+            var validationResult = await validator.ValidateAsync(model);
+            if (validationResult.IsValid)
+            {
+                var result = await _userService.ChangePasswordAsync(model);
+                if (result.Success)
+                {
+                    return RedirectToAction("Login","Index");
+                }
+
+                ViewBag.UpdatePasswordError = result.Payload;
+                return View();
+
+            }
+            ViewBag.UpdatePasswordError = validationResult.Errors[0];
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
+        public async Task<IActionResult> ChangeProfile(EditUserDTO model)
+        {
+            var validator = new EditUserValidation();
+            var validationResult = await validator.ValidateAsync(model);
+            if (validationResult.IsValid)
+            {
+                ServiceResponse result = await _userService.ChangeMainInfoUserAsync(model);
+                if (result.Success)
+                {
+                    return View(nameof(Profile), new UpdateProfileVM() { UserInfo = model });
+                }
+                ViewBag.UserUpdateError = result.Payload;
+                return View(nameof(Profile), new UpdateProfileVM() { UserInfo = model });
+            }
+            ViewBag.UserUpdateError = validationResult.Errors[0];
+            return View(nameof(Profile), new UpdateProfileVM() { UserInfo = model });
+        }
+
     }
 }
