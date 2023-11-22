@@ -1,4 +1,5 @@
 ﻿using FM_MyStat.Core.Entities;
+using FM_MyStat.Core.Entities.Lessons;
 using FM_MyStat.Core.Entities.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -113,7 +114,20 @@ namespace FM_MyStat.Infrastructure.Initializers
                 UserId = teacherUserId
             });
         }
-
+        public static void SeedLesson(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Lesson>().HasData(new Lesson
+            {
+                Id = 1,
+                Name = "C# beginning",
+                Description = "First steps into c# today",
+                Start = DateTime.UtcNow.AddHours(1),
+                End = DateTime.UtcNow.AddHours(3),
+                TeacherId = 1,
+                GroupId = 1,
+                SubjectId = 1
+            });
+        }
         public static void SeedStudent(this ModelBuilder modelBuilder)
         {
             var studentUserId = Guid.NewGuid().ToString();
@@ -162,7 +176,7 @@ namespace FM_MyStat.Infrastructure.Initializers
                 Id = 1,
                 GroupId = 1,
                 AppUserId = studentUserId
-            });
+            });    
 
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
             {
