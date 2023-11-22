@@ -19,7 +19,13 @@ namespace FM_MyStat.Web.Controllers
 
         public async Task<IActionResult> GetAll()
         {
-            return View(await _lessonService.GetAll());
+            var result = await _lessonService.GetAll();
+            return View(result);
+        }
+
+        public async Task<IActionResult> Create()
+        {
+            return View();
         }
     }
 }

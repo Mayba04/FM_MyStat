@@ -89,7 +89,7 @@ namespace FM_MyStat.Core.Services.LessonServices
                 Subject? subject = await _subjectRepo.GetByID(mappedLessons[i].SubjectId);
                 mappedLessons[i].Subject = (subject == null) ? "SUBJECT NOT FOUND" : subject.Name;
             }
-            return _mapper.Map<List<LessonDTO>>(result);
+            return mappedLessons;
         }
 
         public async Task<ServiceResponse> GetByName(LessonDTO model)
