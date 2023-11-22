@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FM_MyStat.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -414,9 +414,9 @@ namespace FM_MyStat.Infrastructure.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "2b9470ab-7ffb-4329-8216-b2015fa77701", null, "Administrator", "ADMINISTRATOR" },
-                    { "91c73a4d-af41-4034-bfa4-ddbbeb945fa9", null, "Student", "STUDENT" },
-                    { "d389b179-c61e-4498-9791-1b2025390916", null, "Teacher", "TEACHER" }
+                    { "0e0aaf68-62ff-4cd3-aefc-a5bc57597427", null, "Student", "STUDENT" },
+                    { "5456292b-0f7f-4b13-a4b6-6e035d9fa7c8", null, "Teacher", "TEACHER" },
+                    { "78a6762a-ce50-46cd-8690-f92503d32aee", null, "Administrator", "ADMINISTRATOR" }
                 });
 
             migrationBuilder.InsertData(
@@ -424,30 +424,35 @@ namespace FM_MyStat.Infrastructure.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "AdministratorId", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "StudentId", "SurName", "TeacherId", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "4475fa8b-3064-4741-8b2b-51550e1f3313", 0, null, "2d708e6f-a947-49b3-8831-943c3a0a435e", "AppUser", "student@email.com", true, "John", "Connor", false, null, "STUDENT@EMAIL.COM", "STUDENT@EMAIL.COM", "AQAAAAIAAYagAAAAEI3p6CIyA7/WBRUrliiNYvXcAFqjaEE11v0oBmU19b8N0Hiksh1JHZvPYmMUWHnQ6w==", "+xx(xxx)xxx-xx-xx", true, "fe122946-aa61-46c4-958f-aa393c27a492", 1, "Johnovych", null, false, "student@email.com" },
-                    { "8c0fac6f-7852-4d3e-a693-ad4cd55364ec", 0, null, "1f0d440b-cd54-4baf-b800-b1e03ba2dc01", "AppUser", "teacher@email.com", true, "John", "Connor", false, null, "TEACHER@EMAIL.COM", "TEACHER@EMAIL.COM", "AQAAAAIAAYagAAAAEGPrLxNTjyb0cONl6ShemPWaW6iuNcSQcnF2iifTcPcKI/ueuKvv/+hrVqseEeb7CQ==", "+xx(xxx)xxx-xx-xx", true, "f8330d0d-171b-4de2-bdc0-bbd1677d294c", null, "Johnovych", 1, false, "teacher@email.com" },
-                    { "915fdaa6-db04-476f-875d-fd7602abde0e", 0, 1, "584d53da-6ce9-459b-99a0-6b66dfbf39f0", "AppUser", "admin@email.com", true, "John", "Connor", false, null, "ADMIN@EMAIL.COM", "ADMIN@EMAIL.COM", "AQAAAAIAAYagAAAAEIqAl3e/NBRFVDa3Ev+Jwvgbk6gDWv9eUiQTwyTzye/39wk3s1HYS4sq8Iw0Tz5GWw==", "+xx(xxx)xxx-xx-xx", true, "b41dba99-ec54-4325-862a-ace764518e9a", null, "Johnovych", null, false, "admin@email.com" }
+                    { "59ca254d-834d-482b-94a9-80b0b0549d83", 0, null, "bd3ea4b6-cf96-4ccf-8cc0-e10fc782c855", "AppUser", "teacher@email.com", true, "John", "Connor", false, null, "TEACHER@EMAIL.COM", "TEACHER@EMAIL.COM", "AQAAAAIAAYagAAAAEO55J1BqF7zSjP8ykAll7j7QHml5ZLN73aFC8O12ha2GvGWqPzhu4GCQeBwUAjPrPQ==", "+xx(xxx)xxx-xx-xx", true, "67c2927e-c63d-46b7-954e-c0a0623f8a4e", null, "Johnovych", 1, false, "teacher@email.com" },
+                    { "a66dff72-a284-4e90-913b-9f219e254aa1", 0, null, "870687ca-7c18-4e7e-aabc-8256f06c83f8", "AppUser", "student@email.com", true, "John", "Connor", false, null, "STUDENT@EMAIL.COM", "STUDENT@EMAIL.COM", "AQAAAAIAAYagAAAAEKsc7yE4IUKfH1XKRuAocqYI0iopDbD45POrlT2s/iKIxYsTcmrGUuh06RVtuCFLyQ==", "+xx(xxx)xxx-xx-xx", true, "03a8fe9d-2922-424a-88ad-2fb1c0dc6b98", 1, "Johnovych", null, false, "student@email.com" },
+                    { "a8a78055-0fc1-4f9c-8a57-c01b2376b860", 0, 1, "cdb4bcc0-33be-4871-8407-68892e0f1a7f", "AppUser", "admin@email.com", true, "John", "Connor", false, null, "ADMIN@EMAIL.COM", "ADMIN@EMAIL.COM", "AQAAAAIAAYagAAAAED1O5MSBW8AJAQuMyv3b7yZDoyIOpPH0lPZmY0+N+xpvfRyBR2YARM+tOuaYgNO15Q==", "+xx(xxx)xxx-xx-xx", true, "83ac85d5-2378-44a9-99bc-9c0bbb961945", null, "Johnovych", null, false, "admin@email.com" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Subjects",
+                columns: new[] { "Id", "Name" },
+                values: new object[] { 1, "C#" });
 
             migrationBuilder.InsertData(
                 table: "Administrators",
                 columns: new[] { "Id", "AppUserId" },
-                values: new object[] { 1, "915fdaa6-db04-476f-875d-fd7602abde0e" });
+                values: new object[] { 1, "a8a78055-0fc1-4f9c-8a57-c01b2376b860" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { "91c73a4d-af41-4034-bfa4-ddbbeb945fa9", "4475fa8b-3064-4741-8b2b-51550e1f3313" },
-                    { "d389b179-c61e-4498-9791-1b2025390916", "8c0fac6f-7852-4d3e-a693-ad4cd55364ec" },
-                    { "2b9470ab-7ffb-4329-8216-b2015fa77701", "915fdaa6-db04-476f-875d-fd7602abde0e" }
+                    { "5456292b-0f7f-4b13-a4b6-6e035d9fa7c8", "59ca254d-834d-482b-94a9-80b0b0549d83" },
+                    { "0e0aaf68-62ff-4cd3-aefc-a5bc57597427", "a66dff72-a284-4e90-913b-9f219e254aa1" },
+                    { "78a6762a-ce50-46cd-8690-f92503d32aee", "a8a78055-0fc1-4f9c-8a57-c01b2376b860" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Teachers",
                 columns: new[] { "Id", "AppUserId" },
-                values: new object[] { 1, "8c0fac6f-7852-4d3e-a693-ad4cd55364ec" });
+                values: new object[] { 1, "59ca254d-834d-482b-94a9-80b0b0549d83" });
 
             migrationBuilder.InsertData(
                 table: "Groups",
@@ -455,9 +460,14 @@ namespace FM_MyStat.Infrastructure.Migrations
                 values: new object[] { 1, "suicide terrorists", 1 });
 
             migrationBuilder.InsertData(
+                table: "Lessons",
+                columns: new[] { "Id", "Description", "End", "GroupId", "HomeworkId", "Name", "Start", "SubjectId", "TeacherId" },
+                values: new object[] { 1, "First steps into c# today", new DateTime(2023, 11, 22, 20, 15, 17, 749, DateTimeKind.Utc).AddTicks(1789), 1, null, "C# beginning", new DateTime(2023, 11, 22, 18, 15, 17, 749, DateTimeKind.Utc).AddTicks(1784), 1, 1 });
+
+            migrationBuilder.InsertData(
                 table: "Students",
                 columns: new[] { "Id", "AppUserId", "GroupId", "Rating" },
-                values: new object[] { 1, "4475fa8b-3064-4741-8b2b-51550e1f3313", 1, 0 });
+                values: new object[] { 1, "a66dff72-a284-4e90-913b-9f219e254aa1", 1, 0 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Administrators_AppUserId",

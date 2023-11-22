@@ -128,6 +128,15 @@ namespace FM_MyStat.Infrastructure.Initializers
                 SubjectId = 1
             });
         }
+        public static void SeedSubject(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Subject>().HasData(new Subject
+            {
+                Id = 1,
+                Name = "C#"
+            });
+        }
+
         public static void SeedStudent(this ModelBuilder modelBuilder)
         {
             var studentUserId = Guid.NewGuid().ToString();
