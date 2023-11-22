@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FM_MyStat.Web.Controllers
 {
-    [Authorize(Roles = "Administrator")]
     public class TeacherController : Controller
     {
         private readonly TeacherService _teacherService;
@@ -20,6 +19,7 @@ namespace FM_MyStat.Web.Controllers
         {
             this._teacherService = teacherService;
         }
+        [Authorize(Roles = "Teacher")]
         public IActionResult Index()
         {
             return View();
@@ -39,6 +39,7 @@ namespace FM_MyStat.Web.Controllers
         #endregion
 
         #region Get all users page
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> GetAll()
         {
             ServiceResponse<List<TeacherDTO>, object> result = await _teacherService.GetAllAsync();
@@ -47,6 +48,7 @@ namespace FM_MyStat.Web.Controllers
         #endregion
 
         #region Profile page
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> Profile(string Id)
         {
             ServiceResponse<EditUserDTO, object> result = await _teacherService.GetEditUserDtoByIdAsync(Id);
@@ -76,7 +78,7 @@ namespace FM_MyStat.Web.Controllers
                 ViewBag.UserUpdateError = result.Errors.FirstOrDefault();
                 return View("Profile", new UpdateProfileTeacherVM() { TeacherInfo = model });
             }
-            ViewBag.UserUpdateError = validationResult.Errors[0];
+            ViewBag.UserUpdateError = validationResult.Errors.FirstOrDefault();
             return View("Profile", new UpdateProfileTeacherVM() { TeacherInfo = model });
         }
 
@@ -96,12 +98,13 @@ namespace FM_MyStat.Web.Controllers
                 ViewBag.UpdatePasswordError = result.Errors;
                 return View(new UpdateProfileTeacherVM() { TeacherInfo = _teacherService.GetEditUserDtoByIdAsync(model.Id).Result.Payload });
             }
-            ViewBag.UpdatePasswordError = validationResult.Errors[0];
+            ViewBag.UpdatePasswordError = validationResult.Errors.FirstOrDefault();
             return View(new UpdateProfileTeacherVM() { TeacherInfo = _teacherService.GetEditUserDtoByIdAsync(model.Id).Result.Payload });
         }
         #endregion
 
         #region Create admin page
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Create()
         {
             return View();
@@ -129,6 +132,7 @@ namespace FM_MyStat.Web.Controllers
         #endregion
 
         #region Delete user page
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(string id)
         {
             ServiceResponse<DeleteUserDTO, object> result = await _teacherService.GetDeleteUserDtoByIdAsync(id);
@@ -153,6 +157,7 @@ namespace FM_MyStat.Web.Controllers
         #endregion
 
         #region Edit other user page
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(string id)
         {
 

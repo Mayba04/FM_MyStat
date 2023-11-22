@@ -50,7 +50,7 @@ namespace FM_MyStat.Web.Controllers
                 await _groupService.Create(model);
                 return RedirectToAction(nameof(GetAll));
             }
-            ViewBag.AuthError = validationResult.Errors[0];
+            ViewBag.AuthError = validationResult.Errors.FirstOrDefault();
             return View();
         }
 

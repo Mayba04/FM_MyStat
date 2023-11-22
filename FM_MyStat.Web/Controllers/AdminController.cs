@@ -166,7 +166,7 @@ namespace FM_MyStat.Web.Controllers
                 return View();
 
             }
-            ViewBag.UpdatePasswordError = validationResult.Errors[0];
+            ViewBag.UpdatePasswordError = validationResult.Errors.FirstOrDefault();
             return View();
         }
 
@@ -187,7 +187,7 @@ namespace FM_MyStat.Web.Controllers
                 ViewBag.UserUpdateError = result.Payload;
                 return View(nameof(Profile), new UpdateProfileVM() { UserInfo = model });
             }
-            ViewBag.UserUpdateError = validationResult.Errors[0];
+            ViewBag.UserUpdateError = validationResult.Errors.FirstOrDefault();
             return View(nameof(Profile), new UpdateProfileVM() { UserInfo = model });
         }
 
