@@ -6,6 +6,7 @@ using FM_MyStat.Core.Services;
 using FM_MyStat.Core.Services.LessonServices;
 using FM_MyStat.Core.Validation.Group;
 using FM_MyStat.Core.Validation.Homework;
+using FM_MyStat.Core.Validation.Subject;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FM_MyStat.Web.Controllers
@@ -57,23 +58,50 @@ namespace FM_MyStat.Web.Controllers
 
         public async Task<IActionResult> Update(int id)
         {
-            return View();
+            var result = await _homeworkService.Get(id);
+            if (result != null)
+            {
+                return View(result);
+            }
+            ViewBag.AuthError = "An error occurred";
+            return RedirectToAction(nameof(GetAll));
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update(EditHomeworkDTO model)
         {
-            return View();
+            var result = await _homeworkService.GetByName(model.Title);
+            if (result != null)
+            {
+                ViewBag.AuthError = "Homework exists.";
+                return View(model);
+            }
+            var validator = new EditHomeworkValidation();
+            var validationResult = await validator.ValidateAsync(model);
+            if (validationResult.IsValid)
+            {
+                await _homeworkService.Update(model);
+                return RedirectToAction(nameof(GetAll));
+            }
+            ViewBag.AuthError = validationResult.Errors.FirstOrDefault();
+            return View(model);
         }
 
         public async Task<IActionResult> Delete(int id)
         {
-            return View("Delete");
+            var homeworkDto = await _homeworkService.Get(id);
+
+            if (homeworkDto == null)
+            {
+                ViewBag.AuthError = "Homework not found.";
+                return RedirectToAction(nameof(GetAll));
+            }
+
+            return View(homeworkDto);
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteById(int Id)
+        public async Task<IActionResult> DeleteHomework(int Id)
         {
+            await _homeworkService.Delete(Id);
             return RedirectToAction(nameof(GetAll));
         }
     }
