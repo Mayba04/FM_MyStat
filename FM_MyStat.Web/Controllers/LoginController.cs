@@ -75,9 +75,11 @@ namespace FM_MyStat.Web.Controllers
             var result = await _userService.ConfirmEmailAsync(userId, token);
             if (result.Success)
             {
-                return Redirect(nameof(SignIn));
+                var User = await _userService.GetAppUserById(userId);
+                var Token = await _userService.SetPasswordAsync(userId);
+                return RedirectToAction("ResetPassword", new { email = User.Payload.Email, token = Token.Payload });
             }
-            return Redirect(nameof(SignIn));
+            return Redirect(nameof(Index));
         }
 
 

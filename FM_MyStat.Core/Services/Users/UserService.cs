@@ -81,6 +81,15 @@ namespace FM_MyStat.Core.Services.Users
                 new ServiceResponse<AppUser?, string>(true, "User succesfully loaded", user) :
                 new ServiceResponse<AppUser?, string>(false, "User not found");
         }
+
+        public async Task<ServiceResponse<AppUser?, string>> GetAppUserById(string id)
+        {
+            AppUser? user = await this._userManager.FindByIdAsync(id);
+            return (user != null) ?
+                new ServiceResponse<AppUser?, string>(true, "User succesfully loaded", user) :
+                new ServiceResponse<AppUser?, string>(false, "User not found");
+        }
+
         public async Task<List<IdentityRole>> GetAllRolesAsync()
         {
             List<IdentityRole> roles = await _roleManager.Roles.ToListAsync();
@@ -274,6 +283,20 @@ namespace FM_MyStat.Core.Services.Users
             await _emailService.SendEmailAsync(email, "Reset password for TopNews.", emailBody);
 
             return new ServiceResponse(true, "Email successfull send.");
+        }
+
+        public async Task<ServiceResponse> SetPasswordAsync(string id)
+        {
+            AppUser? user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return new ServiceResponse(false, "User not found.");
+            }
+
+            string token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            byte[] encodedToken = Encoding.UTF8.GetBytes(token);
+            string validEmailToken = WebEncoders.Base64UrlEncode(encodedToken);
+            return new ServiceResponse(true, "Token generated successfully.", validEmailToken);
         }
 
         public async Task<ServiceResponse> ResetPasswordAsync(PasswordRecoveryDTO model)
