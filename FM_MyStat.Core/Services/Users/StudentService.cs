@@ -2,6 +2,7 @@ using AutoMapper;
 using FM_MyStat.Core.DTOs.UsersDTO.Student;
 using FM_MyStat.Core.DTOs.UsersDTO.User;
 using FM_MyStat.Core.Entities;
+using FM_MyStat.Core.Entities.Specifications;
 using FM_MyStat.Core.Entities.Users;
 using FM_MyStat.Core.Interfaces;
 using System;
@@ -57,9 +58,20 @@ namespace FM_MyStat.Core.Services.Users
             {
                 Student student = _mapper.Map<CreateStudentDTO, Student>(model);
                 student.AppUserId = appUserResponse.Payload.Id;
-                student.Rating = model.Rating;
                 await _studentRepo.Insert(student);
-                return new ServiceResponse(true, "Student was added");
+                await _studentRepo.Save();
+                Student? studentAdd = await _studentRepo.GetItemBySpec(new StudentSpecification.GetByAppUserId(appUserResponse.Payload.Id));
+                if (studentAdd != null)
+                {
+                    EditUserDTO editUserDTO = _mapper.Map<UserDTO, EditUserDTO>(appUserResponse.Payload);
+                    editUserDTO.StudentId = studentAdd.Id;
+                    ServiceResponse response = await _userService.ChangeMainInfoUserAsync(editUserDTO);
+                    if (response.Success)
+                    {
+                        return new ServiceResponse(true, "Student was added");
+                    }
+                    return new ServiceResponse(false, "Something went wrong");
+                }
             }
             return new ServiceResponse(true, "Something went wrong");
         }

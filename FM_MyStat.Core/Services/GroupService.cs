@@ -54,10 +54,10 @@ namespace FM_MyStat.Core.Services
             var result = await _groupRepo.GetItemBySpec(new GroupSpecification.GetByName(name));
             if (result != null)
             {
-                return new ServiceResponse(false, "Category exists.");
+                return new ServiceResponse(false, "Group exists.");
             }
             var category = _mapper.Map<GroupDTO>(result);
-            return new ServiceResponse(true, "Category successfully loaded.", payload: category);
+            return new ServiceResponse(true, "Group successfully loaded.", payload: category);
         }
 
         public async Task Update(EditGroupDTO model)
