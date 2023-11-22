@@ -35,26 +35,9 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
                     <a href="#" class="nav-link active">
-                        <i class="nav-icon fas fa-users"></i>
-                        <p>
-                            Students
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a asp-controller="Dashboard" asp-action="GetAll" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>All students</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link active">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
-                            Subject
+                            Groups
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
@@ -62,22 +45,13 @@
                         <li class="nav-item">
                             <a asp-controller="Subject" asp-action="GetAll" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>All Subject</p>
+                                <p>Your group</p>
                             </a>
                         </li>
-                         
-                        
-                            <li class="nav-item">
-                            <a asp-controller="Subject" asp-action="Create" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                <p>Add Subject</p>
-                                </a>
-                            </li>
-                        
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link active">          
+                    <a href="#" class="nav-link active">
                         <i class="nav-icon fas fa-comments"></i>
                         <p>
                             Hometasks
@@ -88,42 +62,9 @@
                         <li class="nav-item">
                             <a asp-controller="Post" asp-action="Index" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>All hometasks</p>
+                                <p>Your hometasks</p>
                             </a>
                         </li>
-
-                        <li class="nav-item">
-                            <a asp-controller="Post" asp-action="AddPost" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Add new hometask</p>
-                            </a>
-                        </li>
-
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link active">
-                        <i class="nav-icon fas fa-comments"></i>
-                        <p>
-                            Lessons
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a asp-controller="Post" asp-action="Index" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>All lessons</p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a asp-controller="Post" asp-action="AddPost" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Add new lesson</p>
-                            </a>
-                        </li>
-
                     </ul>
                 </li>
             </ul>
