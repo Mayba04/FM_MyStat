@@ -46,7 +46,7 @@ namespace FM_MyStat.Core.Services.LessonServices
 
         public async Task Create(CreateLessonsDTO model)
         {
-            await _lessonsRepo.Insert(_mapper.Map<Lesson>(model));
+            await _lessonsRepo.Insert(_mapper.Map<CreateLessonsDTO, Lesson>(model));
             await _lessonsRepo.Save();
         }
 
@@ -128,7 +128,5 @@ namespace FM_MyStat.Core.Services.LessonServices
             await _lessonsRepo.Update(_mapper.Map<Lesson>(model));
             await _lessonsRepo.Save();
         }
-
-
     }
 }

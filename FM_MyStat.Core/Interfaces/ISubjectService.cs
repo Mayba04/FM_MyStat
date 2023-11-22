@@ -1,4 +1,5 @@
-﻿using FM_MyStat.Core.DTOs.SubjectsDTO;
+﻿using FM_MyStat.Core.DTOs.GrouopsDTO;
+using FM_MyStat.Core.DTOs.SubjectsDTO;
 using FM_MyStat.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace FM_MyStat.Core.Interfaces
         Task Create(CreateSubjectDTO model);
         Task Update(EditSubjectDTO model);
         Task Delete(int id);
+        Task<ServiceResponse<List<SubjectDTO>, object>> GetSubjectDTOByTeacher(string id);
 
     }
 }
