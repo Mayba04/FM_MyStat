@@ -50,7 +50,7 @@ namespace FM_MyStat.Web.Controllers
                 await _groupService.Create(model);
                 return RedirectToAction(nameof(GetAll));
             }
-            ViewBag.AuthError = validationResult.Errors[0];
+            ViewBag.AuthError = validationResult.Errors.FirstOrDefault();
             return View();
         }
 
@@ -91,8 +91,6 @@ namespace FM_MyStat.Web.Controllers
 
             return View(groupDto);
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteGroup(int Id)
         {
             await _groupService.Delete(Id);
@@ -101,4 +99,3 @@ namespace FM_MyStat.Web.Controllers
 
     }
 }
-

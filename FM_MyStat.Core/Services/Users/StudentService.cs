@@ -2,6 +2,7 @@ using AutoMapper;
 using FM_MyStat.Core.DTOs.UsersDTO.Student;
 using FM_MyStat.Core.DTOs.UsersDTO.User;
 using FM_MyStat.Core.Entities;
+using FM_MyStat.Core.Entities.Specifications;
 using FM_MyStat.Core.Entities.Users;
 using FM_MyStat.Core.Interfaces;
 using System;
@@ -57,18 +58,34 @@ namespace FM_MyStat.Core.Services.Users
             {
                 Student student = _mapper.Map<CreateStudentDTO, Student>(model);
                 student.AppUserId = appUserResponse.Payload.Id;
-                student.Rating = model.Rating;
                 await _studentRepo.Insert(student);
-                return new ServiceResponse(true, "Student was added");
+                await _studentRepo.Save();
+                Student? studentAdd = await _studentRepo.GetItemBySpec(new StudentSpecification.GetByAppUserId(appUserResponse.Payload.Id));
+                if (studentAdd != null)
+                {
+                    EditUserDTO editUserDTO = _mapper.Map<UserDTO, EditUserDTO>(appUserResponse.Payload);
+                    editUserDTO.StudentId = studentAdd.Id;
+                    ServiceResponse response = await _userService.ChangeMainInfoUserAsync(editUserDTO);
+                    if (response.Success)
+                    {
+                        return new ServiceResponse(true, "Student was added");
+                    }
+                    return new ServiceResponse(false, "Something went wrong");
+                }
             }
             return new ServiceResponse(true, "Something went wrong");
         }
-        public async Task<ServiceResponse> DeleteStudentAsync(DeleteStudentDTO model)
+        public async Task<ServiceResponse> DeleteStudentAsync(DeleteUserDTO model)
         {
-            await _studentRepo.Delete(model.Id);
-            DeleteUserDTO deleteUserDTO = _mapper.Map<DeleteStudentDTO, DeleteUserDTO>(model);
-            ServiceResponse response = await _userService.DeleteUserAsync(deleteUserDTO);
-            return response;
+            Student? deletestudent = await _studentRepo.GetItemBySpec(new StudentSpecification.GetByAppUserId(model.Id));
+            if (deletestudent != null)
+            {
+                await _studentRepo.Delete(deletestudent.Id);
+                await _studentRepo.Save();
+                ServiceResponse response = await _userService.DeleteUserAsync(model);
+                return response;
+            }
+            return new ServiceResponse(false, "Something went wrong");
         }
         public async Task<ServiceResponse> ChangePasswordAsync(EditUserPasswordDTO model)
         {
@@ -78,8 +95,27 @@ namespace FM_MyStat.Core.Services.Users
         {
             return await this._userService.ChangeMainInfoUserAsync(newinfo);
         }
+        public async Task<ServiceResponse> EditStudentAsync(EditStudentDTO model)
+        {
+            EditUserDTO editUserDTO = _mapper.Map<EditStudentDTO, EditUserDTO>(model);
+            ServiceResponse res = await _userService.EditUserAsync(editUserDTO);
+            if (res.Success)
+            {
+                Student? student = await _studentRepo.GetItemBySpec(new StudentSpecification.GetByAppUserId(model.Id));
+                if (student != null)
+                {
+                    student.Rating = model.Rating;
+                    student.GroupId = model.GroupId;
+                    await _studentRepo.Update(student);
+                    await _studentRepo.Save();
+                    return new ServiceResponse(true);
+                }
+                return new ServiceResponse(false, "", errors: new object[] { "Student not found" });
+            }
+            return res;
+        }
         #endregion
-        
+
         public async Task<ServiceResponse<List<StudentDTO>, object>> GetAllAsync()
         {
             ServiceResponse<List<UserDTO>, object> serviceResponse = await this._userService.GetAllAsync();
@@ -89,12 +125,29 @@ namespace FM_MyStat.Core.Services.Users
             {
                 Student student = await _studentRepo.GetByID(result[i].StudentId);
                 mappedUsers[i].Rating = student.Rating;
-                mappedUsers[i].Group = (await _groupRepo.GetByID(student.GroupId)).Name;
+                Group? group = await _groupRepo.GetByID(student.GroupId);
+                mappedUsers[i].Group = (group == null) ? "GROUP NOT FOUND" : group.Name;
             }
             return new ServiceResponse<List<StudentDTO>, object>(true, "", payload: mappedUsers);
         }
 
-        public async Task<ServiceResponse<EditUserDTO, object>> GetEditUserDtoByIdAsync(string Id) => await this._userService.GetEditUserDtoByIdAsync(Id);
+        public async Task<ServiceResponse<EditStudentDTO, object>> GetEditUserDtoByIdAsync(string Id)
+        {
+            ServiceResponse<EditUserDTO, object> response = await this._userService.GetEditUserDtoByIdAsync(Id);
+            if (response.Success)
+            {
+                Student? student = await _studentRepo.GetItemBySpec(new StudentSpecification.GetByAppUserId(response.Payload.Id));
+                if (student != null)
+                {
+                    EditStudentDTO editStudentDTO = _mapper.Map<EditUserDTO, EditStudentDTO>(response.Payload);
+                    editStudentDTO.Rating = student.Rating;
+                    editStudentDTO.GroupId = student.GroupId;
+                    return new ServiceResponse<EditStudentDTO, object>(true, "", payload: editStudentDTO);
+                }
+                return new ServiceResponse<EditStudentDTO, object>(false, "", errors: new object[] { "Student not found" });
+            }
+            return new ServiceResponse<EditStudentDTO, object>(response.Success, response.Message, errors:response.Errors);
+        }
         public async Task<ServiceResponse<DeleteUserDTO, object>> GetDeleteUserDtoByIdAsync(string Id) => await this._userService.GetDeleteUserDtoByIdAsync(Id);
     }
 }

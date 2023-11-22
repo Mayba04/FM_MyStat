@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
+using System.Data;
+using System.Security.Claims;
 
 namespace FM_MyStat.Web.Controllers
 {
@@ -33,7 +35,12 @@ namespace FM_MyStat.Web.Controllers
             bool userAuthenticated = HttpContext.User.Identity.IsAuthenticated;
             if (userAuthenticated)
             {
-                return RedirectToAction("Index", "Admin");
+                string? role = ((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).FirstOrDefault();
+                string controller = RolesToControllers.GetValueOrDefault(role, null);
+                if (controller != null)
+                {
+                    return RedirectToAction("Index", controller);   
+                }
             }
             return View(nameof(Login));
         }
@@ -47,7 +54,7 @@ namespace FM_MyStat.Web.Controllers
             var validationResult = validator.Validate(model);
             if (!validationResult.IsValid)
             {
-                ViewBag.AuthError = validationResult.Errors[0];
+                ViewBag.AuthError = validationResult.Errors.FirstOrDefault();
                 return View(model);
             }
             ServiceResponse result = await _userService.LoginUserAsync(model);

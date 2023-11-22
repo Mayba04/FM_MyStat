@@ -75,6 +75,12 @@
                                             <label for="exampleInputEmail1">Rating</label>
                                             <input value="0" type="text" name="rating" class="form-control" id="exampleInputEmail1" placeholder="Enter rating">
                                         </div>
+                                        <div class="mb-3">
+                                            <div class="form-group">
+                                                <label>Group</label>
+                                                @Html.DropDownList("GroupId", (SelectList)ViewBag.GroupList, "-- Select Group --",  htmlAttributes: new { @class = "form-control" })
+                                            </div>
+                                        </div>
                                     </div>
                                     <!-- /.card-body -->
                                     <div class="card-footer">
