@@ -16,5 +16,16 @@ namespace FM_MyStat.Web.Controllers
         {
             return RedirectToAction("Index", "Login");
         }
+
+        [Route("Error/{statusCode}")]
+        public IActionResult Error(int statusCode)
+        {
+            switch (statusCode)
+            {
+                case 404:
+                    return View("NotFound");
+                default: return View("Error");
+            }
+        }
     }
 }
