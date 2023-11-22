@@ -112,5 +112,38 @@ namespace FM_MyStat.Web.Controllers
             return RedirectToAction(nameof(GetAll));
         }
         #endregion
+
+        #region Edit other user page
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> Edit(string id)
+        {
+            ServiceResponse<EditStudentDTO, object> result = await _studentService.GetEditUserDtoByIdAsync(id);
+            if (result.Success)
+            {
+                await LoadGroups();
+                return View(result.Payload);
+            }
+            return View(nameof(GetAll));
+        }
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditStudentDTO model)
+        {
+            ValidationResult validationResult = await new EditUserValidation().ValidateAsync(model);
+            if (validationResult.IsValid)
+            {
+                ServiceResponse result = await _studentService.EditStudentAsync(model);
+                if (result.Success)
+                {
+                    return View(nameof(GetAll));
+                }
+                return View(nameof(GetAll));
+            }
+            ViewBag.AuthError = validationResult.Errors.FirstOrDefault();
+            await LoadGroups();
+            return View(nameof(Edit));
+        }
+        #endregion
     }
 }

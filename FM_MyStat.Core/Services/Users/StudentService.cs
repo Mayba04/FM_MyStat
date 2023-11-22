@@ -95,8 +95,27 @@ namespace FM_MyStat.Core.Services.Users
         {
             return await this._userService.ChangeMainInfoUserAsync(newinfo);
         }
+        public async Task<ServiceResponse> EditStudentAsync(EditStudentDTO model)
+        {
+            EditUserDTO editUserDTO = _mapper.Map<EditStudentDTO, EditUserDTO>(model);
+            ServiceResponse res = await _userService.EditUserAsync(editUserDTO);
+            if (res.Success)
+            {
+                Student? student = await _studentRepo.GetItemBySpec(new StudentSpecification.GetByAppUserId(model.Id));
+                if (student != null)
+                {
+                    student.Rating = model.Rating;
+                    student.GroupId = model.GroupId;
+                    await _studentRepo.Update(student);
+                    await _studentRepo.Save();
+                    return new ServiceResponse(true);
+                }
+                return new ServiceResponse(false, "", errors: new object[] { "Student not found" });
+            }
+            return res;
+        }
         #endregion
-        
+
         public async Task<ServiceResponse<List<StudentDTO>, object>> GetAllAsync()
         {
             ServiceResponse<List<UserDTO>, object> serviceResponse = await this._userService.GetAllAsync();
@@ -106,12 +125,29 @@ namespace FM_MyStat.Core.Services.Users
             {
                 Student student = await _studentRepo.GetByID(result[i].StudentId);
                 mappedUsers[i].Rating = student.Rating;
-                mappedUsers[i].Group = (await _groupRepo.GetByID(student.GroupId)).Name;
+                Group? group = await _groupRepo.GetByID(student.GroupId);
+                mappedUsers[i].Group = (group == null) ? $"NOT FOUND / ID {student.GroupId}" : group.Name;
             }
             return new ServiceResponse<List<StudentDTO>, object>(true, "", payload: mappedUsers);
         }
 
-        public async Task<ServiceResponse<EditUserDTO, object>> GetEditUserDtoByIdAsync(string Id) => await this._userService.GetEditUserDtoByIdAsync(Id);
+        public async Task<ServiceResponse<EditStudentDTO, object>> GetEditUserDtoByIdAsync(string Id)
+        {
+            ServiceResponse<EditUserDTO, object> response = await this._userService.GetEditUserDtoByIdAsync(Id);
+            if (response.Success)
+            {
+                Student? student = await _studentRepo.GetItemBySpec(new StudentSpecification.GetByAppUserId(response.Payload.Id));
+                if (student != null)
+                {
+                    EditStudentDTO editStudentDTO = _mapper.Map<EditUserDTO, EditStudentDTO>(response.Payload);
+                    editStudentDTO.Rating = student.Rating;
+                    editStudentDTO.GroupId = student.GroupId;
+                    return new ServiceResponse<EditStudentDTO, object>(true, "", payload: editStudentDTO);
+                }
+                return new ServiceResponse<EditStudentDTO, object>(false, "", errors: new object[] { "Student not found" });
+            }
+            return new ServiceResponse<EditStudentDTO, object>(response.Success, response.Message, errors:response.Errors);
+        }
         public async Task<ServiceResponse<DeleteUserDTO, object>> GetDeleteUserDtoByIdAsync(string Id) => await this._userService.GetDeleteUserDtoByIdAsync(Id);
     }
 }

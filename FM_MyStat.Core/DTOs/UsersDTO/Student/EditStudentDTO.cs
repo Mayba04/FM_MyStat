@@ -10,5 +10,6 @@ namespace FM_MyStat.Core.DTOs.UsersDTO.Student
     public class EditStudentDTO : EditUserDTO
     {
         public int Rating { get; set; }
+        public int? GroupId { get; set; }
     }
 }
