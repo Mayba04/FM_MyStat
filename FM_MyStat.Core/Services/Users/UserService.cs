@@ -82,6 +82,15 @@ namespace FM_MyStat.Core.Services.Users
                 new ServiceResponse<AppUser?, string>(true, "User succesfully loaded", user) :
                 new ServiceResponse<AppUser?, string>(false, "User not found");
         }
+
+        public async Task<ServiceResponse<AppUser?, string>> GetAppUserById(string id)
+        {
+            AppUser? user = await this._userManager.FindByIdAsync(id);
+            return (user != null) ?
+                new ServiceResponse<AppUser?, string>(true, "User succesfully loaded", user) :
+                new ServiceResponse<AppUser?, string>(false, "User not found");
+        }
+
         public async Task<List<IdentityRole>> GetAllRolesAsync()
         {
             List<IdentityRole> roles = await _roleManager.Roles.ToListAsync();
@@ -237,7 +246,7 @@ namespace FM_MyStat.Core.Services.Users
             byte[] encodedToken = Encoding.UTF8.GetBytes(token);
             string validEmailToken = WebEncoders.Base64UrlEncode(encodedToken);
 
-            string url = $"{_configuration["HostSettings:URL"]}/Dashboard/confirmemail?userid={user.Id}&token={validEmailToken}";
+            string url = $"{_configuration["HostSettings:URL"]}/Login/confirmemail?userid={user.Id}&token={validEmailToken}";
 
             string emailBody = $"<h1>Confirm your email</h1> <a href='{url}'>Confirm now!</a>";
             await _emailService.SendEmailAsync(user.Email, "Email confirmation.", emailBody);
@@ -276,7 +285,7 @@ namespace FM_MyStat.Core.Services.Users
             byte[] encodedToken = Encoding.UTF8.GetBytes(token);
             string validEmailToken = WebEncoders.Base64UrlEncode(encodedToken);
 
-            string url = $"{_configuration["HostSettings:URL"]}/Dashboard/ResetPassword?email={email}&token={validEmailToken}";
+            string url = $"{_configuration["HostSettings:URL"]}/Login/ResetPassword?email={email}&token={validEmailToken}";
 
             string emailBody = $"<h1>Follow the instruction for reset password.</h1><a href='{url}'>Reset now!</a>";
             await _emailService.SendEmailAsync(email, "Reset password for TopNews.", emailBody);
@@ -284,7 +293,21 @@ namespace FM_MyStat.Core.Services.Users
             return new ServiceResponse(true, "Email successfull send.");
         }
 
-        public async Task<ServiceResponse> ResetPasswordAsync(PasswordRecoveryDto model)
+        public async Task<ServiceResponse> SetPasswordAsync(string id)
+        {
+            AppUser? user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return new ServiceResponse(false, "User not found.");
+            }
+
+            string token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            byte[] encodedToken = Encoding.UTF8.GetBytes(token);
+            string validEmailToken = WebEncoders.Base64UrlEncode(encodedToken);
+            return new ServiceResponse(true, "Token generated successfully.", validEmailToken);
+        }
+
+        public async Task<ServiceResponse> ResetPasswordAsync(PasswordRecoveryDTO model)
         {
             AppUser? user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)

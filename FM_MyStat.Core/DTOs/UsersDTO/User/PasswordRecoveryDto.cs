@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FM_MyStat.Core.DTOs.UsersDTO.User
 {
-    public class PasswordRecoveryDto
+    public class PasswordRecoveryDTO
     {
         public string Email { get; set; } = string.Empty;
         public string Token { get; set; } = string.Empty;
