@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using FM_MyStat.Core.DTOs.HomeworksDTO;
+using FM_MyStat.Core.DTOs.HomeworksDTO.Homework;
 using FM_MyStat.Core.Entities.Homeworks;
 using FM_MyStat.Core.Entities.Specifications;
 using FM_MyStat.Core.Interfaces;
@@ -22,7 +22,7 @@ namespace FM_MyStat.Core.Services.HomeworkServices
             _mapper = mapper;
         }
 
-        public async Task Create(HomeworkDTO model)
+        public async Task Create(CreateHomeworkDTO model)
         {
             await _homeworkRepo.Insert(_mapper.Map<Homework>(model));
             await _homeworkRepo.Save();
@@ -83,7 +83,7 @@ namespace FM_MyStat.Core.Services.HomeworkServices
             return null;
         }
 
-        public async Task Update(HomeworkDTO model)
+        public async Task Update(EditHomeworkDTO model)
         {
             await _homeworkRepo.Update(_mapper.Map<Homework>(model));
             await _homeworkRepo.Save();
