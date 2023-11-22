@@ -40,9 +40,9 @@ namespace FM_MyStat.Core.Services.HomeworkServices
         public async Task<HomeworkDTO?> Get(int id)
         {
             if (id < 0) return null;
-            var category = await _homeworkRepo.GetByID(id);
-            if (category == null) return null;
-            return _mapper.Map<HomeworkDTO?>(category);
+            var homework = await _homeworkRepo.GetByID(id);
+            if (homework == null) return null;
+            return _mapper.Map<HomeworkDTO?>(homework);
 
         }
 
