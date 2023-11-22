@@ -1,8 +1,12 @@
 ﻿using AutoMapper;
 using FM_MyStat.Core.DTOs.GrouopsDTO;
+using FM_MyStat.Core.DTOs.UsersDTO.Student;
+using FM_MyStat.Core.DTOs.UsersDTO.User;
 using FM_MyStat.Core.Entities;
 using FM_MyStat.Core.Entities.Specifications;
+using FM_MyStat.Core.Entities.Users;
 using FM_MyStat.Core.Interfaces;
+using FM_MyStat.Core.Services.Users;
 using Org.BouncyCastle.Ocsp;
 using System;
 using System.Collections.Generic;
@@ -16,10 +20,14 @@ namespace FM_MyStat.Core.Services
     {
         private readonly IMapper _mapper;
         private readonly IRepository<Group> _groupRepo;
-        public GroupService(IMapper mapper, IRepository<Group> groupRepo)
+        private readonly UserService _userService;
+        private readonly IRepository<Teacher> _teacherRepo;
+        public GroupService(IMapper mapper, IRepository<Group> groupRepo, UserService userService, IRepository<Teacher> teacherRepo)
         {
             this._mapper = mapper;
             this._groupRepo = groupRepo;
+            this._userService = userService;
+            this._teacherRepo = teacherRepo;
         }
         public async Task Create(CreateGroupDTO model)
         {
@@ -74,6 +82,21 @@ namespace FM_MyStat.Core.Services
                 return new ServiceResponse<EditGroupDTO, object>(true, "", payload: _mapper.Map<Group, EditGroupDTO>(group));
             }
             return new ServiceResponse<EditGroupDTO, object>(false, "", errors: new string[] { "Group not found!"});
+        }
+
+        public async Task<ServiceResponse<List<GroupDTO>, object>> GetGroupDTOByTeacher(string id)
+        {
+            ServiceResponse<UserDTO, object> userDTO = await _userService.GetUserById(id);
+            if (userDTO != null)
+            {
+                Teacher? teacher = await _teacherRepo.GetByID(id);
+                if (teacher != null)
+                {
+                    List<GroupDTO> mappedGroups = teacher.Groups.Select(u => _mapper.Map<Group, GroupDTO>(u)).ToList();
+                    return new ServiceResponse<List<GroupDTO>, object>(true, "", payload: mappedGroups);
+                }
+            }
+            return new ServiceResponse<List<GroupDTO>, object>(false, "", errors: new object[] { "Something went wrong" });
         }
     }
 }

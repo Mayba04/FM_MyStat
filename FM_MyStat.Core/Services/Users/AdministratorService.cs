@@ -75,7 +75,6 @@ namespace FM_MyStat.Core.Services.Users
         }
         public async Task<ServiceResponse> DeleteAdministratorAsync(DeleteUserDTO model)
         {
-
             Administrator? deletesadmin = await _adminRepo.GetItemBySpec(new AdministratorSpecification.GetByAppUserId(model.Id));
             if (deletesadmin != null)
             {
