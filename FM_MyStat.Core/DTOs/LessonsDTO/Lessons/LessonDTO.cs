@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace FM_MyStat.Core.DTOs.LessonsDTO.Lessons
 {
-    public class LessonsDTO
+    public class LessonDTO
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -19,8 +19,11 @@ namespace FM_MyStat.Core.DTOs.LessonsDTO.Lessons
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
         public int TeacherId { get; set; }
+        public string Teacher { get; set; }
         public int? HomeworkId { get; set; }
         public int GroupId { get; set; }
+        public string Group { get; set; }
         public int SubjectId { get; set; }
+        public string Subject { get; set; }
     }
 }

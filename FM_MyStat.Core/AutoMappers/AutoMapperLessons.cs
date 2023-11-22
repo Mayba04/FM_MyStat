@@ -18,7 +18,7 @@ namespace FM_MyStat.Core.AutoMappers
             CreateMap<CreateLessonsDTO, Lesson>().ReverseMap();
             CreateMap<DeleteLessonsDTO, Lesson>().ReverseMap();
             CreateMap<EditLessonsDTO, Lesson>().ReverseMap();
-            CreateMap<LessonsDTO, Lesson>().ReverseMap();
+            CreateMap<LessonDTO, Lesson>().ReverseMap();
         }
     }
 }
