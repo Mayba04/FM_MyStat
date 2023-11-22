@@ -68,5 +68,66 @@ namespace FM_MyStat.Web.Controllers
             ViewBag.AuthError = result.Message;
             return View(model);
         }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            var result = await _userService.ConfirmEmailAsync(userId, token);
+            if (result.Success)
+            {
+                return Redirect(nameof(SignIn));
+            }
+            return Redirect(nameof(SignIn));
+        }
+
+
+        [AllowAnonymous]
+        public async Task<IActionResult> ForgotPassword()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            var result = await _userService.ForgotPasswordAsync(email);
+            if (result.Success)
+            {
+                ViewBag.AuthError = result.Message;
+                return View(nameof(Login));
+            }
+            ViewBag.AuthError = result.Message;
+            return View();
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetPassword(string email, string token)
+        {
+            ViewBag.Email = email;
+            ViewBag.Token = token;
+            return View();
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(PasswordRecoveryDTO model)
+        {
+            var validator = new ResetPasswordValidation();
+            var validationresult = await validator.ValidateAsync(model);
+            if (validationresult.IsValid)
+            {
+                var result = await _userService.ResetPasswordAsync(model);
+                if (result.Success)
+                {
+                    ViewBag.AuthError = result.Message;
+                    return View(nameof(Login));
+                }
+                ViewBag.AuthError = result.Message;
+            }
+            ViewBag.AuthError = validationresult.Errors[0];
+            return View();
+        }
     }
 }
