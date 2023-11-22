@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace FM_MyStat.Core.Interfaces
 {
-    internal interface ILessonService
+    public interface ILessonService
     {
-        Task<List<LessonsDTO>> GetAll();
-        Task<LessonsDTO?> Get(int id);
-        Task<ServiceResponse> GetByName(LessonsDTO model);
-        Task<LessonsDTO> GetByName(string Name);
+        Task<List<LessonDTO>> GetAll();
+        Task<LessonDTO?> Get(int id);
+        Task<ServiceResponse> GetByName(LessonDTO model);
+        Task<LessonDTO> GetByName(string Name);
         Task Create(CreateLessonsDTO model);
         Task Update(EditLessonsDTO model);
         Task Delete(int id);
