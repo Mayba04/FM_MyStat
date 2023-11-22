@@ -126,7 +126,7 @@ namespace FM_MyStat.Core.Services.Users
                 Student student = await _studentRepo.GetByID(result[i].StudentId);
                 mappedUsers[i].Rating = student.Rating;
                 Group? group = await _groupRepo.GetByID(student.GroupId);
-                mappedUsers[i].Group = (group == null) ? $"NOT FOUND / ID {student.GroupId}" : group.Name;
+                mappedUsers[i].Group = (group == null) ? "GROUP NOT FOUND" : group.Name;
             }
             return new ServiceResponse<List<StudentDTO>, object>(true, "", payload: mappedUsers);
         }

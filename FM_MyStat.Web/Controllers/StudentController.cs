@@ -81,10 +81,10 @@ namespace FM_MyStat.Web.Controllers
                     return RedirectToAction(nameof(GetAll));
                 }
                 ViewBag.CreateUserError = response.Errors.FirstOrDefault();
-                return View();
+                return RedirectToAction();
             }
             ViewBag.CreateUserError = validationResult.Errors.FirstOrDefault();
-            return View();
+            return RedirectToAction();
         }
         #endregion
 
@@ -97,7 +97,7 @@ namespace FM_MyStat.Web.Controllers
             {
                 return View(result.Payload);
             }
-            return View(nameof(GetAll));
+            return RedirectToAction(nameof(GetAll));
         }
 
         [HttpPost]
@@ -123,7 +123,7 @@ namespace FM_MyStat.Web.Controllers
                 await LoadGroups();
                 return View(result.Payload);
             }
-            return View(nameof(GetAll));
+            return RedirectToAction(nameof(GetAll));
         }
 
         [ValidateAntiForgeryToken]
@@ -136,13 +136,13 @@ namespace FM_MyStat.Web.Controllers
                 ServiceResponse result = await _studentService.EditStudentAsync(model);
                 if (result.Success)
                 {
-                    return View(nameof(GetAll));
+                    return RedirectToAction(nameof(GetAll));
                 }
-                return View(nameof(GetAll));
+                return RedirectToAction(nameof(GetAll));
             }
             ViewBag.AuthError = validationResult.Errors.FirstOrDefault();
             await LoadGroups();
-            return View(nameof(Edit));
+            return RedirectToAction(nameof(Edit));
         }
         #endregion
     }
