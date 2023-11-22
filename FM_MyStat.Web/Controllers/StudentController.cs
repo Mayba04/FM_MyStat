@@ -2,11 +2,13 @@
 using FM_MyStat.Core.DTOs.GrouopsDTO;
 using FM_MyStat.Core.DTOs.UsersDTO.Admin;
 using FM_MyStat.Core.DTOs.UsersDTO.Student;
+using FM_MyStat.Core.DTOs.UsersDTO.User;
 using FM_MyStat.Core.Entities;
 using FM_MyStat.Core.Interfaces;
 using FM_MyStat.Core.Services;
 using FM_MyStat.Core.Services.Users;
 using FM_MyStat.Core.Validation.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -50,6 +52,7 @@ namespace FM_MyStat.Web.Controllers
         #endregion
 
         #region Create admin page
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Create()
         {
             await LoadGroups();
@@ -82,6 +85,31 @@ namespace FM_MyStat.Web.Controllers
             }
             ViewBag.CreateUserError = validationResult.Errors.FirstOrDefault();
             return View();
+        }
+        #endregion
+
+        #region Delete user page
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            ServiceResponse<DeleteUserDTO, object> result = await _studentService.GetDeleteUserDtoByIdAsync(id);
+            if (result.Success)
+            {
+                return View(result.Payload);
+            }
+            return View(nameof(GetAll));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(DeleteUserDTO model)
+        {
+            ServiceResponse result = await _studentService.DeleteStudentAsync(model);
+            if (!result.Success)
+            {
+                ViewBag.GetAllError = result.Errors.FirstOrDefault();
+            }
+            return RedirectToAction(nameof(GetAll));
         }
         #endregion
     }
