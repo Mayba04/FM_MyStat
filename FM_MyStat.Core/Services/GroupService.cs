@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FM_MyStat.Core.DTOs.GrouopsDTO;
+using FM_MyStat.Core.DTOs.SubjectsDTO;
 using FM_MyStat.Core.DTOs.UsersDTO.Student;
 using FM_MyStat.Core.DTOs.UsersDTO.User;
 using FM_MyStat.Core.Entities;
@@ -8,6 +9,7 @@ using FM_MyStat.Core.Entities.Users;
 using FM_MyStat.Core.Interfaces;
 using FM_MyStat.Core.Services.Users;
 using Org.BouncyCastle.Ocsp;
+using Org.BouncyCastle.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -90,15 +92,13 @@ namespace FM_MyStat.Core.Services
             if (userDTO.Success)
             {
                 Teacher? teacher = await _teacherRepo.GetByID(userDTO.Payload.TeacherId);
-                if (teacher != null)
+                if (teacher == null)
                 {
-                    if(teacher.Groups != null)
-                    {
-                        List<GroupDTO> mappedGroups = teacher.Groups.Select(u => _mapper.Map<Group, GroupDTO>(u)).ToList();
-                        return new ServiceResponse<List<GroupDTO>, object>(true, "", payload: mappedGroups);
-                    }
-                    return new ServiceResponse<List<GroupDTO>, object>(false, "", new List<GroupDTO>(), new object[] { "the teacher has no groups" });
+                    return new ServiceResponse<List<GroupDTO>, object>(false, "", errors: new object[] { "Teacher not found" });
                 }
+                IEnumerable<Group> groups = await _groupRepo.GetListBySpec(new GroupSpecification.GetByteacherId(teacher.Id));
+                List<GroupDTO> mappedGroups = groups.Select(u => _mapper.Map<Group, GroupDTO>(u)).ToList();
+                return new ServiceResponse<List<GroupDTO>, object>(true, "", payload: mappedGroups);
             }
             return new ServiceResponse<List<GroupDTO>, object>(false, "", errors: new object[] { "Something went wrong" });
         }

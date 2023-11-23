@@ -7,6 +7,7 @@ using FM_MyStat.Core.Entities.Specifications;
 using FM_MyStat.Core.Entities.Users;
 using FM_MyStat.Core.Interfaces;
 using FM_MyStat.Core.Services.Users;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,13 +22,15 @@ namespace FM_MyStat.Core.Services
         private readonly IRepository<Subject> _subjectRepo;
         private readonly UserService _userService;
         private readonly IRepository<Teacher> _teacherRepo;
+        private readonly IRepository<TeacherSubject> _teachersubjectRepo;
 
-        public SubjectService(IMapper mapper, IRepository<Subject> subjectRepo, UserService userService, IRepository<Teacher> teacherRepo)
+        public SubjectService(IMapper mapper, IRepository<Subject> subjectRepo, UserService userService, IRepository<Teacher> teacherRepo, IRepository<TeacherSubject> teachersubjectRepo)
         {
             _subjectRepo = subjectRepo;
             _mapper = mapper;
             this._userService = userService;
             this._teacherRepo = teacherRepo;
+            this._teachersubjectRepo = teachersubjectRepo;
         }
 
         public async Task Create(CreateSubjectDTO model)
@@ -65,19 +68,10 @@ namespace FM_MyStat.Core.Services
             var result = await _subjectRepo.GetItemBySpec(new SubjectSpecification.GetByName(model.Name));
             if (result != null)
             {
-                return new ServiceResponse
-                {
-                    Success = false,
-                    Message = "Subject exists."
-                };
+                return new ServiceResponse(false, "Subject exists.");
             }
             var subject = _mapper.Map<SubjectDTO>(result);
-            return new ServiceResponse
-            {
-                Success = true,
-                Message = "Subject successfully loaded.",
-                Payload = subject
-            };
+            return new ServiceResponse(true, "Subject successfully loaded.", payload: subject);
         }
 
         public async Task<SubjectDTO> GetByName(string NameSubject)
@@ -93,20 +87,19 @@ namespace FM_MyStat.Core.Services
 
         public async Task<ServiceResponse<List<SubjectDTO>, object>> GetSubjectDTOByTeacher(string id)
         {
-            /*ServiceResponse<UserDTO, object> userDTO = await _userService.GetUserById(id);
+            ServiceResponse<UserDTO, object> userDTO = await _userService.GetUserById(id);
             if (userDTO != null)
             {
                 Teacher? teacher = await _teacherRepo.GetByID(userDTO.Payload.TeacherId);
-                if (teacher != null)
+                if(teacher == null)
                 {
-                    if (teacher.Subjects != null)
-                    {
-                        List<SubjectDTO> mappedSubjects = teacher.Subjects.Select(u => _mapper.Map<Subject, SubjectDTO>(u)).ToList();
-                        return new ServiceResponse<List<SubjectDTO>, object>(true, "", payload: mappedSubjects);
-                    }
-                    return new ServiceResponse<List<SubjectDTO>, object>(false, "", new List<SubjectDTO>(), errors: new object[] { "the teacher has no subjects" });
+                    return new ServiceResponse<List<SubjectDTO>, object>(false, "", errors: new object[] { "Teacher not found" });
                 }
-            }*/
+                IEnumerable<TeacherSubject> TeachersSubjects = await _teachersubjectRepo.GetListBySpec(new TeacherSubjectSpecification.GetByTeacherId(teacher.Id));
+                IEnumerable<Subject> subjects = await _subjectRepo.GetListBySpec(new SubjectSpecification.GetByManyId(TeachersSubjects.Select(s => s.Id)));
+                List<SubjectDTO> mappedSubjects = subjects.Select(u => _mapper.Map<Subject, SubjectDTO>(u)).ToList();
+                return new ServiceResponse<List<SubjectDTO>, object>(true, "", payload: mappedSubjects);
+            }
             return new ServiceResponse<List<SubjectDTO>, object>(false, "", errors: new object[] { "Something went wrong" });
         }
 
