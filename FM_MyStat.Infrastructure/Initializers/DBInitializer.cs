@@ -99,27 +99,15 @@ namespace FM_MyStat.Infrastructure.Initializers
         }
         public static void SeedStudent(this ModelBuilder modelBuilder)
         {
-
-        }
-        public static void SeedData(this ModelBuilder modelBuilder)
-        {
-            
-            
+            var passwordHasher = new PasswordHasher<AppUser>();
             var studentUserId = Guid.NewGuid().ToString();
             var studentRoleId = Guid.NewGuid().ToString();
-
-            // Roles
-            
-            
             modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole
             {
                 Id = studentRoleId,
                 Name = "Student",
                 NormalizedName = "STUDENT"
             });
-
-            // App users
-            
             var studentUser = new AppUser
             {
                 Id = studentUserId,
@@ -135,26 +123,32 @@ namespace FM_MyStat.Infrastructure.Initializers
                 PhoneNumberConfirmed = true,
                 StudentId = 1,
             };
-            
             Student student = new Student
             {
                 Id = 1,
                 GroupId = 1,
                 AppUserId = studentUserId
             };
-
-            // Passwords
-            var passwordHasher = new PasswordHasher<AppUser>();
-            
-            
             studentUser.PasswordHash = passwordHasher.HashPassword(studentUser, "Qwerty-1");
-
-            // Entities
+            modelBuilder.Entity<Student>().HasData(student);
+            modelBuilder.Entity<AppUser>().HasData(studentUser);
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
+            {
+                RoleId = studentRoleId,
+                UserId = studentUserId
+            });
+        }
+        public static void SeedSubject(this ModelBuilder modelBuilder)
+        {
             Subject subject = new Subject
             {
                 Id = 1,
                 Name = "C#"
             };
+            modelBuilder.Entity<Subject>().HasData(subject);
+        }
+        public static void SeedLesson(this ModelBuilder modelBuilder)
+        {
             Lesson lesson = new Lesson
             {
                 Id = 1,
@@ -166,33 +160,25 @@ namespace FM_MyStat.Infrastructure.Initializers
                 GroupId = 1,
                 SubjectId = 1
             };
+            modelBuilder.Entity<Lesson>().HasData(lesson);
+        }
+        public static void SeedGroup(this ModelBuilder modelBuilder)
+        {
             Group group = new Group
             {
                 Id = 1,
                 Name = "suicide terrorists",
                 TeacherId = 1
             };
-
-
-            // Add all
-            
-
-            
-            
-            modelBuilder.Entity<Student>().HasData(student);
-            modelBuilder.Entity<AppUser>().HasData(studentUser);
-
-            modelBuilder.Entity<Subject>().HasData(subject);
-            modelBuilder.Entity<Lesson>().HasData(lesson);
             modelBuilder.Entity<Group>().HasData(group);
-
-            // Links roles - user
-            
-            
-            modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
+        }
+        public static void SeedTeacherSubject(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<TeacherSubject>().HasData(new TeacherSubject()
             {
-                RoleId = studentRoleId,
-                UserId = studentUserId
+                Id = 1,
+                SubjectId = 1,
+                TeacherId = 1
             });
         }
     }

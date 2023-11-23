@@ -103,7 +103,13 @@ namespace FM_MyStat.Infrastructure.Context
                 .HasOne(teachersubject => teachersubject.Subject).WithMany(subject => subject.TeachersSubjects)
                 .HasForeignKey(teachersubject => teachersubject.SubjectId);
 
-            //modelBuilder.SeedData();
+            modelBuilder.SeedAdministrator();
+            modelBuilder.SeedTeacher();
+            modelBuilder.SeedGroup();
+            modelBuilder.SeedStudent();
+            modelBuilder.SeedSubject();
+            modelBuilder.SeedLesson();
+            modelBuilder.SeedTeacherSubject();
         }
     }
 }

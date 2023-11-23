@@ -93,7 +93,7 @@ namespace FM_MyStat.Core.Services
 
         public async Task<ServiceResponse<List<SubjectDTO>, object>> GetSubjectDTOByTeacher(string id)
         {
-            ServiceResponse<UserDTO, object> userDTO = await _userService.GetUserById(id);
+            /*ServiceResponse<UserDTO, object> userDTO = await _userService.GetUserById(id);
             if (userDTO != null)
             {
                 Teacher? teacher = await _teacherRepo.GetByID(userDTO.Payload.TeacherId);
@@ -106,7 +106,7 @@ namespace FM_MyStat.Core.Services
                     }
                     return new ServiceResponse<List<SubjectDTO>, object>(false, "", new List<SubjectDTO>(), errors: new object[] { "the teacher has no subjects" });
                 }
-            }
+            }*/
             return new ServiceResponse<List<SubjectDTO>, object>(false, "", errors: new object[] { "Something went wrong" });
         }
 
