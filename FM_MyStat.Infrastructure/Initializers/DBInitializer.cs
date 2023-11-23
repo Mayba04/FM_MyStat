@@ -63,9 +63,6 @@ namespace FM_MyStat.Infrastructure.Initializers
                 UserId = adminUserId
             });
         }
-
-        
-
         public static void SeedTeacher(this ModelBuilder modelBuilder)
         {
             var teacherUserId = Guid.NewGuid().ToString();

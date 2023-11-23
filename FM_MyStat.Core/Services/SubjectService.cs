@@ -96,11 +96,15 @@ namespace FM_MyStat.Core.Services
             ServiceResponse<UserDTO, object> userDTO = await _userService.GetUserById(id);
             if (userDTO != null)
             {
-                Teacher? teacher = await _teacherRepo.GetByID(id);
+                Teacher? teacher = await _teacherRepo.GetByID(userDTO.Payload.TeacherId);
                 if (teacher != null)
                 {
-                    List<SubjectDTO> mappedSubjects = teacher.Subjects.Select(u => _mapper.Map<Subject, SubjectDTO>(u)).ToList();
-                    return new ServiceResponse<List<SubjectDTO>, object>(true, "", payload: mappedSubjects);
+                    if (teacher.Subjects != null)
+                    {
+                        List<SubjectDTO> mappedSubjects = teacher.Subjects.Select(u => _mapper.Map<Subject, SubjectDTO>(u)).ToList();
+                        return new ServiceResponse<List<SubjectDTO>, object>(true, "", payload: mappedSubjects);
+                    }
+                    return new ServiceResponse<List<SubjectDTO>, object>(false, "", new List<SubjectDTO>(), errors: new object[] { "the teacher has no subjects" });
                 }
             }
             return new ServiceResponse<List<SubjectDTO>, object>(false, "", errors: new object[] { "Something went wrong" });

@@ -27,20 +27,20 @@ namespace FM_MyStat.Web.Controllers
             return View();
         }
 
-        private async void LoadGroups()
+        private async Task LoadGroups()
         {
             var userId = ((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).FirstOrDefault();
             ServiceResponse<List<GroupDTO>, object> result = await _groupService.GetGroupDTOByTeacher(userId);
-            @ViewBag.GroupList = new SelectList((System.Collections.IEnumerable)result,
+            @ViewBag.GroupList = new SelectList((System.Collections.IEnumerable)result.Payload,
                 nameof(GroupDTO.Id), nameof(GroupDTO.Name)
               );
         }
 
-        private async void LoadSubjects()
+        private async Task LoadSubjects()
         {
             var userId = ((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).FirstOrDefault();
             ServiceResponse<List<SubjectDTO>, object> result = await _subjectService.GetSubjectDTOByTeacher(userId);
-            @ViewBag.SubjectList = new SelectList((System.Collections.IEnumerable)result,
+            @ViewBag.SubjectList = new SelectList((System.Collections.IEnumerable)result.Payload,
                 nameof(Subject.Id), nameof(Subject.Name)
               );
         }
@@ -53,6 +53,8 @@ namespace FM_MyStat.Web.Controllers
 
         public async Task<IActionResult> Create()
         {
+            await LoadGroups();
+            await LoadSubjects();
             return View();
         }
     }

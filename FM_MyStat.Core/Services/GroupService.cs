@@ -87,13 +87,17 @@ namespace FM_MyStat.Core.Services
         public async Task<ServiceResponse<List<GroupDTO>, object>> GetGroupDTOByTeacher(string id)
         {
             ServiceResponse<UserDTO, object> userDTO = await _userService.GetUserById(id);
-            if (userDTO != null)
+            if (userDTO.Success)
             {
-                Teacher? teacher = await _teacherRepo.GetByID(id);
+                Teacher? teacher = await _teacherRepo.GetByID(userDTO.Payload.TeacherId);
                 if (teacher != null)
                 {
-                    List<GroupDTO> mappedGroups = teacher.Groups.Select(u => _mapper.Map<Group, GroupDTO>(u)).ToList();
-                    return new ServiceResponse<List<GroupDTO>, object>(true, "", payload: mappedGroups);
+                    if(teacher.Groups != null)
+                    {
+                        List<GroupDTO> mappedGroups = teacher.Groups.Select(u => _mapper.Map<Group, GroupDTO>(u)).ToList();
+                        return new ServiceResponse<List<GroupDTO>, object>(true, "", payload: mappedGroups);
+                    }
+                    return new ServiceResponse<List<GroupDTO>, object>(false, "", new List<GroupDTO>(), new object[] { "the teacher has no groups" });
                 }
             }
             return new ServiceResponse<List<GroupDTO>, object>(false, "", errors: new object[] { "Something went wrong" });
