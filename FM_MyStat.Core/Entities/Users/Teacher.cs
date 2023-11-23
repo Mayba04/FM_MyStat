@@ -17,7 +17,7 @@ namespace FM_MyStat.Core.Entities.Users
         public string? AppUserId { get; set; }
         public AppUser? AppUser { get; set; }
         public IEnumerable<Group> Groups { get; set; }
-        public IEnumerable<Subject> Subjects { get; set; }
+        public IEnumerable<TeacherSubject> TeachersSubjects { get; set; }
         public IEnumerable<Lesson> Lessons { get; set; }
     }
 }

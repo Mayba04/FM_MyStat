@@ -17,5 +17,19 @@ namespace FM_MyStat.Core.Entities.Specifications
                 Query.Where(x => x.Name == name);
             }
         }
+        public class GetById : Specification<Subject>
+        {
+            public GetById(int Id)
+            {
+                Query.Where(x => x.Id == Id);
+            }
+        }
+        public class GetByManyId : Specification<Subject>
+        {
+            public GetByManyId(IEnumerable<int> ids)
+            {
+                Query.Where(x => ids.Contains(x.Id));
+            }
+        }
     }
 }

@@ -31,7 +31,8 @@ namespace FM_MyStat.Infrastructure.Context
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Lesson> Lessons { get; set; }
         public DbSet<LessonMark> LessonMarks { get; set; }
-        
+        public DbSet<TeacherSubject> TeachersSubjects { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -94,15 +95,21 @@ namespace FM_MyStat.Infrastructure.Context
                 .HasOne(lesson => lesson.Subject).WithMany(subject => subject.Lessons)
                 .HasForeignKey(lesson => lesson.SubjectId);
 
-            modelBuilder.Entity<Teacher>()
-                .HasMany(teacher => teacher.Subjects).WithMany(subject => subject.Teachers);
+            modelBuilder.Entity<TeacherSubject>()
+                .HasOne(teachersubject => teachersubject.Teacher).WithMany(teacher => teacher.TeachersSubjects)
+                .HasForeignKey(teachersubject => teachersubject.TeacherId);
 
+            modelBuilder.Entity<TeacherSubject>()
+                .HasOne(teachersubject => teachersubject.Subject).WithMany(subject => subject.TeachersSubjects)
+                .HasForeignKey(teachersubject => teachersubject.SubjectId);
 
             modelBuilder.SeedAdministrator();
             modelBuilder.SeedTeacher();
+            modelBuilder.SeedGroup();
             modelBuilder.SeedStudent();
             modelBuilder.SeedSubject();
             modelBuilder.SeedLesson();
+            modelBuilder.SeedTeacherSubject();
         }
     }
 }
