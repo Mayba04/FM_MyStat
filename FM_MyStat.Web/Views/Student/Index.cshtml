@@ -15,32 +15,18 @@
 
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0">Dashboard</h1>
-                </div><!-- /.col -->
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Dashboard </li>
-                    </ol>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
-    </div>
-
     <div class="container mt-4">
-        <h1>Student Dashboard</h1>
+        <h2>Student Dashboard</h2>
         <hr>
 
-        <!-- Rating -->
         <div class="row">
-            <div class="col-md-6">
+            <!-- Rating -->
+            <div class="col-md-4 mb-4">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-header">
                         <h4 class="card-title">Your Rating</h4>
+                    </div>
+                    <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <p class="card-text mb-1">Your place in the group:</p>
@@ -53,22 +39,22 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- List of Students -->
-        <div class="row mt-4">
-            <div class="col-md-6">
+            <!-- List of Students -->
+            <div class="col-md-4 mb-4">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-header">
                         <h4 class="card-title">Group Rating</h4>
+                    </div>
+                    <div class="card-body">
                         <div class="list-group">
-                            @foreach (var student in Model.RatingList)
+                            @for (int i = 0; i < Model.RatingList.Count; i++)
                             {
+                                var student = Model.RatingList[i];
                                 <a href="#" class="list-group-item list-group-item-action">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div>
-                                            <h5 class="mb-1">@student.FirstName @student.SurName @student.LastName</h5>
-                                            <p class="mb-0">Rating: @student.Rating</p>
+                                            <h5 class="mb-1">@(i+1). @student.FirstName @student.SurName @student.LastName</h5>
                                         </div>
                                         <span class="badge badge-primary badge-pill">@student.Rating ★</span>
                                     </div>
@@ -78,14 +64,17 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row mt-4">
-            <div class="col-md-6">
+
+
+            <!-- Homeworks Info -->
+            <div class="col-md-4 mb-4">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-header">
                         <h4 class="card-title">Homeworks Info</h4>
+                    </div>
+                    <div class="card-body">
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-6">
                                 <div class="card">
                                     <div class="card-body">
                                         <h6 class="card-subtitle mb-2 text-muted">Checked</h6>
@@ -93,7 +82,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-6">
                                 <div class="card">
                                     <div class="card-body">
                                         <h6 class="card-subtitle mb-2 text-muted">Current</h6>
@@ -101,7 +90,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-6">
                                 <div class="card">
                                     <div class="card-body">
                                         <h6 class="card-subtitle mb-2 text-muted">On Inspection</h6>
@@ -109,7 +98,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-6">
                                 <div class="card">
                                     <div class="card-body">
                                         <h6 class="card-subtitle mb-2 text-muted">Overdue</h6>
@@ -122,9 +111,10 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
+
+
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
