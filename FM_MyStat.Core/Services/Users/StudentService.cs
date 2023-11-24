@@ -2,9 +2,11 @@ using AutoMapper;
 using FM_MyStat.Core.DTOs.UsersDTO.Student;
 using FM_MyStat.Core.DTOs.UsersDTO.User;
 using FM_MyStat.Core.Entities;
+using FM_MyStat.Core.Entities.Homeworks;
 using FM_MyStat.Core.Entities.Specifications;
 using FM_MyStat.Core.Entities.Users;
 using FM_MyStat.Core.Interfaces;
+using FM_MyStat.Web.Models.ViewModels.Student;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,19 +20,25 @@ namespace FM_MyStat.Core.Services.Users
         private readonly UserService _userService;
         private readonly IRepository<Student> _studentRepo;
         private readonly IRepository<Group> _groupRepo;
+        private readonly IRepository<Homework> _homeworkRepo;
         private readonly IMapper _mapper;
+        private readonly IRepository<HomeworkDone> _homeworkDoneRepo;
 
         public StudentService(
                 UserService userService,
                 IRepository<Student> StudentRepo,
                 IMapper mapper,
-                IRepository<Group> groupRepo
+                IRepository<Group> groupRepo,
+                IRepository<Homework> homeworkRepo,
+                IRepository<HomeworkDone> homeworkDoneRepo
             )
         {
             this._userService = userService;
             this._studentRepo = StudentRepo;
             this._mapper = mapper;
             this._groupRepo = groupRepo;
+            this._homeworkRepo = homeworkRepo;
+            this._homeworkDoneRepo = homeworkDoneRepo;
         }
         #region SignIn, SignOut
         public async Task<ServiceResponse> LoginStudentAsync(UserLoginDTO model)
@@ -150,6 +158,49 @@ namespace FM_MyStat.Core.Services.Users
         }
         public async Task<ServiceResponse<DeleteUserDTO, object>> GetDeleteUserDtoByIdAsync(string Id) => await this._userService.GetDeleteUserDtoByIdAsync(Id);
 
-        
+        public async Task<ServiceResponse<DashboardStudentInfo, object>> GetDashboardStudentInfo(string Id)
+        {
+            DashboardStudentInfo dashboardStudentInfo = new DashboardStudentInfo();
+            // StudentInfo
+            ServiceResponse<UserDTO, object> userDTO = await _userService.GetUserById(Id);
+            if (!userDTO.Success)
+            {
+                return new ServiceResponse<DashboardStudentInfo, object>(false, "", errors: userDTO.Errors);
+            }
+            StudentDTO StudentInfo = _mapper.Map<UserDTO, StudentDTO>(userDTO.Payload);
+            Student? studentDTO = await _studentRepo.GetByID(userDTO.Payload.StudentId);
+            StudentInfo.Rating = studentDTO.Rating;
+            Group group = await _groupRepo.GetByID(studentDTO.GroupId);
+            StudentInfo.Group = group.Name;
+            dashboardStudentInfo.StudentInfo = StudentInfo;
+            // Group
+            dashboardStudentInfo.Group = group.Name;
+            // RatingList
+            List<Student> usersingroup = (await _studentRepo.GetListBySpec(new StudentSpecification.GetByGroupId(group.Id))).ToList();
+            List<StudentDTO> studentsingroup = usersingroup.Select(u => _mapper.Map<Student, StudentDTO>(u)).ToList();
+            for (int i = 0; i < studentsingroup.Count; i++)
+            {
+                ServiceResponse<UserDTO, object> dtouser = await _userService.GetUserById(usersingroup[i].AppUserId);
+                if (dtouser.Success)
+                {
+                    studentsingroup[i].FirstName = dtouser.Payload.FirstName;
+                    studentsingroup[i].LastName = dtouser.Payload.LastName;
+                    studentsingroup[i].SurName = dtouser.Payload.SurName;
+                }
+            }
+            studentsingroup.Sort((user1, user2) => user1.Rating >= user2.Rating ? 1 : -1);
+            dashboardStudentInfo.RatingList = studentsingroup;
+            // HomeworksAll
+            IEnumerable<Homework> allHomeworks = await _homeworkRepo.GetListBySpec(new HomeworkSpecification.GetByGroupId(group.Id));
+            dashboardStudentInfo.HomeworksAll = allHomeworks.Count();
+            // HomeworksChecked
+            IEnumerable<HomeworkDone> HomeworksChecked = await _homeworkDoneRepo.GetListBySpec(new HomeworkDoneSpecification.GetCheckedByStudentId(studentDTO.Id));
+            dashboardStudentInfo.HomeworksChecked = HomeworksChecked.Count();
+            // HomeworksCurrent
+            dashboardStudentInfo.HomeworksCurrent = 0;
+            // HomeworksOnInspection
+            dashboardStudentInfo.HomeworksOnInspection = 0;
+            return new ServiceResponse<DashboardStudentInfo, object>(true, "", payload: dashboardStudentInfo);
+        }
     }
 }

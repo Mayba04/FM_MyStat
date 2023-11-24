@@ -28,5 +28,12 @@ namespace FM_MyStat.Core.Entities.Specifications
                 Query.Where(a => a.AppUserId == Id);
             }
         }
+        public class GetByGroupId : Specification<Student>
+        {
+            public GetByGroupId(int Id)
+            {
+                Query.Where(a => a.GroupId == Id);
+            }
+        }
     }
 }
