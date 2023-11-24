@@ -19,6 +19,7 @@ namespace FM_MyStat.Core.AutoMappers.Student
             CreateMap<EditStudentDTO, AppUser>().ReverseMap();
             CreateMap<EditStudentDTO, EditUserDTO>().ReverseMap();
             CreateMap<AppUser, EditStudentDTO>().ReverseMap();
+            CreateMap<Entities.Users.Student, StudentDTO>().ReverseMap();
             //CreateMap<CreateStudentDTO, AppUser>().ForMember(dst => dst.UserName, act => act.MapFrom(src => src.Email));
         }
     }

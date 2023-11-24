@@ -12,7 +12,6 @@ namespace FM_MyStat.Core.DTOs.UsersDTO.Teacher
 {
     public class TeacherDTO : UserDTO
     {
-        public int Id { get; set; }
         public string? AppUserId { get; set; }
     }
 }
