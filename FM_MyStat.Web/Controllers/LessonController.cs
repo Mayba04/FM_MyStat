@@ -101,5 +101,40 @@ namespace FM_MyStat.Web.Controllers
             ViewBag.AuthError = validationResult.Errors.FirstOrDefault();
             return View();
         }
+
+        public async Task<IActionResult> Edit(int Id)
+        {
+            await LoadGroups();
+            await LoadSubjects();
+            await LoadTeacher();
+            var result = await _lessonService.Get(Id);
+            if (result != null)
+            {
+                return View(result);
+            }
+            ViewBag.AuthError = "An error occurred";
+            return RedirectToAction(nameof(GetAll));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(EditLessonsDTO model)
+        {
+            var result = await _lessonService.GetByName(model.Name);
+            if (result != null)
+            {
+                ViewBag.AuthError = "Subjects exists.";
+                return View(model);
+            }
+            var validator = new EditLessonValidation();
+            var validationResult = await validator.ValidateAsync(model);
+            if (validationResult.IsValid)
+            {
+                await _lessonService.Update(model);
+                return RedirectToAction(nameof(GetAll));
+            }
+            ViewBag.AuthError = validationResult.Errors.FirstOrDefault();
+            return View(model);
+        }
     }
 }
