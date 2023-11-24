@@ -136,5 +136,23 @@ namespace FM_MyStat.Web.Controllers
             ViewBag.AuthError = validationResult.Errors.FirstOrDefault();
             return View(model);
         }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var groupDto = await _lessonService.Get(id);
+
+            if (groupDto == null)
+            {
+                ViewBag.AuthError = "Lesson not found.";
+                return RedirectToAction(nameof(GetAll));
+            }
+
+            return View(groupDto);
+        }
+        public async Task<IActionResult> DeleteLesson(int Id)
+        {
+            await _lessonService.Delete(Id);
+            return RedirectToAction(nameof(GetAll));
+        }
     }
 }
