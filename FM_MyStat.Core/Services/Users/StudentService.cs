@@ -149,5 +149,7 @@ namespace FM_MyStat.Core.Services.Users
             return new ServiceResponse<EditStudentDTO, object>(response.Success, response.Message, errors:response.Errors);
         }
         public async Task<ServiceResponse<DeleteUserDTO, object>> GetDeleteUserDtoByIdAsync(string Id) => await this._userService.GetDeleteUserDtoByIdAsync(Id);
+
+        
     }
 }
