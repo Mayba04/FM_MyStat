@@ -18,5 +18,12 @@ namespace FM_MyStat.Core.Entities.Specifications
                 Query.Where(x => x.Description == description);
             }
         }
+        public class GetCheckedByStudentId : Specification<HomeworkDone>
+        {
+            public GetCheckedByStudentId(int Id)
+            {
+                Query.Where(x => x.StudentId == Id && x.Mark != null && x.Mark != 0);
+            }
+        }
     }
 }

@@ -18,5 +18,12 @@ namespace FM_MyStat.Core.Entities.Specifications
                 Query.Where(x => x.Title == title);
             }
         }
+        public class GetByGroupId : Specification<Homework>
+        {
+            public GetByGroupId(int Id)
+            {
+                Query.Where(x => x.GroupId == Id);
+            }
+        }
     }
 }
