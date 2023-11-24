@@ -7,6 +7,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using FM_MyStat.Core.Entities;
 using System.Security.Claims;
 using FM_MyStat.Core.DTOs.SubjectsDTO;
+using FM_MyStat.Core.Validation.Subject;
+using FM_MyStat.Core.DTOs.LessonsDTO.Lessons;
+using FM_MyStat.Core.Validation.Lesson;
+using FM_MyStat.Core.Services.Users;
+using FM_MyStat.Core.DTOs.UsersDTO.Teacher;
+using Microsoft.AspNetCore.Identity;
+using FM_MyStat.Core.DTOs.UsersDTO.User;
+using FM_MyStat.Core.Entities.Users;
 
 namespace FM_MyStat.Web.Controllers
 {
@@ -16,11 +24,13 @@ namespace FM_MyStat.Web.Controllers
         private readonly ILessonService _lessonService;
         private readonly IGroupService _groupService;
         private readonly ISubjectService _subjectService;
-        public LessonController(ILessonService lessonService, IGroupService groupService, ISubjectService subjectService)
+        private readonly TeacherService _teacherService;
+        public LessonController(ILessonService lessonService, IGroupService groupService, ISubjectService subjectService, TeacherService treerService)
         {
             this._lessonService = lessonService;
             _groupService = groupService;
             _subjectService = subjectService;
+            _teacherService = treerService;
         }
         public IActionResult Index()
         {
@@ -45,6 +55,13 @@ namespace FM_MyStat.Web.Controllers
               );
         }
 
+        private async Task LoadTeacher()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            ServiceResponse<TeacherDTO, object> result = await _teacherService.GetTeacherByAppUserIdAsync(userId);
+            @ViewBag.IdTeacher = result.Payload.Id;
+        }
+
         public async Task<IActionResult> GetAll()
         {
             var result = await _lessonService.GetAll();
@@ -55,6 +72,33 @@ namespace FM_MyStat.Web.Controllers
         {
             await LoadGroups();
             await LoadSubjects();
+            await LoadTeacher();
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(CreateLessonsDTO model)
+        {
+            var validator = new CreateLessonValidation();
+            var validationResult = await validator.ValidateAsync(model);
+            if (validationResult.IsValid)
+            {
+                var lessonTask = _lessonService.GetAll();
+                List<LessonDTO> lesson = await lessonTask;
+                bool containsSubject = lesson.Any(cat => cat.Name == model.Name 
+                && cat.Description == model.Description 
+                && cat.GroupId == model.GroupId
+                && cat.SubjectId == model.SubjectId);
+                if (containsSubject)
+                {
+                    ViewBag.AuthError = "Such a lesson already exists";
+                    return View();
+                }
+                await _lessonService.Create(model);
+                return RedirectToAction(nameof(GetAll));
+            }
+            ViewBag.AuthError = validationResult.Errors.FirstOrDefault();
             return View();
         }
     }
