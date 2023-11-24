@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using FM_MyStat.Core.Entities.Homeworks;
 using FM_MyStat.Core.DTOs.HomeworksDTO.Homework;
-
 namespace FM_MyStat.Core.AutoMappers
 {
     public class AutoMapperHomework : Profile
@@ -16,6 +15,9 @@ namespace FM_MyStat.Core.AutoMappers
         public AutoMapperHomework()
         {
             CreateMap<Homework, HomeworkDTO>().ReverseMap();
+            CreateMap<CreateHomeworkDTO, Homework>().ReverseMap();
+            CreateMap<DeleteHomeworkDTO, Homework>().ReverseMap();
+            CreateMap<EditHomeworkDTO, Homework>().ReverseMap();
         }
     }
 }

@@ -1,5 +1,5 @@
 @{
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
 }
 @using FM_MyStat.Core.DTOs.HomeworksDTO.Homework;
 @model CreateHomeworkDTO
@@ -56,18 +56,24 @@
                                 <form method="post" asp-action="Create">
                                     <div class="card-body">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Title</label>
-                                            <input type="text" name="title" class="form-control" id="exampleInputEmail1" placeholder="Enter Title">
+                                            <label for="title">Title</label>
+                                            <input type="text" name="title" class="form-control" id="title" placeholder="Enter Title">
                                         </div>
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Description</label>
-                                            <input type="text" name="description" class="form-control" id="exampleInputEmail1" placeholder="Enter Description">
+                                            <label for="description">Description</label>
+                                            <input type="text" name="description" class="form-control" id="description" placeholder="Enter Description">
                                         </div>
                                         <div class="mb-3">
                                             <div class="form-group">
                                                 <label>Group</label>
                                                 @Html.DropDownList("GroupId", (SelectList)ViewBag.GroupList, "-- Select Group --",  htmlAttributes: new { @class = "form-control" })
                                             </div>
+                                        </div>
+                                        </div>
+                                            <div class="mb-3">
+                                                <div class="form-group">
+                                            <label>Lesson ID</label>
+                                            @Html.DropDownList("LessonId", (SelectList)ViewBag.LessonList, "-- Select Lesson --",  htmlAttributes: new { @class = "form-control" })
                                         </div>
                                     </div>
                                     <!-- /.card-body -->

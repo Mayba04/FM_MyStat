@@ -1,4 +1,5 @@
-﻿using FM_MyStat.Core.DTOs.LessonsDTO.Lessons;
+﻿using FM_MyStat.Core.DTOs.GrouopsDTO;
+using FM_MyStat.Core.DTOs.LessonsDTO.Lessons;
 using FM_MyStat.Core.DTOs.UsersDTO.Teacher;
 using FM_MyStat.Core.Services;
 using System;
@@ -18,5 +19,6 @@ namespace FM_MyStat.Core.Interfaces
         Task Create(CreateLessonsDTO model);
         Task Update(EditLessonsDTO model);
         Task Delete(int id);
+        Task<ServiceResponse<List<LessonDTO>, object>> GetLessonDTOByTeacher(string id);
     }
 }
