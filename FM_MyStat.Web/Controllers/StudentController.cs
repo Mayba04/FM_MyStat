@@ -8,10 +8,12 @@ using FM_MyStat.Core.Interfaces;
 using FM_MyStat.Core.Services;
 using FM_MyStat.Core.Services.Users;
 using FM_MyStat.Core.Validation.User;
+using FM_MyStat.Web.Models.ViewModels.Student;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 
 namespace FM_MyStat.Web.Controllers
 {
@@ -25,9 +27,11 @@ namespace FM_MyStat.Web.Controllers
             this._studentService = studentService;
             this._groupService = groupService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var userId = ((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).FirstOrDefault();
+            ServiceResponse<DashboardStudentInfo, object> response = await _studentService.GetDashboardStudentInfo(userId);
+            return View(response.Payload);
         }
 
         #region Log out page

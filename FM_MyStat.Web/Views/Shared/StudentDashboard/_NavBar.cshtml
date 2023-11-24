@@ -6,7 +6,7 @@
 
 @{
     var user = await UserManager.GetUserAsync(User);
-    var dashboardInfo = new DashboardStudentInfo();  // МЕТОД ДОБАВАТИ СЄРОМУ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //var dashboardInfo = new DashboardStudentInfo();  // МЕТОД ДОБАВАТИ СЄРОМУ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 }
 <!-- Navbar -->
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -21,7 +21,7 @@
     </ul>
 
     <!-- Right navbar links -->
-    <ul class="navbar-nav ml-auto">
+    @* <ul class="navbar-nav ml-auto">
         <li class="nav-item ml-2">
             <span class="nav-link">Welcome, @dashboardInfo.StudentInfo.FirstName @dashboardInfo.StudentInfo.SurName @dashboardInfo.StudentInfo.LastName</span>
         </li>
@@ -37,5 +37,5 @@
                 <button class="btn btn-primary" type="submit">Log out</button>
             </form>
         </li>
-    </ul>
+    </ul> *@
 </nav>
