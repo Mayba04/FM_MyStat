@@ -12,7 +12,7 @@ namespace FM_MyStat.Web.Models.ViewModels.Student
         public int HomeworksChecked { get; set; } // перевірені
         public int HomeworksCurrent { get; set; } // поточні
         public int HomeworksOnInspection { get; set; } //  на перевірці
-        public int HomeworksOverdue { get; set; } //  протерміновано
+        public int HomeworksOverdue { get; set; } //  протерміновано    
         public List<StudentDTO> RatingList { get; set; }
     }
 }
