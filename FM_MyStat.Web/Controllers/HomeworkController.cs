@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using FM_MyStat.Core.DTOs.GrouopsDTO;
 using FM_MyStat.Core.DTOs.HomeworksDTO.Homework;
+using FM_MyStat.Core.DTOs.LessonsDTO.Lessons;
 using FM_MyStat.Core.Interfaces;
 using FM_MyStat.Core.Services;
 using FM_MyStat.Core.Services.LessonServices;
@@ -8,15 +9,21 @@ using FM_MyStat.Core.Validation.Group;
 using FM_MyStat.Core.Validation.Homework;
 using FM_MyStat.Core.Validation.Subject;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 
 namespace FM_MyStat.Web.Controllers
 {
     public class HomeworkController : Controller
     {
         private readonly IHomeworkService _homeworkService;
-        public HomeworkController(IHomeworkService homeworkService)
+        private readonly IGroupService _groupService;
+        private readonly ILessonService _lessonService;
+        public HomeworkController(IHomeworkService homeworkService, IGroupService groupService, ILessonService lessonService)
         {
             _homeworkService = homeworkService;
+            _groupService = groupService;
+            _lessonService = lessonService;
         }
 
         public IActionResult Index()
@@ -29,8 +36,10 @@ namespace FM_MyStat.Web.Controllers
             return View(await _homeworkService.GetAll());
         }   
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            await LoadGroups();
+            await LoadLessons();
             return View();
         }
         [HttpPost]
@@ -58,24 +67,20 @@ namespace FM_MyStat.Web.Controllers
 
         public async Task<IActionResult> Update(int id)
         {
-            var result = await _homeworkService.Get(id);
-            if (result != null)
+            await LoadGroups();
+            await LoadLessons();
+            var result = await _homeworkService.GetEditHomeworkDTO(id);
+            if (result.Success)
             {
-                return View(result);
+                return View(result.Payload);
             }
-            ViewBag.AuthError = "An error occurred";
+            ViewBag.AuthError = result.Errors.FirstOrDefault();
             return RedirectToAction(nameof(GetAll));
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update(EditHomeworkDTO model)
         {
-            var result = await _homeworkService.GetByName(model.Title);
-            if (result != null)
-            {
-                ViewBag.AuthError = "Homework exists.";
-                return View(model);
-            }
             var validator = new EditHomeworkValidation();
             var validationResult = await validator.ValidateAsync(model);
             if (validationResult.IsValid)
@@ -103,6 +108,23 @@ namespace FM_MyStat.Web.Controllers
         {
             await _homeworkService.Delete(Id);
             return RedirectToAction(nameof(GetAll));
+        }
+        private async Task LoadGroups()
+        {
+            var userId = ((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).FirstOrDefault();
+            ServiceResponse<List<GroupDTO>, object> result = await _groupService.GetGroupDTOByTeacher(userId);
+            @ViewBag.GroupList = new SelectList((System.Collections.IEnumerable)result.Payload,
+                nameof(GroupDTO.Id), nameof(GroupDTO.Name)
+              );
+        }
+
+        private async Task LoadLessons()
+        {
+            var userId = ((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).FirstOrDefault();
+            ServiceResponse<List<LessonDTO>, object> result = await _lessonService.GetLessonDTOByTeacher(userId);
+            @ViewBag.LessonList = new SelectList((System.Collections.IEnumerable)result.Payload,
+                nameof(LessonDTO.Id), nameof(LessonDTO.Name)
+              );
         }
     }
 }

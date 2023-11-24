@@ -1,4 +1,5 @@
-﻿using FM_MyStat.Core.DTOs.HomeworksDTO.Homework;
+﻿using FM_MyStat.Core.DTOs.GrouopsDTO;
+using FM_MyStat.Core.DTOs.HomeworksDTO.Homework;
 using FM_MyStat.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -17,5 +18,6 @@ namespace FM_MyStat.Core.Interfaces
         Task Create(CreateHomeworkDTO model);
         Task Update(EditHomeworkDTO model);
         Task Delete(int id);
+        Task<ServiceResponse<EditHomeworkDTO, object>> GetEditHomeworkDTO(int id);
     }
 }

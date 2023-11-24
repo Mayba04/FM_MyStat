@@ -1,8 +1,8 @@
 ﻿@{
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
 }
 @using FM_MyStat.Core.DTOs.HomeworksDTO.Homework;
-@model DeleteHomeworkDTO;
+@model HomeworkDTO;
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -43,12 +43,7 @@
                                     <span class="text-danger">@ViewBag.DeleteHomeworkError</span>
                                 }
                                 <h5 class="mb-4">Do you really wants to delete homework @Model.Title?</h5>
-                                <form method="post" asp-action="Delete">
-                                    <div class="card-footer">
-                                        <button type="submit" style="width: 25%;" class="btn btn-block btn-danger btn-sm">Delete</button>
-                                    </div>
-                                </form>
-
+                                <a asp-controller="Homework" asp-action="DeleteHomework" asp-route-id="@Model.Id" style="width: 25%;" class="btn btn-block btn-danger btn-sm">Delete</a>
                             </div>
                         </div>
                         <!-- /.card-body -->

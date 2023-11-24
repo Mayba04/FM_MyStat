@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FM_MyStat.Core.DTOs.GrouopsDTO;
 using FM_MyStat.Core.DTOs.HomeworksDTO;
 using FM_MyStat.Core.DTOs.LessonsDTO.Lessons;
 using FM_MyStat.Core.DTOs.UsersDTO.Student;
@@ -123,10 +124,29 @@ namespace FM_MyStat.Core.Services.LessonServices
             return null;
         }
 
+        public async Task<ServiceResponse<List<LessonDTO>, object>> GetLessonDTOByTeacher(string id)
+        {
+            ServiceResponse<UserDTO, object> userDTO = await _userService.GetUserById(id);
+            if (userDTO.Success)
+            {
+                Teacher? teacher = await _teacherRepo.GetByID(userDTO.Payload.TeacherId);
+                if (teacher == null)
+                {
+                    return new ServiceResponse<List<LessonDTO>, object>(false, "", errors: new object[] { "Lesson not found" });
+                }
+                IEnumerable<Lesson> lessons = await _lessonsRepo.GetListBySpec(new LessonsSpecification.GetByteacherId(teacher.Id));
+                List<LessonDTO> mappedLessons = lessons.Select(u => _mapper.Map<Lesson, LessonDTO>(u)).ToList();
+                return new ServiceResponse<List<LessonDTO>, object>(true, "", payload: mappedLessons);
+            }
+            return new ServiceResponse<List<LessonDTO>, object>(false, "", errors: new object[] { "Something went wrong" });
+        }
+
         public async Task Update(EditLessonsDTO model)
         {
             await _lessonsRepo.Update(_mapper.Map<Lesson>(model));
             await _lessonsRepo.Save();
         }
+
+
     }
 }
