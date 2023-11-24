@@ -114,5 +114,20 @@ namespace FM_MyStat.Core.Services.Users
             List<GroupDTO> mappedGroups = teacher.Groups.Select(u => _mapper.Map<Group, GroupDTO>(u)).ToList();
             return new ServiceResponse<List<GroupDTO>, object>(true, "", payload: mappedGroups);
         }
+
+        public async Task<ServiceResponse<TeacherDTO, object>> GetTeacherByAppUserIdAsync(string appUserId)
+        {
+            Teacher teacher = await _teacherRepo.GetItemBySpec(new TeacherSpecification.GetByAppUserId(appUserId));
+
+            if (teacher != null)
+            {
+                TeacherDTO mappedTeacher = _mapper.Map<Teacher, TeacherDTO>(teacher);
+
+                return new ServiceResponse<TeacherDTO, object>(true, "", payload: mappedTeacher);
+            }
+            return new ServiceResponse<TeacherDTO, object>(false, "", errors: new object[] { "Teacher not found" });
+        }
+
+
     }
 }

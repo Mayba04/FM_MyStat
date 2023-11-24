@@ -14,6 +14,7 @@ namespace FM_MyStat.Core.AutoMappers.Users
         public AutoMapperTeacherProfile()
         {
             CreateMap<TeacherDTO, AppUser>().ReverseMap();
+            CreateMap<Teacher, TeacherDTO>().ReverseMap();
             CreateMap<EditTeacherDTO, AppUser>().ReverseMap();
             CreateMap<AppUser, EditTeacherDTO>().ReverseMap();
             CreateMap<CreateTeacherDTO, AppUser>().ForMember(dst => dst.UserName, act => act.MapFrom(src => src.Email));

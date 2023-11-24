@@ -97,7 +97,7 @@ namespace FM_MyStat.Web.Controllers
             var result = await _subjectService.GetByName(model.Name);
             if (result!=null)
             {
-                ViewBag.AuthError = "Subjects exists.";
+                ViewBag.AuthError = "Lesson exists.";
                 return View(model);
             }
             var validator = new EditSubjectValidation();
