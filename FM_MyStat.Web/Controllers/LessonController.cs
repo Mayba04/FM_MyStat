@@ -25,12 +25,14 @@ namespace FM_MyStat.Web.Controllers
         private readonly IGroupService _groupService;
         private readonly ISubjectService _subjectService;
         private readonly TeacherService _teacherService;
-        public LessonController(ILessonService lessonService, IGroupService groupService, ISubjectService subjectService, TeacherService treerService)
+        private readonly UserService _userService;
+        public LessonController(ILessonService lessonService, IGroupService groupService, ISubjectService subjectService, TeacherService treerService, UserService userService)
         {
             this._lessonService = lessonService;
             _groupService = groupService;
             _subjectService = subjectService;
             _teacherService = treerService;
+            _userService = userService;
         }
         public IActionResult Index()
         {
@@ -39,8 +41,8 @@ namespace FM_MyStat.Web.Controllers
 
         private async Task LoadGroups()
         {
-            var userId = ((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).FirstOrDefault();
-            ServiceResponse<List<GroupDTO>, object> result = await _groupService.GetGroupDTOByTeacher(userId);
+            ServiceResponse<UserDTO, object> response = await _userService.GetLoggedUser(HttpContext.User);
+            ServiceResponse<List<GroupDTO>, object> result = await _groupService.GetGroupDTOByTeacher(response.Payload.Id);
             @ViewBag.GroupList = new SelectList((System.Collections.IEnumerable)result.Payload,
                 nameof(GroupDTO.Id), nameof(GroupDTO.Name)
               );
@@ -48,8 +50,8 @@ namespace FM_MyStat.Web.Controllers
 
         private async Task LoadSubjects()
         {
-            var userId = ((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).FirstOrDefault();
-            ServiceResponse<List<SubjectDTO>, object> result = await _subjectService.GetSubjectDTOByTeacher(userId);
+            ServiceResponse<UserDTO, object> response = await _userService.GetLoggedUser(HttpContext.User);
+            ServiceResponse<List<SubjectDTO>, object> result = await _subjectService.GetSubjectDTOByTeacher(response.Payload.Id);
             @ViewBag.SubjectList = new SelectList((System.Collections.IEnumerable)result.Payload,
                 nameof(Subject.Id), nameof(Subject.Name)
               );

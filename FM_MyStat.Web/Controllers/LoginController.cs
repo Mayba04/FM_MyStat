@@ -30,16 +30,16 @@ namespace FM_MyStat.Web.Controllers
             this._userService = userService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             bool userAuthenticated = HttpContext.User.Identity.IsAuthenticated;
             if (userAuthenticated)
             {
-                string? role = ((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).FirstOrDefault();
-                string controller = RolesToControllers.GetValueOrDefault(role, null);
+                ServiceResponse<UserDTO, object> response = await _userService.GetLoggedUser(HttpContext.User);
+                string controller = RolesToControllers.GetValueOrDefault(response.Payload.Role, null);
                 if (controller != null)
                 {
-                    return RedirectToAction("Index", controller);   
+                    return RedirectToAction("Index", controller);
                 }
             }
             return View(nameof(Login));
@@ -135,7 +135,7 @@ namespace FM_MyStat.Web.Controllers
                 }
                 ViewBag.AuthError = result.Message;
             }
-            ViewBag.AuthError = validationresult.Errors[0];
+            ViewBag.AuthError = validationresult.Errors.FirstOrDefault();
             return View();
         }
     }
