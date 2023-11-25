@@ -14,7 +14,7 @@ namespace FM_MyStat.Core.Interfaces
         Task<HomeworkDTO?> Get(int id);
         Task<ServiceResponse> GetByName(HomeworkDTO model);
         Task<HomeworkDTO> GetByName(string NameHomework);
-        Task Create(CreateHomeworkDTO model);
+        Task Create(HomeworkDTO model);
         Task Update(EditHomeworkDTO model);
         Task Delete(int id);
     }

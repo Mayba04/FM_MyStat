@@ -7,7 +7,7 @@
 
 @{
     ViewData["Title"] = "Homework";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
 }
 
 <div class="content-wrapper">
@@ -44,6 +44,7 @@
                                         <th>Description</th>
                                         <th>Group</th>
                                         <th>Lesson</th>
+                                        <th>PathFile</th>
                                         @if (@User.IsInRole("Administrator"))
                                         {
                                             <th>Edit</th>
@@ -58,8 +59,9 @@
                                             <td>@item.Id</td>
                                             <td>@item.Title</td>
                                             <td>@item.Description</td>
-                                            <td>@item.Group</td>
-                                            <td>@item.Lesson</td>
+                                            <td>@item.GroupId</td>
+                                            <td>@item.LessonId</td>
+                                            <td>@item.PathFile</td>
                                             @if (@User.IsInRole("Administrator"))
                                             {
                                                 <td><a asp-controller="Homework" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-block btn-warning btn-sm">Edit</a></td>

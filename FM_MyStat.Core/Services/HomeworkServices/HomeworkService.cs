@@ -3,6 +3,9 @@ using FM_MyStat.Core.DTOs.HomeworksDTO.Homework;
 using FM_MyStat.Core.Entities.Homeworks;
 using FM_MyStat.Core.Entities.Specifications;
 using FM_MyStat.Core.Interfaces;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,18 +18,45 @@ namespace FM_MyStat.Core.Services.HomeworkServices
     {
         private readonly IMapper _mapper;
         private readonly IRepository<Homework> _homeworkRepo;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IConfiguration _configuration;
 
-        public HomeworkService(IMapper mapper, IRepository<Homework> homeRepo)
+        public HomeworkService(IMapper mapper, IRepository<Homework> homeRepo, IWebHostEnvironment webHostEnvironment, IConfiguration configuration)
         {
             _homeworkRepo = homeRepo;
             _mapper = mapper;
+            _webHostEnvironment = webHostEnvironment;
+            _configuration = configuration;
         }
 
-        public async Task Create(CreateHomeworkDTO model)
+        public async Task Create(HomeworkDTO model)
         {
-            await _homeworkRepo.Insert(_mapper.Map<Homework>(model));
+            if (model.File.Count > 0)
+            {
+                string wevRootPath = _webHostEnvironment.WebRootPath;
+                string uploadt = wevRootPath + _configuration.GetValue<string>("FileSettings:FilePath");
+                var files = model.File;
+                var fileName = Guid.NewGuid().ToString();
+                string extansions = Path.GetExtension(files[0].FileName);
+                using (var fileStream = new FileStream(Path.Combine(uploadt, fileName + extansions), FileMode.Create))
+                {
+                    files[0].CopyTo(fileStream);
+                }
+                model.PathFile = fileName + extansions;
+            }
+            else
+            {
+                model.PathFile = "Default.txt";
+            }
+           
+            var homeworkEntity = _mapper.Map<Homework>(model);
+            homeworkEntity.Lesson = null;
+            homeworkEntity.Group = null;
+            homeworkEntity.HomeworksDone = null;
+            await _homeworkRepo.Insert(homeworkEntity);
             await _homeworkRepo.Save();
         }
+
 
         public async Task Delete(int id)
         {

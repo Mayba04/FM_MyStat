@@ -18,5 +18,6 @@ namespace FM_MyStat.Core.Interfaces
         Task Create(CreateLessonsDTO model);
         Task Update(EditLessonsDTO model);
         Task Delete(int id);
+        Task<ServiceResponse<List<LessonDTO>, object>> GetLessonDTOByTeacher(string id);
     }
 }

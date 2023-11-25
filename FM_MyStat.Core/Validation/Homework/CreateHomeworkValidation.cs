@@ -8,11 +8,14 @@ using System.Threading.Tasks;
 
 namespace FM_MyStat.Core.Validation.Homework
 {
-    public class CreateHomeworkValidation : AbstractValidator<CreateHomeworkDTO>
+    public class CreateHomeworkValidation : AbstractValidator<HomeworkDTO>
     {
         public CreateHomeworkValidation() 
         {
-            RuleFor(r => r.Title).MinimumLength(2).NotEmpty().MaximumLength(32);
+            RuleFor(r => r.Title).NotEmpty().MaximumLength(64).MinimumLength(2);
+            RuleFor(r => r.Description).NotEmpty().MaximumLength(64).MinimumLength(2);
+            RuleFor(r => r.LessonId).NotEmpty();
+            RuleFor(r => r.GroupId).NotEmpty();
         }
     }
 }
