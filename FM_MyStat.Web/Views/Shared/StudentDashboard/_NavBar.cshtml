@@ -38,4 +38,15 @@
             </form>
         </li>
     </ul> *@
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+            <a asp-controller="Student" asp-action="Profile" asp-route-id="@user.Id" class="btn btn-primary">Profile</a>
+        </li>
+        <li class="nav-item ml-2">
+            <form method="post" asp-controller="Student" asp-action="LogOut">
+                <button class="btn btn-primary" type="submit">Log out</button>
+            </form>
+        </li>
+    </ul>
 </nav>
