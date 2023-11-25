@@ -7,15 +7,28 @@
 <link rel="stylesheet" href="~/dashboard/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 <link rel="stylesheet" href="~/dashboard/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 
-@{
-    ViewData["Title"] = "Homework";
-    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
-}
 
 @{
     var user = await UserManager.GetUserAsync(User);
     //var email = await UserManager.GetEmailAsync(user);
 }
+
+@if (User.IsInRole("Administrator"))
+{
+    ViewData["Title"] = "Homework";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+else if (User.IsInRole("Teacher"))
+{
+    ViewData["Title"] = "Homework";
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+}
+else
+{
+    ViewData["Title"] = "Homework";
+    Layout = "~/Views/Shared/_DefaultLayout.cshtml";
+}
+
 
 <div class="content-wrapper">
     <section class="content-header">
@@ -51,6 +64,7 @@
                                         <th>Description</th>
                                         <th>Group</th>
                                         <th>Lesson</th>
+                                        <th>PathFile</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -62,6 +76,7 @@
                                             <td>@item.Description</td>
                                             <td>@item.Group</td>
                                             <td>@item.Lesson</td>
+                                            <td>@item.PathFile</td>
                                             <td><a asp-controller="Homework" asp-action="Update" asp-route-id="@item.Id" class="btn btn-block btn-warning btn-sm">Edit</a></td>
                                             <td><a asp-controller="Homework" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-block btn-danger btn-sm">Delete</a></td>
                                         </tr>
