@@ -1,12 +1,14 @@
 ﻿@using FM_MyStat.Core.Entities.Users;
+@using FM_MyStat.Core.Services.Users;
 @using FM_MyStat.Web.Models.ViewModels.Student;
 @using Microsoft.AspNetCore.Identity;
 
 @inject UserManager<AppUser> UserManager
+@inject StudentService StudentService;
 
 @{
     var user = await UserManager.GetUserAsync(User);
-    //var dashboardInfo = new DashboardStudentInfo();  // МЕТОД ДОБАВАТИ СЄРОМУ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    var dashboardInfo = (await StudentService.GetDashboardStudentInfo(user.Id)).Payload;
 }
 <!-- Navbar -->
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -21,7 +23,7 @@
     </ul>
 
     <!-- Right navbar links -->
-    @* <ul class="navbar-nav ml-auto">
+    <ul class="navbar-nav ml-auto">
         <li class="nav-item ml-2">
             <span class="nav-link">Welcome, @dashboardInfo.StudentInfo.FirstName @dashboardInfo.StudentInfo.SurName @dashboardInfo.StudentInfo.LastName</span>
         </li>
@@ -31,15 +33,6 @@
         <li class="nav-item ml-2">
             <span class="nav-link">Points: @dashboardInfo.StudentInfo.Rating ★</span>
         </li>
-
-        <li class="nav-item ml-2">
-            <form method="post" asp-controller="Teacher" asp-action="LogOut">
-                <button class="btn btn-primary" type="submit">Log out</button>
-            </form>
-        </li>
-    </ul> *@
-    <!-- Right navbar links -->
-    <ul class="navbar-nav ml-auto">
         <li class="nav-item">
             <a asp-controller="Student" asp-action="Profile" asp-route-id="@user.Id" class="btn btn-primary">Profile</a>
         </li>
