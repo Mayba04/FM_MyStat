@@ -3,6 +3,7 @@ using FM_MyStat.Core.DTOs.GrouopsDTO;
 using FM_MyStat.Core.DTOs.UsersDTO.Admin;
 using FM_MyStat.Core.DTOs.UsersDTO.User;
 using FM_MyStat.Core.Entities.Users;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.AspNetCore.WebUtilities;
@@ -325,5 +326,13 @@ namespace FM_MyStat.Core.Services.Users
             return new ServiceResponse(false, "Something went wrong", errors: res.Errors.Select(e => e.Description));
         }
         #endregion
+
+        public async Task<ServiceResponse<UserDTO, object>> GetLoggedUser(System.Security.Claims.ClaimsPrincipal claims)
+        {
+            AppUser user = await _userManager.GetUserAsync(claims);
+            UserDTO mappedUser = _mapper.Map<AppUser, UserDTO>(user);
+            mappedUser.Role = string.Join(", ", await _userManager.GetRolesAsync(user));
+            return new ServiceResponse<UserDTO, object>(true, "", payload: mappedUser);
+        }
     }
 }
