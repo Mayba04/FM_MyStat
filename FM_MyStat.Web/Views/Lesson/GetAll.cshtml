@@ -59,6 +59,9 @@
                                         <th>Ends</th>
                                         <th>Group</th>
                                         <th>Subject</th>
+                                        <th>Homework</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -71,6 +74,14 @@
                                             <td>@item.End</td>
                                             <td>@item.Group</td>
                                             <td>@item.Subject</td>
+                                            @if (item.HomeworkId == null)
+                                            {
+                                                <td><a asp-controller="Homework" asp-action="Create" asp-route-LessonId="@item.Id" class="btn btn-block btn-warning btn-sm">Add</a></td>
+                                            }
+                                            else
+                                            {
+                                                <td><a asp-controller="Homework" asp-action="Update" asp-route-Id="@item.HomeworkId" class="btn btn-block btn-warning btn-sm">Edit</a></td>
+                                            }
                                             <td><a asp-controller="Lesson" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-block btn-warning btn-sm">Edit</a></td>
                                             <td><a asp-controller="Lesson" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-block btn-danger btn-sm">Delete</a></td>
                                         </tr>

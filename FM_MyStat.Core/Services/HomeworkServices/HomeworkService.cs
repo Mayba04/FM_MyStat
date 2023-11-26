@@ -58,13 +58,15 @@ namespace FM_MyStat.Core.Services.HomeworkServices
             {
                 model.PathFile = "Default.txt";
             }
-
-            var homeworkEntity = _mapper.Map<Homework>(model);
-            homeworkEntity.Lesson = null;
-            homeworkEntity.Group = null;
-            homeworkEntity.HomeworksDone = null;
-            await _homeworkRepo.Insert(homeworkEntity);
+            Homework addedHomework = _mapper.Map<CreateHomeworkDTO, Homework>(model);
+            Lesson lesson = await _lessonRepo.GetByID(model.LessonId);
+            Group group = await _groupRepo.GetByID(lesson.GroupId);
+            addedHomework.GroupId = group.Id;
+            await _homeworkRepo.Insert(addedHomework);
             await _homeworkRepo.Save();
+            lesson.HomeworkId = addedHomework.Id;
+            await _lessonRepo.Update(lesson);
+            await _lessonRepo.Save();
         }
 
         public async Task Delete(int id)

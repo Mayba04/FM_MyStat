@@ -34,12 +34,11 @@ namespace FM_MyStat.Web.Controllers
         public async Task<IActionResult> GetAll()
         {
             return View(await _homeworkService.GetAll());
-        }   
+        }
 
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(int? LessonId)
         {
-            await LoadGroups();
-            await LoadLessons();
+            @ViewBag.LessonId = LessonId;
             return View();
         }
         [HttpPost]
@@ -67,8 +66,6 @@ namespace FM_MyStat.Web.Controllers
 
         public async Task<IActionResult> Update(int id)
         {
-            await LoadGroups();
-            await LoadLessons();
             var result = await _homeworkService.GetEditHomeworkDTO(id);
             if (result.Success)
             {
@@ -108,23 +105,6 @@ namespace FM_MyStat.Web.Controllers
         {
             await _homeworkService.Delete(Id);
             return RedirectToAction(nameof(GetAll));
-        }
-        private async Task LoadGroups()
-        {
-            var userId = ((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).FirstOrDefault();
-            ServiceResponse<List<GroupDTO>, object> result = await _groupService.GetGroupDTOByTeacher(userId);
-            @ViewBag.GroupList = new SelectList((System.Collections.IEnumerable)result.Payload,
-                nameof(GroupDTO.Id), nameof(GroupDTO.Name)
-              );
-        }
-
-        private async Task LoadLessons()
-        {
-            var userId = ((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).FirstOrDefault();
-            ServiceResponse<List<LessonDTO>, object> result = await _lessonService.GetLessonDTOByTeacher(userId);
-            @ViewBag.LessonList = new SelectList((System.Collections.IEnumerable)result.Payload,
-                nameof(LessonDTO.Id), nameof(LessonDTO.Name)
-              );
         }
     }
 }

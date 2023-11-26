@@ -67,18 +67,6 @@
                                             <label for="description">Description</label>
                                             <input type="text" name="description" class="form-control" id="description" placeholder="Enter Description">
                                         </div>
-                                        <div class="mb-3">
-                                            <div class="form-group">
-                                                <label>Group</label>
-                                                @Html.DropDownList("GroupId", (SelectList)ViewBag.GroupList, "-- Select Group --",  htmlAttributes: new { @class = "form-control" })
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <div class="form-group">
-                                            <label>Lesson ID</label>
-                                            @Html.DropDownList("LessonId", (SelectList)ViewBag.LessonList, "-- Select Lesson --",  htmlAttributes: new { @class = "form-control" })
-                                        </div>
                                     </div>
                                     <!-- /.card-body -->
                                     <div class="card-footer">
