@@ -96,7 +96,7 @@ namespace FM_MyStat.Core.Services
                     return new ServiceResponse<List<SubjectDTO>, object>(false, "", errors: new object[] { "Teacher not found" });
                 }
                 IEnumerable<TeacherSubject> TeachersSubjects = await _teachersubjectRepo.GetListBySpec(new TeacherSubjectSpecification.GetByTeacherId(teacher.Id));
-                IEnumerable<Subject> subjects = await _subjectRepo.GetListBySpec(new SubjectSpecification.GetByManyId(TeachersSubjects.Select(s => s.Id)));
+                IEnumerable<Subject> subjects = await _subjectRepo.GetListBySpec(new SubjectSpecification.GetByManyId(TeachersSubjects.Select(s => s.SubjectId)));
                 List<SubjectDTO> mappedSubjects = subjects.Select(u => _mapper.Map<Subject, SubjectDTO>(u)).ToList();
                 return new ServiceResponse<List<SubjectDTO>, object>(true, "", payload: mappedSubjects);
             }

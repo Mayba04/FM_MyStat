@@ -1,7 +1,9 @@
 ﻿using FluentValidation.Results;
+using FM_MyStat.Core.DTOs.SubjectsDTO;
 using FM_MyStat.Core.DTOs.UsersDTO.Admin;
 using FM_MyStat.Core.DTOs.UsersDTO.Teacher;
 using FM_MyStat.Core.DTOs.UsersDTO.User;
+using FM_MyStat.Core.Entities.Users;
 using FM_MyStat.Core.Services;
 using FM_MyStat.Core.Services.Users;
 using FM_MyStat.Core.Validation.User;
@@ -186,7 +188,27 @@ namespace FM_MyStat.Web.Controllers
             ViewBag.AuthError = validationResult.Errors.FirstOrDefault();
             return View(nameof(Edit));
         }
-        
+
+        #endregion
+
+        #region Update subjects
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> EditSubjects(int Id)
+        {
+            IEnumerable<SubjectUpdateDTO> subjects = await _teacherService.GetSubjectsForTeacher(Id);
+            TeacherEditSubjectsViewModel viewModel = new TeacherEditSubjectsViewModel
+            {
+                TeacherId = Id,
+                Subjects = subjects.ToList()
+            };
+            return View(viewModel);
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditSubjects(TeacherEditSubjectsViewModel viewModel)
+        {
+            await _teacherService.UpdateTeacherSubjects(viewModel.TeacherId, viewModel.Subjects);
+            return RedirectToAction(nameof(GetAll));
+        }
         #endregion
     }
 }

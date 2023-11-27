@@ -1,5 +1,6 @@
-using AutoMapper;
+﻿using AutoMapper;
 using FM_MyStat.Core.DTOs.GrouopsDTO;
+using FM_MyStat.Core.DTOs.SubjectsDTO;
 using FM_MyStat.Core.DTOs.UsersDTO.Admin;
 using FM_MyStat.Core.DTOs.UsersDTO.Teacher;
 using FM_MyStat.Core.DTOs.UsersDTO.User;
@@ -19,17 +20,23 @@ namespace FM_MyStat.Core.Services.Users
     {
         private readonly UserService _userService;
         private readonly IRepository<Teacher> _teacherRepo;
+        private readonly IRepository<TeacherSubject> _teacherSubjectRepo;
         private readonly IMapper _mapper;
+        private readonly IRepository<Subject> _subjectRepo;
 
         public TeacherService(
                 UserService userService,
                 IRepository<Teacher> teacherRepo,
-                IMapper mapper
+                IMapper mapper,
+                IRepository<TeacherSubject> teacherSubjectRepo,
+                IRepository<Subject> subjectRepo
             )
         {
             this._userService = userService;
             this._teacherRepo = teacherRepo;
             this._mapper = mapper;
+            this._teacherSubjectRepo = teacherSubjectRepo;
+            this._subjectRepo = subjectRepo;
         }
         #region SignIn, SignOut
         public async Task<ServiceResponse> LoginTeacherAsync(UserLoginDTO model)
@@ -122,12 +129,35 @@ namespace FM_MyStat.Core.Services.Users
             if (teacher != null)
             {
                 TeacherDTO mappedTeacher = _mapper.Map<Teacher, TeacherDTO>(teacher);
-
                 return new ServiceResponse<TeacherDTO, object>(true, "", payload: mappedTeacher);
             }
             return new ServiceResponse<TeacherDTO, object>(false, "", errors: new object[] { "Teacher not found" });
         }
 
+        public async Task<IEnumerable<SubjectUpdateDTO>> GetSubjectsForTeacher(int teacherId)
+        {
+            IEnumerable<int> teacherSubjects = (await _teacherSubjectRepo.GetListBySpec(new TeacherSubjectSpecification.GetByTeacherId(teacherId))).Select(item => item.SubjectId);
+            IEnumerable<Subject> subjects = await _subjectRepo.GetAll();
+            IEnumerable<SubjectUpdateDTO> mappedSubjects = subjects.Select(item => _mapper.Map<Subject, SubjectUpdateDTO>(item));
+            mappedSubjects = mappedSubjects.Select(item => new SubjectUpdateDTO { Id = item.Id, Name = item.Name, Selected = teacherSubjects.Contains(item.Id) });
+            return mappedSubjects;
+        }
 
+        public async Task UpdateTeacherSubjects(int teacherId, List<SubjectUpdateDTO> subjects)
+        {
+            IEnumerable<TeacherSubject> teacherSubjects = await _teacherSubjectRepo.GetListBySpec(new TeacherSubjectSpecification.GetByTeacherId(teacherId));
+            foreach (TeacherSubject item in teacherSubjects)
+            {
+                await _teacherSubjectRepo.Delete(item.Id);
+            }
+            await _teacherSubjectRepo.Save();
+
+            var newTeacherSubjects = subjects.Where(item => item.Selected).Select(item => new TeacherSubject{ TeacherId = teacherId, SubjectId =  item.Id});
+            foreach (TeacherSubject item in newTeacherSubjects)
+            {
+                await _teacherSubjectRepo.Insert(item);
+            }
+            await _teacherSubjectRepo.Save();
+        }
     }
 }
