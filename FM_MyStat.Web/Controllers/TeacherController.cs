@@ -210,5 +210,7 @@ namespace FM_MyStat.Web.Controllers
             return RedirectToAction(nameof(GetAll));
         }
         #endregion
+
+
     }
 }
