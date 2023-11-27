@@ -17,7 +17,7 @@ namespace FM_MyStat.Core.Validation.User
             RuleFor(r => r.SurName).MinimumLength(2).NotEmpty().MaximumLength(12);
             RuleFor(r => r.Email).NotEmpty().WithMessage("Filed must not be empty")
               .EmailAddress().WithMessage("Invalid email format.");
-            RuleFor(r=>r.PhoneNumber).NotEmpty().MinimumLength(11).MaximumLength(12);
+            RuleFor(r=>r.PhoneNumber).NotEmpty().MinimumLength(11).MaximumLength(15);
 
         }
     }
