@@ -1,5 +1,6 @@
 ﻿using FluentValidation.Results;
 using FM_MyStat.Core.DTOs.GrouopsDTO;
+using FM_MyStat.Core.DTOs.HomeworksDTO.Homework;
 using FM_MyStat.Core.DTOs.UsersDTO.Admin;
 using FM_MyStat.Core.DTOs.UsersDTO.Student;
 using FM_MyStat.Core.DTOs.UsersDTO.User;
@@ -148,6 +149,85 @@ namespace FM_MyStat.Web.Controllers
             await LoadGroups();
             return RedirectToAction(nameof(Edit));
         }
+        #endregion
+
+        #region Homeworks
+        public async Task<IActionResult> AllHomeworks()
+        {
+            var userId = ((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).FirstOrDefault();
+            List<HomeworkDTO> homeworks = new List<HomeworkDTO>();
+            homeworks.Add(new HomeworkDTO
+            {
+                Id = 1,
+                Title = "Math Assignment",
+                Description = "Solve problems 1 to 10",
+                GroupId = 101,
+                Group = "Group A",
+                LessonId = 201,
+                Lesson = "Mathematics"
+            });
+
+            homeworks.Add(new HomeworkDTO
+            {
+                Id = 2,
+                Title = "English Essay",
+                Description = "Write an essay on a chosen topic",
+                GroupId = 102,
+                Group = "Group B",
+                LessonId = 202,
+                Lesson = "English Literature"
+            });
+
+            homeworks.Add(new HomeworkDTO
+            {
+                Id = 3,
+                Title = "Science Experiment",
+                Description = "Conduct a simple experiment and write a report",
+                GroupId = 103,
+                Group = "Group C",
+                LessonId = 203,
+                Lesson = "Physics"
+            });
+            homeworks.Add(new HomeworkDTO
+            {
+                Id = 4,
+                Title = "History Research",
+                Description = "Research and write about a historical event",
+                GroupId = 104,
+                Group = "Group D",
+                LessonId = 204,
+                Lesson = "World History"
+            });
+            homeworks.Add(new HomeworkDTO
+            {
+                Id = 5,
+                Title = "Art Project",
+                Description = "Create a piece of art using your preferred medium",
+                GroupId = 105,
+                Group = "Group E",
+                LessonId = 205,
+                Lesson = "Visual Arts"
+            });
+
+            homeworks.Add(new HomeworkDTO
+            {
+                Id = 6,
+                Title = "Physical Education Challenge",
+                Description = "Complete a fitness challenge and track your progress",
+                GroupId = 106,
+                Group = "Group F",
+                LessonId = 206,
+                Lesson = "Physical Education"
+            });
+            return View(homeworks);
+        }
+
+        public async Task<IActionResult> SubmitHomework()
+        {
+            return View();
+        }
+
+
         #endregion
     }
 }
