@@ -41,7 +41,7 @@ namespace FM_MyStat.Core.Services.HomeworkServices
 
         public async Task Create(CreateHomeworkDTO model)
         {
-            if (model.File.Count > 0)
+            if (model.File != null)
             {
                 string wevRootPath = _webHostEnvironment.WebRootPath;
                 string uploadt = wevRootPath + _configuration.GetValue<string>("FileSettings:FilePath");
@@ -71,9 +71,23 @@ namespace FM_MyStat.Core.Services.HomeworkServices
 
         public async Task Delete(int id)
         {
-            HomeworkDTO? model = await Get(id);
+            var model = await Get(id);
             if (model == null) return;
-            await _homeworkRepo.Delete(id);
+
+            string webPathRoot = _webHostEnvironment.WebRootPath;
+            string upload = webPathRoot + _configuration.GetValue<string>("FileSettings:FilePath");
+            string existingFilePath = Path.Combine(upload, model.PathFile);
+
+            if (File.Exists(existingFilePath) && model.PathFile != "Default.txt")
+            {
+                File.Delete(existingFilePath);
+            }
+
+            Lesson lesson = await _lessonRepo.GetByID(model.LessonId);
+            lesson.HomeworkId = null;
+            await _lessonRepo.Update(lesson);
+            await _lessonRepo.Save();
+            await _homeworkRepo.Delete(model.Id);
             await _homeworkRepo.Save();
         }
 
@@ -83,7 +97,6 @@ namespace FM_MyStat.Core.Services.HomeworkServices
             var homework = await _homeworkRepo.GetByID(id);
             if (homework == null) return null;
             return _mapper.Map<HomeworkDTO?>(homework);
-
         }
 
         public async Task<List<HomeworkDTO>> GetAll()
