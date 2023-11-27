@@ -1,10 +1,10 @@
 ﻿@using FM_MyStat.Core.Entities.Users;
 @using FM_MyStat.Web.Models.ViewModels;
 ﻿@using Microsoft.AspNetCore.Identity;
-@model UpdateProfileVM
+@model UpdateProfileTeacherVM
 
 @{
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
 }
 
 @inject UserManager<AppUser> UserManager
@@ -24,7 +24,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a asp-controller="Admin" asp-action="Index">Home</a></li>
-                        <li class="breadcrumb-item active">User profile</li>
+                        <li class="breadcrumb-item active">Teacher profile</li>
                     </ol>
                 </div>
             </div>
@@ -40,7 +40,7 @@
                         <div class="card-header">
                             <h3 class="card-title">Quick Example</h3>
                         </div>
-                        <form method="post" asp-controller="Admin" asp-action="ChangeProfile">
+                        <form method="post" asp-controller="Teacher" asp-action="ChangeMainInfo">
                             <div class="card-body">
                                 <div Visible="False" class="form-group" ty>
                                     <label style="display: none;">Id</label>
@@ -86,20 +86,20 @@
                         {
                             <span class="text-danger mt-3">@ViewBag.UpdatePasswordError</span>
                         }
-                        <form method="post" asp-action="Profile">
+                        <form method="post" asp-controller="Teacher" asp-action="ChangePasswordInfo">
                             <div class="card-body">
                                 <input type="hidden" name="Id" asp-for="=@user.Id" value=@user.Id />
                                 <div class="form-group">
                                     <label for="Password">Old Password</label>
-                                    <input type="password" asp-for="@Model.UserPassword.OldPassword" name="oldPassword" class="form-control" placeholder="Old password" />
+                                    <input type="password" asp-for="@Model.UpdatePassword.OldPassword" name="oldPassword" class="form-control" placeholder="Old password" />
                                 </div>
                                 <div class="form-group">
                                     <label for="Password">New Password</label>
-                                    <input type="password" asp-for="@Model.UserPassword.NewPassword" name="newPassword" class="form-control" placeholder="New Password">
+                                    <input type="password" asp-for="@Model.UpdatePassword.NewPassword" name="newPassword" class="form-control" placeholder="New Password">
                                 </div>
                                 <div class="form-group">
                                     <label for="ConfirmPassword">Confirm Password</label>
-                                    <input type="password" name="confirmPassword" asp-for="@Model.UserPassword.ConfirmPassword" class="form-control" placeholder="Confirm Password">
+                                    <input type="password" name="confirmPassword" asp-for="@Model.UpdatePassword.ConfirmPassword" class="form-control" placeholder="Confirm Password">
                                 </div>
                             </div>
                             <!-- /.card-body -->

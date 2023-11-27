@@ -1,4 +1,4 @@
-﻿using FluentValidation.Results;
+using FluentValidation.Results;
 using FM_MyStat.Core.DTOs.GrouopsDTO;
 using FM_MyStat.Core.DTOs.HomeworksDTO.Homework;
 using FM_MyStat.Core.DTOs.UsersDTO.Admin;
@@ -9,6 +9,7 @@ using FM_MyStat.Core.Interfaces;
 using FM_MyStat.Core.Services;
 using FM_MyStat.Core.Services.Users;
 using FM_MyStat.Core.Validation.User;
+using FM_MyStat.Web.Models.ViewModels;
 using FM_MyStat.Web.Models.ViewModels.Student;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -149,9 +150,6 @@ namespace FM_MyStat.Web.Controllers
             await LoadGroups();
             return RedirectToAction(nameof(Edit));
         }
-        #endregion
-
-        #region Homeworks
         public async Task<IActionResult> AllHomeworks()
         {
             var userId = ((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).FirstOrDefault();
@@ -226,8 +224,60 @@ namespace FM_MyStat.Web.Controllers
         {
             return View();
         }
+        #region Profile page
+        [Authorize(Roles = "Student")]
+        public async Task<IActionResult> Profile(string Id)
+        {
+            ServiceResponse<EditStudentDTO, object> result = await _studentService.GetEditUserDtoByIdAsync(Id);
+            if (result.Success)
+            {
+                UpdateProfileStudentVM profile = new UpdateProfileStudentVM()
+                {
+                    StudentInfo = result.Payload,
+                };
+                return View(profile);
+            }
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeMainInfo(EditUserDTO model)
+        {
+            EditUserValidation validator = new EditUserValidation();
+            ValidationResult validationResult = await validator.ValidateAsync(model);
+            if (validationResult.IsValid)
+            {
+                ServiceResponse result = await _studentService.ChangeMainInfoStudentAsync(model);
+                if (result.Success)
+                {
+                    return View("Profile", new UpdateProfileStudentVM() { StudentInfo = model });
+                }
+                ViewBag.UserUpdateError = result.Errors.FirstOrDefault();
+                return View("Profile", new UpdateProfileStudentVM() { StudentInfo = model });
+            }
+            ViewBag.UserUpdateError = validationResult.Errors.FirstOrDefault();
+            return View("Profile", new UpdateProfileStudentVM() { StudentInfo = model });
+        }
 
-
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePasswordInfo(EditUserPasswordDTO model)
+        {
+            EditPasswordValidation validator = new EditPasswordValidation();
+            ValidationResult validationResult = await validator.ValidateAsync(model);
+            if (validationResult.IsValid)
+            {
+                ServiceResponse result = await _studentService.ChangePasswordAsync(model);
+                if (result.Success)
+                {
+                    return RedirectToAction(nameof(SignIn));
+                }
+                ViewBag.UpdatePasswordError = result.Errors;
+                return View(new UpdateProfileStudentVM() { StudentInfo = _studentService.GetEditUserDtoByIdAsync(model.Id).Result.Payload });
+            }
+            ViewBag.UpdatePasswordError = validationResult.Errors.FirstOrDefault();
+            return View(new UpdateProfileStudentVM() { StudentInfo = _studentService.GetEditUserDtoByIdAsync(model.Id).Result.Payload });
+        }
         #endregion
     }
 }
