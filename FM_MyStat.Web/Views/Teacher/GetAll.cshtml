@@ -58,6 +58,7 @@
                                         <th>EmailConfirmed</th>
                                         <th>LockedOut</th>
                                         <th>PhoneNumber</th>
+                                        <th>Subjects</th>
                                         <th>Edit</th>
                                         <th>Delete</th>
                                     </tr>
@@ -73,6 +74,7 @@
                                             <td>@item.EmailConfirmed</td>
                                             <td>@item.LockedOut</td>
                                             <td>@item.PhoneNumber</td>
+                                            <td><a asp-controller="Teacher" asp-action="EditSubjects" asp-route-id="@item.TeacherId" class="btn btn-block btn-warning btn-sm">Edit</a></td>
                                             <td><a asp-controller="Teacher" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-block btn-warning btn-sm">Edit</a></td>
                                             <td><a asp-controller="Teacher" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-block btn-danger btn-sm">Delete</a></td>
                                         </tr>

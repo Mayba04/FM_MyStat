@@ -18,6 +18,7 @@ namespace FM_MyStat.Core.AutoMappers
             CreateMap<DeleteSubjectDTO, Subject>().ReverseMap();
             CreateMap<EditSubjectDTO, Subject>().ReverseMap();
             CreateMap<SubjectDTO, Subject>().ReverseMap();
+            CreateMap<SubjectUpdateDTO, Subject>().ReverseMap();
         }
     }
 }
