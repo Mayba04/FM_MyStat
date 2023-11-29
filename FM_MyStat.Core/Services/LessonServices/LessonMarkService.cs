@@ -3,6 +3,7 @@ using FM_MyStat.Core.DTOs.LessonsDTO.LessonMark;
 using FM_MyStat.Core.DTOs.LessonsDTO.Lessons;
 using FM_MyStat.Core.Entities.Lessons;
 using FM_MyStat.Core.Entities.Specifications;
+using FM_MyStat.Core.Entities.Users;
 using FM_MyStat.Core.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -16,11 +17,15 @@ namespace FM_MyStat.Core.Services.LessonServices
     {
         private readonly IMapper _mapper;
         private readonly IRepository<LessonMark> _lessonsMarkRepo;
+        private readonly IRepository<Student> _studentRepo;
+        private readonly IRepository<Lesson> _lessonRepo;
 
-        public LessonMarkService(IMapper mapper, IRepository<LessonMark> lessonMarkRepo)
+        public LessonMarkService(IMapper mapper, IRepository<LessonMark> lessonMarkRepo, IRepository<Lesson> lessonRepo, IRepository<Student> studentRepo)
         {
             _lessonsMarkRepo = lessonMarkRepo;
             _mapper = mapper;
+            _lessonRepo = lessonRepo;
+            _studentRepo = studentRepo;
         }
 
         public async Task Create(CreateLessonMarkDTO model)
@@ -89,6 +94,38 @@ namespace FM_MyStat.Core.Services.LessonServices
         {
             await _lessonsMarkRepo.Update(_mapper.Map<LessonMark>(model));
             await _lessonsMarkRepo.Save();
+        }
+
+        public async Task AddGrade(LessonMarkDTO model)
+        {
+            // Check if the lesson and student exist
+            var lesson = _lessonRepo.GetByID(model.LessonId).Result;
+            var student = _studentRepo.GetByID(model.StudentId).Result;
+
+            // Add the lesson mark
+            var lessonMarkEntity = _mapper.Map<LessonMark>(model);
+            _lessonsMarkRepo.Insert(lessonMarkEntity).Wait();
+            _lessonsMarkRepo.Save().Wait();
+
+            // Update the student's overall rating
+            UpdateStudentRating(model.StudentId).Wait();
+        }
+
+        private async Task UpdateStudentRating(int studentId)
+        {
+            var lessonMarks = await _lessonsMarkRepo.GetListBySpec(new LessonsMarkSpecification.GetByStudentId(studentId));
+
+            if (lessonMarks.Any())
+            {
+                double overallRating = lessonMarks.Average(mark => mark.Mark);
+                var student = await _studentRepo.GetByID(studentId);
+                if (student != null)
+                {
+                    student.Rating = Convert.ToInt32(overallRating);
+                    await _studentRepo.Update(student);
+                    await _studentRepo.Save();
+                }
+            }
         }
     }
 }
