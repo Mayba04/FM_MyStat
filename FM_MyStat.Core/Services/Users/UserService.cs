@@ -189,35 +189,6 @@ namespace FM_MyStat.Core.Services.Users
             }
             return new ServiceResponse(false, "Error.", errors: result.Errors.ToList().Select(i => i.Description));
         }
-        //public async Task<ServiceResponse> ChangeMainInfoUserAsync(EditUserDTO newinfo)
-        //{
-        //    AppUser user = await _userManager.FindByIdAsync(newinfo.Id);
-
-        //    if (user != null)
-        //    {
-        //        user.FirstName = newinfo.FirstName;
-        //        if (user.Email != newinfo.Email)
-        //        {
-        //            user.EmailConfirmed = false;
-        //            user.Email = newinfo.Email;
-        //            user.UserName = newinfo.Email;
-        //            await SendConfirmationEmailAsync(user);
-        //        }
-        //        user.LastName = newinfo.LastName;
-                
-        //        user.PhoneNumber = newinfo.PhoneNumber;
-        //        user.AdministratorId = newinfo.AdministratorId;
-        //        user.TeacherId = newinfo.TeacherId;
-        //        user.StudentId = newinfo.StudentId;
-
-        //        IdentityResult result = await _userManager.UpdateAsync(user);
-
-        //        return (result.Succeeded) ?
-        //            new ServiceResponse(true, "Information has been changed") :
-        //            new ServiceResponse(false, "Something went wrong", errors: result.Errors.Select(e => e.Description));
-        //    }
-        //    return new ServiceResponse(false, "Not found user");
-        //}
 
         public async Task<ServiceResponse> ChangeMainInfoUserAsync(EditUserDTO newinfo)
         {
