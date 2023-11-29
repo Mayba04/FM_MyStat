@@ -81,7 +81,7 @@ namespace FM_MyStat.Web.Controllers
 
         public async Task<IActionResult> Edit(int Id)
         {
-            var result = await _subjectService.Get(Id);
+            var result = await _subjectService.GetEditSubjectDTO(Id);
             if (result != null)
             {
                 return View(result);

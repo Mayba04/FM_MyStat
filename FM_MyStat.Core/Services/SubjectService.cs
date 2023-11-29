@@ -54,7 +54,13 @@ namespace FM_MyStat.Core.Services
             var subject = await _subjectRepo.GetByID(id);
             if (subject == null) return null;
             return _mapper.Map<SubjectDTO?>(subject);
-
+        }
+        public async Task<EditSubjectDTO?> GetEditSubjectDTO(int id)
+        {
+            if (id < 0) return null;
+            var subject = await _subjectRepo.GetByID(id);
+            if (subject == null) return null;
+            return _mapper.Map<EditSubjectDTO?>(subject);
         }
 
         public async Task<List<SubjectDTO>> GetAll()
