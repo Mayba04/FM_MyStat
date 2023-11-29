@@ -150,6 +150,7 @@ namespace FM_MyStat.Web.Controllers
             await LoadGroups();
             return RedirectToAction(nameof(Edit));
         }
+        #endregion
         public async Task<IActionResult> AllHomeworks()
         {
             var userId = ((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).FirstOrDefault();
