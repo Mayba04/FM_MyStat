@@ -12,6 +12,7 @@ using FM_MyStat.Core.Interfaces;
 using FM_MyStat.Core.Services.Users;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -144,20 +145,55 @@ namespace FM_MyStat.Core.Services.HomeworkServices
             return null;
         }
 
-        public async Task<ServiceResponse<EditHomeworkDTO, object>> GetEditHomeworkDTO(int id)
+        public async Task<ServiceResponse<CreateHomeworkDTO, object>> GetCreateHomeworkDTO(int id)
         {
             Homework? homework = await _homeworkRepo.GetByID(id);
             if (homework != null)
             {
-                return new ServiceResponse<EditHomeworkDTO, object>(true, "", payload: _mapper.Map<Homework, EditHomeworkDTO>(homework));
+                return new ServiceResponse<CreateHomeworkDTO, object>(true, "", payload: _mapper.Map<Homework, CreateHomeworkDTO>(homework));
             }
-            return new ServiceResponse<EditHomeworkDTO, object>(false, "", errors: new string[] { "Homework not found!" });
+            return new ServiceResponse<CreateHomeworkDTO, object>(false, "", errors: new string[] { "Homework not found!" });
         }
 
-        public async Task Update(EditHomeworkDTO model)
+        public async Task Update(CreateHomeworkDTO model)
         {
-            await _homeworkRepo.Update(_mapper.Map<Homework>(model));
+            var currentPost = await _homeworkRepo.GetByID(model.Id);
+            if (model.File.Count > 0)
+            {
+                string webPathRoot = _webHostEnvironment.WebRootPath;
+                string upload = webPathRoot + _configuration.GetValue<string>("FileSettings:FilePath");
+
+                string existingFilePath = Path.Combine(upload, currentPost.PathFile);
+
+                if (File.Exists(existingFilePath) && model.PathFile != "Default.png")
+                {
+                    File.Delete(existingFilePath);
+                }
+
+                var files = model.File;
+
+                string fileName = Guid.NewGuid().ToString();
+                string extension = Path.GetExtension(files[0].FileName);
+                using (var fileStream = new FileStream(Path.Combine(upload, fileName + extension), FileMode.Create))
+                {
+                    files[0].CopyTo(fileStream);
+                }
+                model.PathFile = fileName + extension;
+            }
+            else
+            {
+                model.PathFile = currentPost.PathFile;
+            }
+            var homeworkEntity = _mapper.Map<Homework>(model);
+            homeworkEntity.Lesson = null;
+            homeworkEntity.Group = null;
+            await _homeworkRepo.Update(homeworkEntity);
             await _homeworkRepo.Save();
+
+            //await _homeworkRepo.Update(_mapper.Map<Homework>(model));
+            //await _homeworkRepo.Save();
         }
+
+       
     }
 }

@@ -16,6 +16,7 @@ namespace FM_MyStat.Core.AutoMappers
         {
             CreateMap<Homework, HomeworkDTO>().ReverseMap();
             CreateMap<CreateHomeworkDTO, Homework>().ReverseMap();
+            CreateMap<Homework, CreateHomeworkDTO>().ReverseMap();
             CreateMap<DeleteHomeworkDTO, Homework>().ReverseMap();
             CreateMap<EditHomeworkDTO, Homework>().ReverseMap();
         }
