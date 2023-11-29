@@ -26,5 +26,5 @@ namespace FM_MyStat.Core.Entities.Specifications
                 Query.Where(x => x.StudentId == Id);
             }
         }
-    }
+        }
 }

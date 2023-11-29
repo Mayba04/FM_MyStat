@@ -1,29 +1,46 @@
 ﻿using FM_MyStat.Core.DTOs.LessonsDTO.LessonMark;
+using FM_MyStat.Core.DTOs.LessonsDTO.Lessons;
+using FM_MyStat.Core.Services.LessonServices;
+using FM_MyStat.Web.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FM_MyStat.Web.Controllers
 {
     public class LessonMarkController : Controller
     {
-        public LessonMarkController()
+        private readonly LessonMarkService _lessonMarkService;
+
+        public LessonMarkController(LessonMarkService lessonMarkService)
         {
-            
-        }
-        public IActionResult Index()
-        {
-            return View();
+            _lessonMarkService = lessonMarkService;
         }
 
-        public async Task<IActionResult> GetInfoLesson(string lessonId)
+        [HttpGet]
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var viewModel = new LessonMarksVM
+            {
+                students = await _lessonMarkService.GetAllStudents(),
+                mark = new LessonMarkDTO(),  // Initialize an empty LessonMarkDTO
+                lesson = new LessonDTO()  // Initialize an empty LessonDTO
+            };
+
+            return View(viewModel);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SubmitMark(LessonMarkDTO model)
+        public async Task<IActionResult> SubmitMark(LessonMarkDTO mark)
         {
-            return View();
+            try
+            {
+                await _lessonMarkService.AddGrade(mark);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "An error occurred while submitting the mark.");
+                return View("Index");
+            }
         }
     }
 }
