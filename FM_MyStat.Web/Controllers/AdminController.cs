@@ -159,7 +159,7 @@ namespace FM_MyStat.Web.Controllers
                 var result = await _userService.ChangePasswordAsync(model);
                 if (result.Success)
                 {
-                    return RedirectToAction("Login","Index");
+                    return RedirectToAction("Home","Index");
                 }
 
                 ViewBag.UpdatePasswordError = result.Payload;
@@ -182,6 +182,14 @@ namespace FM_MyStat.Web.Controllers
                 ServiceResponse result = await _userService.ChangeMainInfoUserAsync(model);
                 if (result.Success)
                 {
+                    if (result.Message.Contains("address"))
+                    {
+                        ServiceResponse response = await _administratorService.SignOutAsync();
+                        if (response.Success == true)
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
+                    }
                     return View(nameof(Profile), new UpdateProfileVM() { UserInfo = model });
                 }
                 ViewBag.UserUpdateError = result.Payload;

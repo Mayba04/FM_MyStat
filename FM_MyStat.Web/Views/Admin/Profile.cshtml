@@ -89,7 +89,7 @@
                         {
                             <span class="text-danger mt-3">@ViewBag.UpdatePasswordError</span>
                         }
-                        <form method="post" asp-action="Profile">
+                        <form method="post" asp-action="Profiles">
                             <div class="card-body">
                                 <input type="hidden" name="Id" asp-for="=@user.Id" value=@user.Id />
                                 <div class="form-group">
