@@ -66,7 +66,7 @@ namespace FM_MyStat.Web.Controllers
 
         public async Task<IActionResult> Update(int id)
         {
-            var result = await _homeworkService.GetEditHomeworkDTO(id);
+            var result = await _homeworkService.GetCreateHomeworkDTO(id);
             if (result.Success)
             {
                 return View(result.Payload);
@@ -74,11 +74,12 @@ namespace FM_MyStat.Web.Controllers
             ViewBag.AuthError = result.Errors.FirstOrDefault();
             return RedirectToAction(nameof(GetAll));
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Update(EditHomeworkDTO model)
+        public async Task<IActionResult> Update(CreateHomeworkDTO model)
         {
-            var validator = new EditHomeworkValidation();
+            var validator = new CreateHomeworkValidation();
             var validationResult = await validator.ValidateAsync(model);
             if (validationResult.IsValid)
             {

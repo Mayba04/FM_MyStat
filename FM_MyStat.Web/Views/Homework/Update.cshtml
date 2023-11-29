@@ -1,5 +1,5 @@
 ﻿@using FM_MyStat.Core.DTOs.HomeworksDTO.Homework;
-@model EditHomeworkDTO;
+@model CreateHomeworkDTO;
 
 @{
     ViewData["Title"] = "Homework";
@@ -56,7 +56,7 @@
                                 {
                                     <span class="text-danger mt-3">@ViewBag.AuthError</span>
                                 }
-                                <form method="post" asp-controller="Homework" asp-action="Update">
+                                <form method="post" asp-controller="Homework" asp-action="Update" enctype="multipart/form-data">
                                     <div class="card-body">
                                         <div class="form-group">
                                             <label>Homework</label>
@@ -65,7 +65,16 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="description">Description</label>
-                                            <input type="text" name="description" class="form-control" id="description" placeholder="Enter Description">
+                                            <input type="text" asp-for="Description" name="description" class="form-control" id="description" placeholder="Enter Description">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>File</label>
+                                            <input type="file" class="form-control-file" asp-for="PathFile" id=" file" name="file" />
+                                           
+                                            <button type="button" id="removeFileBtn" class="btn btn-danger btn-sm">Remove File</button>
+                                        </div>
+                                        <div class="form-group">
+                                           
                                         </div>
                                     </div>
                                     <!-- /.card-body -->
@@ -85,3 +94,10 @@
     </section>
     <!-- /.content -->
 </div>
+
+<script>
+    document.getElementById('removeFileBtn').addEventListener('click', function () {
+        var fileInput = document.getElementById('file');
+        fileInput.value = ''; // Очищає вибраний файл
+    });
+</script>
