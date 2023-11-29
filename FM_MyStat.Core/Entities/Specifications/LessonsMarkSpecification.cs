@@ -18,5 +18,13 @@ namespace FM_MyStat.Core.Entities.Specifications
                 Query.Where(x => x.Id == Id);
             }
         }
+
+        public class GetByStudentId : Specification<LessonMark>
+        {
+            public GetByStudentId(int Id)
+            {
+                Query.Where(x => x.StudentId == Id);
+            }
+        }
     }
 }
