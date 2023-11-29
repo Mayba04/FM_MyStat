@@ -75,6 +75,14 @@ namespace FM_MyStat.Web.Controllers
                 ServiceResponse result = await _teacherService.ChangeMainInfoTeacherAsync(model);
                 if (result.Success)
                 {
+                    if (result.Message.Contains("address"))
+                    {
+                        ServiceResponse response = await _teacherService.SignOutAsync();
+                        if (response.Success == true)
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
+                    }
                     return View("Profile", new UpdateProfileTeacherVM() { TeacherInfo = model });
                 }
                 ViewBag.UserUpdateError = result.Errors.FirstOrDefault();
@@ -95,7 +103,7 @@ namespace FM_MyStat.Web.Controllers
                 ServiceResponse result = await _teacherService.ChangePasswordAsync(model);
                 if (result.Success)
                 {
-                    return RedirectToAction(nameof(SignIn));
+                    return RedirectToAction("Index", "Home");
                 }
                 ViewBag.UpdatePasswordError = result.Errors;
                 return View(new UpdateProfileTeacherVM() { TeacherInfo = _teacherService.GetEditUserDtoByIdAsync(model.Id).Result.Payload });
