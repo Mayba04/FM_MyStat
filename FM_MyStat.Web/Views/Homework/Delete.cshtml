@@ -3,6 +3,21 @@
 }
 @using FM_MyStat.Core.DTOs.HomeworksDTO.Homework;
 @model HomeworkDTO;
+@if (User.IsInRole("Administrator"))
+{
+    ViewData["Title"] = "Homework";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+else if (User.IsInRole("Teacher"))
+{
+    ViewData["Title"] = "Homework";
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+}
+else
+{
+    ViewData["Title"] = "Homework";
+    Layout = "~/Views/Shared/_DefaultLayout.cshtml";
+}
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
