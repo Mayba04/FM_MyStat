@@ -191,7 +191,7 @@ namespace FM_MyStat.Core.Services.Users
         }
         public async Task<ServiceResponse> ChangeMainInfoUserAsync(EditUserDTO newinfo)
         {
-            AppUser user = await _userManager.FindByIdAsync(newinfo.Id);
+            AppUser user = await _userManager.FindByEmailAsync(newinfo.Email);
 
             if (user != null)
             {
