@@ -280,5 +280,6 @@ namespace FM_MyStat.Web.Controllers
             return View(new UpdateProfileStudentVM() { StudentInfo = _studentService.GetEditUserDtoByIdAsync(model.Id).Result.Payload });
         }
         #endregion
+        #endregion
     }
 }

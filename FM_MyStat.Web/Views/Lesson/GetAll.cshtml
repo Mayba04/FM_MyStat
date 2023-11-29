@@ -82,6 +82,7 @@
                                             {
                                                 <td><a asp-controller="Homework" asp-action="Update" asp-route-Id="@item.HomeworkId" class="btn btn-block btn-warning btn-sm">Edit</a></td>
                                             }
+                                            <td><a asp-controller="LessonMark" asp-action="GetInfoLesson" asp-route-id="@item.Id" class="btn btn-block btn-warning btn-sm">Marks</a></td>
                                             <td><a asp-controller="Lesson" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-block btn-warning btn-sm">Edit</a></td>
                                             <td><a asp-controller="Lesson" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-block btn-danger btn-sm">Delete</a></td>
                                         </tr>
