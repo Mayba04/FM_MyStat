@@ -86,17 +86,6 @@ namespace FM_MyStat.Web.Controllers
             var validationResult = await validator.ValidateAsync(model);
             if (validationResult.IsValid)
             {
-                var lessonTask = _lessonService.GetAll();
-                List<LessonDTO> lesson = await lessonTask;
-                bool containsSubject = lesson.Any(cat => cat.Name == model.Name 
-                && cat.Description == model.Description 
-                && cat.GroupId == model.GroupId
-                && cat.SubjectId == model.SubjectId);
-                if (containsSubject)
-                {
-                    ViewBag.AuthError = "Such a lesson already exists";
-                    return View();
-                }
                 await _lessonService.Create(model);
                 return RedirectToAction(nameof(GetAll));
             }
