@@ -1,9 +1,12 @@
 ﻿using FM_MyStat.Core.DTOs.GrouopsDTO;
+using FM_MyStat.Core.DTOs.UsersDTO.Teacher;
 using FM_MyStat.Core.Interfaces;
 using FM_MyStat.Core.Services;
+using FM_MyStat.Core.Services.Users;
 using FM_MyStat.Core.Validation.Group;
 using FM_MyStat.Core.Validation.Subject;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using X.PagedList;
 
 namespace FM_MyStat.Web.Controllers
@@ -11,10 +14,12 @@ namespace FM_MyStat.Web.Controllers
     public class GroupController : Controller
     {
         private readonly IGroupService _groupService;
+        private readonly TeacherService _teacherService;
 
-        public GroupController(IGroupService groupService)
+        public GroupController(IGroupService groupService, TeacherService teacherService)
         {
             _groupService= groupService;
+            _teacherService = teacherService;
         }
         public IActionResult Index()
         {
@@ -27,8 +32,29 @@ namespace FM_MyStat.Web.Controllers
             return View(group);
         }
 
-        public IActionResult Create()
+        private async Task LoadTeachers()
         {
+            var serviceResponse = await _teacherService.GetAllAsync();
+            if (serviceResponse != null && serviceResponse.Success)
+            {
+                List<TeacherDTO> result = serviceResponse.Payload;
+                var teacherSelectList = result.Select(t => new SelectListItem
+                {
+                    Value = t.TeacherId.ToString(), 
+                    Text = $"{t.FirstName} {t.SurName} {t.LastName}"
+                });
+
+                ViewBag.TeacherList = new SelectList(teacherSelectList, "Value", "Text");
+            }
+            else
+            {
+                ViewBag.TeacherList = Enumerable.Empty<SelectListItem>();
+            }
+        }
+
+        public async Task<IActionResult> CreateAsync()
+        {
+            await LoadTeachers();
             return View();
         }
         [HttpPost]

@@ -58,7 +58,16 @@
                                             <label for="Input">Name</label>
                                             <input type="text" name="Name" class="form-control" id="Name" placeholder="Enter Name groups">
                                         </div>
+
+                                        <div class="mb-3">
+                                            <div class="form-group">
+                                                <label>Teacher</label>
+                                                @Html.DropDownList("TeacherId", (SelectList)ViewBag.TeacherList, "-- Select Teacher --",  htmlAttributes: new { @class = "form-control" })
+                                            </div>
+                                        </div>
+
                                     </div>
+                                   
                                     <!-- /.card-body -->
                                     <div class="card-footer">
                                         <button type="submit" class="btn btn-primary">Create</button>
