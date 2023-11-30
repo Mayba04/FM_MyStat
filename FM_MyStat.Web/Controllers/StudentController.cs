@@ -23,11 +23,13 @@ namespace FM_MyStat.Web.Controllers
     {
         private readonly StudentService _studentService;
         private readonly IGroupService _groupService;
+        private readonly IHomeworkService _homeworkService;
 
-        public StudentController(StudentService studentService, IGroupService groupService)
+        public StudentController(StudentService studentService, IGroupService groupService, IHomeworkService homeworkService)
         {
             this._studentService = studentService;
             this._groupService = groupService;
+            this._homeworkService = homeworkService;
         }
         public async Task<IActionResult> Index()
         {
@@ -154,70 +156,71 @@ namespace FM_MyStat.Web.Controllers
         public async Task<IActionResult> AllHomeworks()
         {
             var userId = ((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).FirstOrDefault();
-            List<HomeworkDTO> homeworks = new List<HomeworkDTO>();
-            homeworks.Add(new HomeworkDTO
-            {
-                Id = 1,
-                Title = "Math Assignment",
-                Description = "Solve problems 1 to 10",
-                GroupId = 101,
-                Group = "Group A",
-                LessonId = 201,
-                Lesson = "Mathematics"
-            });
+            var homeworks = await _homeworkService.GetAllByUserId(userId);
+            //List<HomeworkDTO> homeworks = new List<HomeworkDTO>();
+            //homeworks.Add(new HomeworkDTO
+            //{
+            //    Id = 1,
+            //    Title = "Math Assignment",
+            //    Description = "Solve problems 1 to 10",
+            //    GroupId = 101,
+            //    Group = "Group A",
+            //    LessonId = 201,
+            //    Lesson = "Mathematics"
+            //});
 
-            homeworks.Add(new HomeworkDTO
-            {
-                Id = 2,
-                Title = "English Essay",
-                Description = "Write an essay on a chosen topic",
-                GroupId = 102,
-                Group = "Group B",
-                LessonId = 202,
-                Lesson = "English Literature"
-            });
+            //homeworks.Add(new HomeworkDTO
+            //{
+            //    Id = 2,
+            //    Title = "English Essay",
+            //    Description = "Write an essay on a chosen topic",
+            //    GroupId = 102,
+            //    Group = "Group B",
+            //    LessonId = 202,
+            //    Lesson = "English Literature"
+            //});
 
-            homeworks.Add(new HomeworkDTO
-            {
-                Id = 3,
-                Title = "Science Experiment",
-                Description = "Conduct a simple experiment and write a report",
-                GroupId = 103,
-                Group = "Group C",
-                LessonId = 203,
-                Lesson = "Physics"
-            });
-            homeworks.Add(new HomeworkDTO
-            {
-                Id = 4,
-                Title = "History Research",
-                Description = "Research and write about a historical event",
-                GroupId = 104,
-                Group = "Group D",
-                LessonId = 204,
-                Lesson = "World History"
-            });
-            homeworks.Add(new HomeworkDTO
-            {
-                Id = 5,
-                Title = "Art Project",
-                Description = "Create a piece of art using your preferred medium",
-                GroupId = 105,
-                Group = "Group E",
-                LessonId = 205,
-                Lesson = "Visual Arts"
-            });
+            //homeworks.Add(new HomeworkDTO
+            //{
+            //    Id = 3,
+            //    Title = "Science Experiment",
+            //    Description = "Conduct a simple experiment and write a report",
+            //    GroupId = 103,
+            //    Group = "Group C",
+            //    LessonId = 203,
+            //    Lesson = "Physics"
+            //});
+            //homeworks.Add(new HomeworkDTO
+            //{
+            //    Id = 4,
+            //    Title = "History Research",
+            //    Description = "Research and write about a historical event",
+            //    GroupId = 104,
+            //    Group = "Group D",
+            //    LessonId = 204,
+            //    Lesson = "World History"
+            //});
+            //homeworks.Add(new HomeworkDTO
+            //{
+            //    Id = 5,
+            //    Title = "Art Project",
+            //    Description = "Create a piece of art using your preferred medium",
+            //    GroupId = 105,
+            //    Group = "Group E",
+            //    LessonId = 205,
+            //    Lesson = "Visual Arts"
+            //});
 
-            homeworks.Add(new HomeworkDTO
-            {
-                Id = 6,
-                Title = "Physical Education Challenge",
-                Description = "Complete a fitness challenge and track your progress",
-                GroupId = 106,
-                Group = "Group F",
-                LessonId = 206,
-                Lesson = "Physical Education"
-            });
+            //homeworks.Add(new HomeworkDTO
+            //{
+            //    Id = 6,
+            //    Title = "Physical Education Challenge",
+            //    Description = "Complete a fitness challenge and track your progress",
+            //    GroupId = 106,
+            //    Group = "Group F",
+            //    LessonId = 206,
+            //    Lesson = "Physical Education"
+            //});
             return View(homeworks);
         }
 

@@ -1,4 +1,4 @@
-﻿    using AutoMapper;
+﻿using AutoMapper;
 using FM_MyStat.Core.DTOs.GrouopsDTO;
 using FM_MyStat.Core.DTOs.HomeworksDTO.Homework;
 using FM_MyStat.Core.DTOs.LessonsDTO.Lessons;
@@ -17,7 +17,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Group = FM_MyStat.Core.Entities.Group;
 
 namespace FM_MyStat.Core.Services.HomeworkServices
 {
@@ -29,8 +31,9 @@ namespace FM_MyStat.Core.Services.HomeworkServices
         private readonly IRepository<Lesson> _lessonRepo;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IConfiguration _configuration;
+        private readonly StudentService _studentService;
 
-        public HomeworkService(IMapper mapper, IRepository<Homework> homeRepo, IRepository<Group> groupRepo, IRepository<Lesson> lessonRepo, IWebHostEnvironment webHostEnvironment, IConfiguration configuration)
+        public HomeworkService(StudentService studentService, IMapper mapper, IRepository<Homework> homeRepo, IRepository<Group> groupRepo, IRepository<Lesson> lessonRepo, IWebHostEnvironment webHostEnvironment, IConfiguration configuration)
         {
             _homeworkRepo = homeRepo;
             _mapper = mapper;
@@ -38,6 +41,7 @@ namespace FM_MyStat.Core.Services.HomeworkServices
             _lessonRepo = lessonRepo;
             _webHostEnvironment = webHostEnvironment;
             _configuration = configuration;
+            _studentService = studentService;
         }
 
         public async Task Create(CreateHomeworkDTO model)
@@ -105,6 +109,27 @@ namespace FM_MyStat.Core.Services.HomeworkServices
             var result = await _homeworkRepo.GetAll();
             List<HomeworkDTO> mappedHomeworks = result.Select(u => _mapper.Map<Homework, HomeworkDTO>(u)).ToList();
             for (int i = 0; i < result.Count(); i++)
+            {
+                Group? group = await _groupRepo.GetByID(mappedHomeworks[i].GroupId);
+                mappedHomeworks[i].Group = (group == null) ? "GROUP NOT FOUND" : group.Name;
+                Lesson? lesson = await _lessonRepo.GetByID(mappedHomeworks[i].LessonId);
+                mappedHomeworks[i].Lesson = (lesson == null) ? "LESSON NOT FOUND" : lesson.Name;
+            }
+            return mappedHomeworks;
+        }
+
+        public async Task<List<HomeworkDTO>> GetAllByUserId(string studentId)
+        {
+            var student = await _studentService.GetEditUserDtoByIdAsync(studentId);
+            if (student?.Payload?.GroupId == null)
+            {
+                return new List<HomeworkDTO>();
+            }
+            var allHomeworks = await _homeworkRepo.GetAll();
+            var filteredHomeworks = allHomeworks.Where(h => h.GroupId == student.Payload.GroupId).ToList();
+            
+            List<HomeworkDTO> mappedHomeworks = filteredHomeworks.Select(u => _mapper.Map<Homework, HomeworkDTO>(u)).ToList();
+            for (int i = 0; i < filteredHomeworks.Count(); i++)
             {
                 Group? group = await _groupRepo.GetByID(mappedHomeworks[i].GroupId);
                 mappedHomeworks[i].Group = (group == null) ? "GROUP NOT FOUND" : group.Name;
