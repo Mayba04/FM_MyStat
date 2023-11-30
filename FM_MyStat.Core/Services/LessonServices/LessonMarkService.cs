@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FM_MyStat.Core.DTOs.LessonsDTO.LessonMark;
 using FM_MyStat.Core.DTOs.LessonsDTO.Lessons;
+using FM_MyStat.Core.DTOs.UsersDTO.Student;
 using FM_MyStat.Core.Entities.Lessons;
 using FM_MyStat.Core.Entities.Specifications;
 using FM_MyStat.Core.Entities.Users;
@@ -126,6 +127,14 @@ namespace FM_MyStat.Core.Services.LessonServices
                     await _studentRepo.Save();
                 }
             }
+        }
+
+        public async Task<List<StudentDTO>> GetAllStudents()
+        {
+            // Implement logic to retrieve a list of students from your repository
+            // For example:
+            var students = await _studentRepo.GetAll();
+            return _mapper.Map<List<StudentDTO>>(students);
         }
     }
 }

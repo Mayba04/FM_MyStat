@@ -1,5 +1,6 @@
 ﻿using FM_MyStat.Core.DTOs.LessonsDTO.LessonMark;
 using FM_MyStat.Core.DTOs.LessonsDTO.Lessons;
+using FM_MyStat.Core.DTOs.UsersDTO.Student;
 using FM_MyStat.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -18,5 +19,6 @@ namespace FM_MyStat.Core.Interfaces
         Task Create(CreateLessonMarkDTO model);
         Task Update(EditLessonMarkDTO model);
         Task Delete(int id);
+        Task<List<StudentDTO>> GetAllStudents();
     }
 }
