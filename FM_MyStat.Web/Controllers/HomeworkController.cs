@@ -109,18 +109,5 @@ namespace FM_MyStat.Web.Controllers
             await _homeworkService.Delete(Id);
             return RedirectToAction(nameof(GetAll));
         }
-
-        public async Task<IActionResult> Download(int id)
-        {
-            var (fileContents, contentType, fileName) = await _homeworkService.DownloadHomeworkFileAsync(id);
-
-            if (fileContents == null || contentType == null || fileName == null)
-            {
-                return RedirectToAction("Index", "Login");
-            }
-
-            return File(fileContents, contentType, fileName);
-        }
-
     }
 }

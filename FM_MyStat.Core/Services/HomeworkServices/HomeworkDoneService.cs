@@ -1,8 +1,12 @@
 ﻿using AutoMapper;
 using FM_MyStat.Core.DTOs.HomeworksDTO;
+using FM_MyStat.Core.DTOs.HomeworksDTO.Homework;
 using FM_MyStat.Core.Entities.Homeworks;
+using FM_MyStat.Core.Entities.Lessons;
 using FM_MyStat.Core.Entities.Specifications;
 using FM_MyStat.Core.Interfaces;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,17 +19,45 @@ namespace FM_MyStat.Core.Services.HomeworkServices
     {
         private readonly IMapper _mapper;
         private readonly IRepository<HomeworkDone> _homeworkDoneRepo;
+        private readonly IRepository<Homework> _homeworkRepo;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IConfiguration _configuration;
 
-        public HomeworkDoneService(IMapper mapper, IRepository<HomeworkDone> homeRepo)
+        public HomeworkDoneService(IMapper mapper, IRepository<HomeworkDone> homeRepo, IWebHostEnvironment webHostEnvironment, IConfiguration configuration)
         {
             _homeworkDoneRepo = homeRepo;
             _mapper = mapper;
+            _webHostEnvironment = webHostEnvironment;
+            _configuration = configuration;
         }
 
         public async Task Create(HomeworkDoneDTO model)
         {
-            await _homeworkDoneRepo.Insert(_mapper.Map<HomeworkDone>(model));
+
+            if (model.File != null)
+            {
+                string wevRootPath = _webHostEnvironment.WebRootPath;
+                string uploadt = wevRootPath + _configuration.GetValue<string>("FileSettings2:FilePath");
+                var files = model.File;
+                var fileName = Guid.NewGuid().ToString();
+                string extansions = Path.GetExtension(files[0].FileName);
+                using (var fileStream = new FileStream(Path.Combine(uploadt, fileName + extansions), FileMode.Create))
+                {
+                    files[0].CopyTo(fileStream);
+                }
+                model.FilePath = fileName + extansions;
+            }
+            else
+            {
+                model.FilePath = "Default.txt";
+            }
+            HomeworkDone addedHomework = _mapper.Map<HomeworkDoneDTO, HomeworkDone>(model);
+            
+            await _homeworkDoneRepo.Insert(addedHomework);
             await _homeworkDoneRepo.Save();
+
+            //await _homeworkDoneRepo.Insert(_mapper.Map<HomeworkDone>(model));
+            //await _homeworkDoneRepo.Save();
         }
 
         public async Task Delete(int id)

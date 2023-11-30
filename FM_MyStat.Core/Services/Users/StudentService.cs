@@ -156,6 +156,22 @@ namespace FM_MyStat.Core.Services.Users
             }
             return new ServiceResponse<EditStudentDTO, object>(response.Success, response.Message, errors:response.Errors);
         }
+
+        public async Task<ServiceResponse<Student, object>> GetEditUserIdAsync(string Id)
+        {
+            ServiceResponse<EditUserDTO, object> response = await this._userService.GetEditUserDtoByIdAsync(Id);
+            if (response.Success)
+            {
+                Student? student = await _studentRepo.GetItemBySpec(new StudentSpecification.GetByAppUserId(response.Payload.Id));
+                if (student != null)
+                {
+                    return new ServiceResponse<Student, object>(true, "", payload: student);
+                }
+                return new ServiceResponse<Student, object>(false, "", errors: new object[] { "Student not found" });
+            }
+            return new ServiceResponse<Student, object>(response.Success, response.Message, errors: response.Errors);
+        }
+
         public async Task<ServiceResponse<DeleteUserDTO, object>> GetDeleteUserDtoByIdAsync(string Id) => await this._userService.GetDeleteUserDtoByIdAsync(Id);
 
         public async Task<ServiceResponse<DashboardStudentInfo, object>> GetDashboardStudentInfo(string Id)
