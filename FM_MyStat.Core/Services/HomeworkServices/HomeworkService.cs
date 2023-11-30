@@ -157,13 +157,13 @@ namespace FM_MyStat.Core.Services.HomeworkServices
 
         public async Task Update(CreateHomeworkDTO model)
         {
-            var currentPost = await _homeworkRepo.GetByID(model.Id);
-            if (model.File.Count > 0)
+            var currentHomework = await _homeworkRepo.GetByID(model.Id);
+            if (model.File != null)
             {
                 string webPathRoot = _webHostEnvironment.WebRootPath;
                 string upload = webPathRoot + _configuration.GetValue<string>("FileSettings:FilePath");
 
-                string existingFilePath = Path.Combine(upload, currentPost.PathFile);
+                string existingFilePath = Path.Combine(upload, currentHomework.PathFile);
 
                 if (File.Exists(existingFilePath) && model.PathFile != "Default.png")
                 {
@@ -182,11 +182,9 @@ namespace FM_MyStat.Core.Services.HomeworkServices
             }
             else
             {
-                model.PathFile = currentPost.PathFile;
+                model.PathFile = currentHomework.PathFile;
             }
             var homeworkEntity = _mapper.Map<Homework>(model);
-            homeworkEntity.Lesson = null;
-            homeworkEntity.Group = null;
             await _homeworkRepo.Update(homeworkEntity);
             await _homeworkRepo.Save();
 
