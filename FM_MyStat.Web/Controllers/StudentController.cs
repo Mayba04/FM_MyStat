@@ -160,10 +160,17 @@ namespace FM_MyStat.Web.Controllers
             return View(homeworks);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> SubmitHomework()
         {
             return View();
         }
+
+       
+
+
+
         #region Profile page
         [Authorize(Roles = "Student")]
         public async Task<IActionResult> Profile(string Id)

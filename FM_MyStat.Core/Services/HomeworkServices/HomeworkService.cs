@@ -11,6 +11,7 @@ using FM_MyStat.Core.Entities.Users;
 using FM_MyStat.Core.Interfaces;
 using FM_MyStat.Core.Services.Users;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -217,6 +218,33 @@ namespace FM_MyStat.Core.Services.HomeworkServices
             //await _homeworkRepo.Save();
         }
 
-       
+        public async Task<(byte[] fileContents, string contentType, string fileName)> DownloadHomeworkFileAsync(int homeworkId)
+        {
+            var homework = await _homeworkRepo.GetByID(homeworkId);
+            if (homework == null)
+            {
+                return (null, null, null); 
+            }
+
+            string webPathRoot = _webHostEnvironment.WebRootPath;
+            string upload = webPathRoot + _configuration.GetValue<string>("FileSettings:FilePath");
+
+            string filePath = Path.Combine(_webHostEnvironment.WebRootPath, upload, homework.PathFile);
+
+            filePath = Path.GetFullPath(filePath);
+
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                return (null, null, null); 
+            }
+
+            byte[] fileContents = await System.IO.File.ReadAllBytesAsync(filePath);
+            string contentType = "application/octet-stream"; 
+            string fileName = Path.GetFileName(filePath);
+
+            return (fileContents, contentType, fileName);
+        }
+
     }
 }
