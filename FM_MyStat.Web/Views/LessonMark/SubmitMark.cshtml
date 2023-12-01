@@ -4,48 +4,40 @@
     Layout = "~/Views/Shared/_TeacherLayout.cshtml";
 }
 
-
 <h2>Lesson Marks</h2>
 <div class="content-wrapper">
     <div class="container">
         <div class="container-fluid">
-            <tr>
-                <form asp-controller="LessonMark" asp-action="SubmitMark" method="post">
-                    <table class="table">
-                        <thead>
+            <form asp-controller="LessonMark" asp-action="SubmitMark" method="post">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Ім'я</th>
+                            <th>Прізвище</th>
+                            <th>По батькові</th>
+                            <th>Оцінка</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.Count; i++)
+                        {
                             <tr>
-                                <th>First Name</th>
-                                <th>Surname</th>
-                                <th>Last Name</th>
-                                <th>Mark</th>
+                                <td>@Model[i].FirstName</td>
+                                <td>@Model[i].SurName</td>
+                                <td>@Model[i].LastName</td>
+                                <td>
+                                    @Html.DropDownListFor(m => m[i].Mark, new SelectList(Enumerable.Range(1, 12)), htmlAttributes: new { @class = "form-control" })
+                                    <input type="hidden" asp-for="@Model[i].LessonMarkId" />
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @for (int i = 0; i < Model.Count; i++)
-                            {
-                                <tr>
-                                    <td>@Model[i].FirstName</td>
-                                    <td>@Model[i].SurName</td>
-                                    <td>@Model[i].LastName</td>
-                                    <td>
-                                        <select class="form-control" asp-for="@Model[i].Mark" name="@Model[@i].Mark">
-                                            @for (int mark = 1; mark <= 12; mark++)
-                                            {
-                                                <option value="@mark">@mark</option>
-                                            }
-                                        </select>
-                                        <input type="hidden" id="@Model[@i].LessonMarkId" name="@Model[@i].LessonMarkId" value="@Model[i].LessonMarkId" />
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+                        }
+                    </tbody>
+                </table>
 
-                    <div class="card-footer">
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </div>
-                </form>
-            </tr>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Зберегти</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
