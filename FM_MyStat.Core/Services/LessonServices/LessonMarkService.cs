@@ -97,22 +97,9 @@ namespace FM_MyStat.Core.Services.LessonServices
             await _lessonsMarkRepo.Save();
         }
 
-        public async Task AddGrade(LessonMarkDTO model)
-        {
-            var lesson = _lessonRepo.GetByID(model.LessonId).Result;
-            var student = _studentRepo.GetByID(model.StudentId).Result;
-
-            var lessonMarkEntity = _mapper.Map<LessonMark>(model);
-            await _lessonsMarkRepo.Insert(lessonMarkEntity);
-            await _lessonsMarkRepo.Save();
-
-            await UpdateStudentRating(model.StudentId);
-        }
-
         private async Task UpdateStudentRating(int studentId)
         {
             var lessonMarks = await _lessonsMarkRepo.GetListBySpec(new LessonsMarkSpecification.GetByStudentId(studentId));
-
             if (lessonMarks.Any())
             {
                 double overallRating = lessonMarks.Average(mark => mark.Mark);
@@ -130,6 +117,46 @@ namespace FM_MyStat.Core.Services.LessonServices
         {
             var students = await _studentRepo.GetAll();
             return _mapper.Map<List<StudentDTO>>(students);
+        }
+
+        public async Task<List<StudentMarkDTO>> GetAllStudentsByLesson(int lessonId)
+        {
+            Lesson lesson = await _lessonRepo.GetByID(lessonId);
+            IEnumerable<Student> students = await _studentRepo.GetListBySpec(new StudentSpecification.GetByGroupId(lesson.GroupId));
+            List<StudentMarkDTO> studentsList = students.Select(p => _mapper.Map<StudentMarkDTO>(p)).ToList();
+            for (int i = 0; i < studentsList.Count(); i++)
+            {
+                LessonMark lessonMark = await _lessonsMarkRepo.GetItemBySpec(new LessonsMarkSpecification.GetByLessonId(lessonId, (int)studentsList[i].StudentId));
+                if (lessonMark == null)
+                {
+                    LessonMark lessonMark1 = new LessonMark();
+                    lessonMark1.LessonId = lessonId;
+                    lessonMark1.StudentId = (int)studentsList[i].StudentId;
+                    lessonMark1.Mark = 1;
+                    await _lessonsMarkRepo.Insert(lessonMark1);
+                    await _lessonsMarkRepo.Save();
+                    studentsList[i].Mark = 0;
+                    studentsList[i].LessonMarkId = lessonMark.Id;
+                }
+                else
+                {
+                    studentsList[i].Mark = lessonMark.Mark;
+                    studentsList[i].LessonMarkId = lessonMark.Id;
+                }
+            }
+            return studentsList;
+        }
+
+        public async Task SetMarksStudents(List<StudentMarkDTO> studentMarks)
+        {
+            foreach (StudentMarkDTO studentMark in studentMarks)
+            {
+                LessonMark lessonMark = await _lessonsMarkRepo.GetByID(studentMark.LessonMarkId);
+                lessonMark.Mark = studentMark.Mark;
+                await _lessonsMarkRepo.Update(lessonMark);
+                await _lessonsMarkRepo.Save();
+                await UpdateStudentRating((int)studentMark.StudentId);
+            }
         }
     }
 }

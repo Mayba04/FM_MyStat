@@ -1,8 +1,8 @@
-﻿@using FM_MyStat.Core.DTOs.LessonsDTO.LessonMark;
-@using FM_MyStat.Core.DTOs.UsersDTO.Student;
-@using FM_MyStat.Web.Models.ViewModels;
-@model LessonMarksVM;
-
+﻿@* @using FM_MyStat.Core.DTOs.UsersDTO.Student;
+@model List<StudentMarkDTO>;
+@{
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+}
 
 
 <h2>Lesson Marks</h2>
@@ -17,7 +17,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var student in Model.students)
+        @foreach (var student in Model)
         {
             <tr>
                 <td>@student.FirstName</td>
@@ -72,4 +72,4 @@
             });
         });
     </script>
-}
+} *@

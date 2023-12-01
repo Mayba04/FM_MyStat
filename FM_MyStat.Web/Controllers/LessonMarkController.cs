@@ -1,5 +1,6 @@
 ﻿using FM_MyStat.Core.DTOs.LessonsDTO.LessonMark;
 using FM_MyStat.Core.DTOs.LessonsDTO.Lessons;
+using FM_MyStat.Core.DTOs.UsersDTO.Student;
 using FM_MyStat.Core.Interfaces;
 using FM_MyStat.Core.Services.LessonServices;
 using FM_MyStat.Web.Models.ViewModels;
@@ -20,40 +21,20 @@ namespace FM_MyStat.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var viewModel = new LessonMarksVM
-            {
-                students = await _lessonMarkService.GetAllStudents(),
-                mark = new LessonMarkDTO(),
-                lesson = new LessonDTO()
-            };
-
-            return View(viewModel);
+            return View();
         }
 
         public async Task<IActionResult> SubmitMark(int Id)
         {
-            LessonMarksVM model = new LessonMarksVM()
-            {
-                students = await _lessonMarkService.GetAllStudents(),
-                mark = new LessonMarkDTO(),
-                lesson = new LessonDTO()
-            };
-            return View(model);
+            List<StudentMarkDTO> studentMarkDTO = await _lessonMarkService.GetAllStudentsByLesson(Id);
+            return View(studentMarkDTO);
         }
 
         [HttpPost]
-        public async Task<IActionResult> SubmitMark(LessonMarkDTO mark)
+        public async Task<IActionResult> SubmitMark(List<StudentMarkDTO> marks)
         {
-            try
-            {
-                await _lessonMarkService.AddGrade(mark);
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError(string.Empty, "An error occurred while submitting the mark.");
-                return View("Index");
-            }
+            await _lessonMarkService.SetMarksStudents(marks);
+            return RedirectToAction("GetAll","Lesson");
         }
     }
 }
