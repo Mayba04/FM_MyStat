@@ -18,6 +18,7 @@ namespace FM_MyStat.Core.DTOs.HomeworksDTO
         public int? Mark { get; set; }
         public string? Description { get; set; }
         public string? FilePath { get; set; }
+        public string? FullNameStudent { get; set; }
         public IFormFileCollection File { get; set; }
     }
 }

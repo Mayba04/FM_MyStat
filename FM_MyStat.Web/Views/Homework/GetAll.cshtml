@@ -65,6 +65,10 @@ else
                                         <th>Group</th>
                                         <th>Lesson</th>
                                         <th>PathFile</th>
+                                        @if (User.IsInRole("Teacher"))
+                                        {
+                                            <th>HomewoeorkDone</th>
+                                        }
                                         <th>Edit</th>
                                         <th>Delete</th>
                                     </tr>
@@ -79,6 +83,10 @@ else
                                             <td>@item.Group</td>
                                             <td>@item.Lesson</td>
                                             <td>@item.PathFile</td>
+                                            @if (User.IsInRole("Teacher"))
+                                            {
+                                                <td><a asp-controller="HomeworkDone" asp-action="Homeinspection" asp-route-id="@item.Id" class="btn btn-block btn-warning btn-sm">Home inspection</a></td>
+                                            }
                                             <td><a asp-controller="Homework" asp-action="Update" asp-route-id="@item.Id" class="btn btn-block btn-warning btn-sm">Edit</a></td>
                                             <td><a asp-controller="Homework" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-block btn-danger btn-sm">Delete</a></td>
                                         </tr>

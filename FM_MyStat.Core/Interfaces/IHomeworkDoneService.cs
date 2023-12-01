@@ -11,7 +11,7 @@ namespace FM_MyStat.Core.Interfaces
     public interface IHomeworkDoneService
     {
         Task<List<HomeworkDoneDTO>> GetAll();
-
+        Task<List<HomeworkDoneDTO>> GetAll(int homeworkId);
         Task<HomeworkDoneDTO?> Get(int id);
         Task<ServiceResponse> GetByName(HomeworkDoneDTO model);
         Task<HomeworkDoneDTO> GetByName(string NameDescription);

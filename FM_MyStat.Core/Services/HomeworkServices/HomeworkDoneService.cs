@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using FM_MyStat.Core.DTOs.HomeworksDTO;
 using FM_MyStat.Core.DTOs.HomeworksDTO.Homework;
+using FM_MyStat.Core.DTOs.UsersDTO.User;
 using FM_MyStat.Core.Entities.Homeworks;
 using FM_MyStat.Core.Entities.Lessons;
 using FM_MyStat.Core.Entities.Specifications;
+using FM_MyStat.Core.Entities.Users;
 using FM_MyStat.Core.Interfaces;
+using FM_MyStat.Core.Services.Users;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -20,15 +23,19 @@ namespace FM_MyStat.Core.Services.HomeworkServices
         private readonly IMapper _mapper;
         private readonly IRepository<HomeworkDone> _homeworkDoneRepo;
         private readonly IRepository<Homework> _homeworkRepo;
+        private readonly IRepository<Student> _studentRepo;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IConfiguration _configuration;
+        private readonly UserService _userService;
 
-        public HomeworkDoneService(IMapper mapper, IRepository<HomeworkDone> homeRepo, IWebHostEnvironment webHostEnvironment, IConfiguration configuration)
+        public HomeworkDoneService(IMapper mapper, UserService userService, IRepository<HomeworkDone> homeRepo, IWebHostEnvironment webHostEnvironment, IConfiguration configuration, IRepository<Student> studentRepo)
         {
+            _userService = userService;
             _homeworkDoneRepo = homeRepo;
             _mapper = mapper;
             _webHostEnvironment = webHostEnvironment;
             _configuration = configuration;
+            _studentRepo = studentRepo;
         }
 
         public async Task Create(HomeworkDoneDTO model)
@@ -83,6 +90,29 @@ namespace FM_MyStat.Core.Services.HomeworkServices
             var result = await _homeworkDoneRepo.GetAll();
             return _mapper.Map<List<HomeworkDoneDTO>>(result);
         }
+
+        public async Task<List<HomeworkDoneDTO>> GetAll(int homeworkId)
+        {
+            var result = await _homeworkDoneRepo.GetAll();
+            var filteredHomeworkDones = result.Where(h => h.HomeworkId == homeworkId);
+            ServiceResponse<List<UserDTO>, object> serviceResponse = await this._userService.GetAllAsync();
+            List<UserDTO> userDTOs = serviceResponse.Payload.Where(u => u.Role == "Student").ToList();
+            
+            var map = _mapper.Map<List<HomeworkDoneDTO>>(filteredHomeworkDones);
+            foreach (var item in map)
+            {
+                foreach (var item2 in userDTOs)
+                {
+                    if (item.StudentId == item2.StudentId)
+                    {
+                        item.FullNameStudent = $"{item2.FirstName} {item2.SurName} {item2.LastName}";
+                    }
+                }
+            }
+
+            return map;
+        }
+
 
         public async Task<ServiceResponse> GetByName(HomeworkDoneDTO model)
         {
