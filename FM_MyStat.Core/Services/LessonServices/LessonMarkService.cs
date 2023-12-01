@@ -150,6 +150,7 @@ namespace FM_MyStat.Core.Services.LessonServices
                 studentsList[i].FirstName = (string)app.Payload.FirstName;
                 studentsList[i].LastName = (string)app.Payload.LastName;
                 studentsList[i].SurName = (string)app.Payload.SurName;
+                studentsList[i].StudentId = (int)app.Payload.StudentId;
             }
             return studentsList;
         }
@@ -162,7 +163,7 @@ namespace FM_MyStat.Core.Services.LessonServices
                 lessonMark.Mark = studentMark.Mark;
                 await _lessonsMarkRepo.Update(lessonMark);
                 await _lessonsMarkRepo.Save();
-                await UpdateStudentRating((int)studentMark.StudentId);
+                await UpdateStudentRating(lessonMark.StudentId);
             }
         }
     }
