@@ -25,7 +25,7 @@ pipeline  {
             steps {
                 echo 'Creating docker image ...'
                 dir('.'){
-                    sh "docker build -t pashtetmpi/topnews . "
+                    sh "docker build -t pashtetmpi/fmmystat . "
                 }
             }
         }
@@ -43,7 +43,7 @@ pipeline  {
             steps {
                 echo " ============== pushing image =================="
                 sh '''
-                docker push pashtetmpi/topnews:latest
+                docker push pashtetmpi/fmmystat:latest
                 '''
             }
         }
@@ -51,7 +51,7 @@ pipeline  {
             steps {
                 echo " ============== pushing image =================="
                 sh '''
-                docker run -d --name TopNews -p 80:80 pashtetmpi/topnews:latest
+                docker run -d --name TopNews -p 80:80 pashtetmpi/fmmystat:latest
                 '''
             }
         }
