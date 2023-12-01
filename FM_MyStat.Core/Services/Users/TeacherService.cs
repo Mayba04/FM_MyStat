@@ -2,6 +2,7 @@
 using FM_MyStat.Core.DTOs.GrouopsDTO;
 using FM_MyStat.Core.DTOs.SubjectsDTO;
 using FM_MyStat.Core.DTOs.UsersDTO.Admin;
+using FM_MyStat.Core.DTOs.UsersDTO.Student;
 using FM_MyStat.Core.DTOs.UsersDTO.Teacher;
 using FM_MyStat.Core.DTOs.UsersDTO.User;
 using FM_MyStat.Core.Entities;
@@ -23,13 +24,17 @@ namespace FM_MyStat.Core.Services.Users
         private readonly IRepository<TeacherSubject> _teacherSubjectRepo;
         private readonly IMapper _mapper;
         private readonly IRepository<Subject> _subjectRepo;
+        private readonly IRepository<Group> _groupRepo;
+        private readonly IRepository<Student> _studentRepo;
 
         public TeacherService(
                 UserService userService,
                 IRepository<Teacher> teacherRepo,
                 IMapper mapper,
                 IRepository<TeacherSubject> teacherSubjectRepo,
-                IRepository<Subject> subjectRepo
+                IRepository<Subject> subjectRepo,
+                IRepository<Group> groupRepo,
+                IRepository<Student> studentRepo
             )
         {
             this._userService = userService;
@@ -37,6 +42,8 @@ namespace FM_MyStat.Core.Services.Users
             this._mapper = mapper;
             this._teacherSubjectRepo = teacherSubjectRepo;
             this._subjectRepo = subjectRepo;
+            this._groupRepo = groupRepo;
+            this._studentRepo = studentRepo;
         }
         #region SignIn, SignOut
         public async Task<ServiceResponse> LoginTeacherAsync(UserLoginDTO model)
@@ -159,5 +166,38 @@ namespace FM_MyStat.Core.Services.Users
             }
             await _teacherSubjectRepo.Save();
         }
+
+        #region Info for teacher
+        public async Task<List<StudentDTO>> GetStudentsByTeacherId(int Id)
+        {
+            Teacher teacher = await _teacherRepo.GetByID(Id);
+            IEnumerable<Group> groups = await _groupRepo.GetListBySpec(new GroupSpecification.GetByteacherId(teacher.Id));
+            IEnumerable<Student> students = await _studentRepo.GetListBySpec(new StudentSpecification.GetByManyGroupId(groups.Select(g => g.Id)));
+            List<StudentDTO> result = new List<StudentDTO>();
+            foreach (var student in students)
+            {
+                ServiceResponse<AppUser, string> user = await _userService.GetAppUserById(student.AppUserId);
+                StudentDTO st = _mapper.Map<AppUser, StudentDTO>(user.Payload);
+                st.Rating = student.Rating;
+                Group? group = await _groupRepo.GetByID(student.GroupId);
+                st.Group = (group == null) ? "GROUP NOT FOUND" : group.Name;
+                result.Add(st);
+            }
+            return result;
+        }
+        public async Task<List<GroupDTO>> GetGroupsByTeacherId(int Id)
+        {
+            Teacher teacher = await _teacherRepo.GetByID(Id);
+            IEnumerable<Group> groups = await _groupRepo.GetListBySpec(new GroupSpecification.GetByteacherId(teacher.Id));
+            return groups.Select(g => _mapper.Map<GroupDTO>(g)).ToList();
+        }
+        public async Task<List<SubjectDTO>> GetSubjectsByTeacherId(int Id)
+        {
+            Teacher teacher = await _teacherRepo.GetByID(Id);
+            IEnumerable<TeacherSubject> teacherSubjects = await _teacherSubjectRepo.GetListBySpec(new TeacherSubjectSpecification.GetByTeacherId(teacher.Id));
+            IEnumerable<Subject> subjects = await _subjectRepo.GetListBySpec(new SubjectSpecification.GetByManyId(teacherSubjects.Select(ts => ts.SubjectId)));
+            return subjects.Select(s => _mapper.Map<SubjectDTO>(s)).ToList();
+        }
+        #endregion
     }
 }

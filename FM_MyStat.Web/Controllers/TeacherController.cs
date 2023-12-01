@@ -1,6 +1,8 @@
 ﻿using FluentValidation.Results;
+using FM_MyStat.Core.DTOs.GrouopsDTO;
 using FM_MyStat.Core.DTOs.SubjectsDTO;
 using FM_MyStat.Core.DTOs.UsersDTO.Admin;
+using FM_MyStat.Core.DTOs.UsersDTO.Student;
 using FM_MyStat.Core.DTOs.UsersDTO.Teacher;
 using FM_MyStat.Core.DTOs.UsersDTO.User;
 using FM_MyStat.Core.Entities.Users;
@@ -15,11 +17,13 @@ namespace FM_MyStat.Web.Controllers
 {
     public class TeacherController : Controller
     {
+        private readonly UserService _userService;
         private readonly TeacherService _teacherService;
 
-        public TeacherController(TeacherService teacherService)
+        public TeacherController(TeacherService teacherService, UserService userService)
         {
             this._teacherService = teacherService;
+            this._userService = userService;
         }
         [Authorize(Roles = "Teacher")]
         public IActionResult Index()
@@ -219,6 +223,28 @@ namespace FM_MyStat.Web.Controllers
         }
         #endregion
 
-
+        #region Info for teacher
+        [Authorize(Roles = "Teacher")]
+        public async Task<IActionResult> Students()
+        {
+            ServiceResponse<UserDTO, object> response = await _userService.GetLoggedUser(HttpContext.User);
+            List<StudentDTO> students = await _teacherService.GetStudentsByTeacherId((int)response.Payload.TeacherId);
+            return View(students);
+        }
+        [Authorize(Roles = "Teacher")]
+        public async Task<IActionResult> Groups()
+        {
+            ServiceResponse<UserDTO, object> response = await _userService.GetLoggedUser(HttpContext.User);
+            List<GroupDTO> groups = await _teacherService.GetGroupsByTeacherId((int)response.Payload.TeacherId);
+            return View(groups);
+        }
+        [Authorize(Roles = "Teacher")]
+        public async Task<IActionResult> Subjects()
+        {
+            ServiceResponse<UserDTO, object> response = await _userService.GetLoggedUser(HttpContext.User);
+            List<SubjectDTO> subjects = await _teacherService.GetSubjectsByTeacherId((int)response.Payload.TeacherId);
+            return View(subjects);
+        }
+        #endregion
     }
 }
