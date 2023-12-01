@@ -6,6 +6,7 @@ using FM_MyStat.Core.Entities.Lessons;
 using FM_MyStat.Core.Entities.Specifications;
 using FM_MyStat.Core.Entities.Users;
 using FM_MyStat.Core.Interfaces;
+using FM_MyStat.Core.Services.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,13 +21,15 @@ namespace FM_MyStat.Core.Services.LessonServices
         private readonly IRepository<LessonMark> _lessonsMarkRepo;
         private readonly IRepository<Student> _studentRepo;
         private readonly IRepository<Lesson> _lessonRepo;
+        private readonly UserService _userService;
 
-        public LessonMarkService(IMapper mapper, IRepository<LessonMark> lessonMarkRepo, IRepository<Lesson> lessonRepo, IRepository<Student> studentRepo)
+        public LessonMarkService(UserService userService, IMapper mapper, IRepository<LessonMark> lessonMarkRepo, IRepository<Lesson> lessonRepo, IRepository<Student> studentRepo)
         {
             _lessonsMarkRepo = lessonMarkRepo;
             _mapper = mapper;
             _lessonRepo = lessonRepo;
             _studentRepo = studentRepo;
+            _userService = userService;
         }
 
         public async Task Create(CreateLessonMarkDTO model)
@@ -122,27 +125,31 @@ namespace FM_MyStat.Core.Services.LessonServices
         public async Task<List<StudentMarkDTO>> GetAllStudentsByLesson(int lessonId)
         {
             Lesson lesson = await _lessonRepo.GetByID(lessonId);
-            IEnumerable<Student> students = await _studentRepo.GetListBySpec(new StudentSpecification.GetByGroupId(lesson.GroupId));
+            List<Student> students = (await _studentRepo.GetListBySpec(new StudentSpecification.GetByGroupId(lesson.GroupId))).ToList();
             List<StudentMarkDTO> studentsList = students.Select(p => _mapper.Map<StudentMarkDTO>(p)).ToList();
             for (int i = 0; i < studentsList.Count(); i++)
             {
-                LessonMark lessonMark = await _lessonsMarkRepo.GetItemBySpec(new LessonsMarkSpecification.GetByLessonId(lessonId, (int)studentsList[i].StudentId));
+                ServiceResponse<AppUser, string> app = await _userService.GetAppUserById(students[i].AppUserId);
+                LessonMark lessonMark = await _lessonsMarkRepo.GetItemBySpec(new LessonsMarkSpecification.GetByLessonId(lessonId, (int)app.Payload.StudentId));
                 if (lessonMark == null)
                 {
                     LessonMark lessonMark1 = new LessonMark();
                     lessonMark1.LessonId = lessonId;
-                    lessonMark1.StudentId = (int)studentsList[i].StudentId;
+                    lessonMark1.StudentId = (int)app.Payload.StudentId;
                     lessonMark1.Mark = 1;
                     await _lessonsMarkRepo.Insert(lessonMark1);
                     await _lessonsMarkRepo.Save();
-                    studentsList[i].Mark = 0;
-                    studentsList[i].LessonMarkId = lessonMark.Id;
+                    studentsList[i].Mark = lessonMark1.Mark;
+                    studentsList[i].LessonMarkId = lessonMark1.Id;
                 }
                 else
                 {
                     studentsList[i].Mark = lessonMark.Mark;
                     studentsList[i].LessonMarkId = lessonMark.Id;
                 }
+                studentsList[i].FirstName = (string)app.Payload.FirstName;
+                studentsList[i].LastName = (string)app.Payload.LastName;
+                studentsList[i].SurName = (string)app.Payload.SurName;
             }
             return studentsList;
         }
