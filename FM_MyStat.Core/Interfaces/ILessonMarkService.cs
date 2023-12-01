@@ -20,6 +20,7 @@ namespace FM_MyStat.Core.Interfaces
         Task Update(EditLessonMarkDTO model);
         Task Delete(int id);
         Task<List<StudentDTO>> GetAllStudents();
-        Task AddGrade(LessonMarkDTO model);
+        Task SetMarksStudents(List<StudentMarkDTO> studentMarks);
+        Task<List<StudentMarkDTO>> GetAllStudentsByLesson(int lessonId);
     }
 }
