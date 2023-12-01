@@ -99,17 +99,14 @@ namespace FM_MyStat.Core.Services.LessonServices
 
         public async Task AddGrade(LessonMarkDTO model)
         {
-            // Check if the lesson and student exist
             var lesson = _lessonRepo.GetByID(model.LessonId).Result;
             var student = _studentRepo.GetByID(model.StudentId).Result;
 
-            // Add the lesson mark
             var lessonMarkEntity = _mapper.Map<LessonMark>(model);
-            _lessonsMarkRepo.Insert(lessonMarkEntity).Wait();
-            _lessonsMarkRepo.Save().Wait();
+            await _lessonsMarkRepo.Insert(lessonMarkEntity);
+            await _lessonsMarkRepo.Save();
 
-            // Update the student's overall rating
-            UpdateStudentRating(model.StudentId).Wait();
+            await UpdateStudentRating(model.StudentId);
         }
 
         private async Task UpdateStudentRating(int studentId)
@@ -131,8 +128,6 @@ namespace FM_MyStat.Core.Services.LessonServices
 
         public async Task<List<StudentDTO>> GetAllStudents()
         {
-            // Implement logic to retrieve a list of students from your repository
-            // For example:
             var students = await _studentRepo.GetAll();
             return _mapper.Map<List<StudentDTO>>(students);
         }
