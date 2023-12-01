@@ -150,5 +150,34 @@ namespace FM_MyStat.Core.Services.HomeworkServices
             await _homeworkDoneRepo.Update(_mapper.Map<HomeworkDone>(model));
             await _homeworkDoneRepo.Save();
         }
+
+        public async Task<(byte[] fileContents, string contentType, string fileName)> DownloadHomeworkFileAsync(int homeworkId)
+        {
+            var homework = await _homeworkDoneRepo.GetByID(homeworkId);
+            if (homework == null)
+            {
+                return (null, null, null);
+            }
+
+            string webPathRoot = _webHostEnvironment.WebRootPath;
+            string upload = webPathRoot + _configuration.GetValue<string>("FileSettings2:FilePath");
+
+            string filePath = Path.Combine(_webHostEnvironment.WebRootPath, upload, homework.FilePath);
+
+            filePath = Path.GetFullPath(filePath);
+
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                return (null, null, null);
+            }
+
+            byte[] fileContents = await System.IO.File.ReadAllBytesAsync(filePath);
+            string contentType = "application/octet-stream";
+            string fileName = Path.GetFileName(filePath);
+
+            return (fileContents, contentType, fileName);
+        }
+
     }
 }

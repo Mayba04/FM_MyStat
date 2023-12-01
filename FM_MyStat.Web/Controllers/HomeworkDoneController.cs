@@ -52,5 +52,18 @@ namespace FM_MyStat.Web.Controllers
             }
             return RedirectToAction(nameof(Homeinspection));
         }
+
+
+        public async Task<IActionResult> Download(int id)
+        {
+            var (fileContents, contentType, fileName) = await _homeworkDoneService.DownloadHomeworkFileAsync(id);
+
+            if (fileContents == null || contentType == null || fileName == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            return File(fileContents, contentType, fileName);
+        }
     }
 }

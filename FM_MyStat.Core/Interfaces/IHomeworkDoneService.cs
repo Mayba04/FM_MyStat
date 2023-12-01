@@ -18,5 +18,6 @@ namespace FM_MyStat.Core.Interfaces
         Task Create(HomeworkDoneDTO model);
         Task Update(HomeworkDoneDTO model);
         Task Delete(int id);
+        Task<(byte[] fileContents, string contentType, string fileName)> DownloadHomeworkFileAsync(int homeworkId);
     }
 }
