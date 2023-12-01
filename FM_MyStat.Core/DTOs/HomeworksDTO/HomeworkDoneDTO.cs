@@ -1,5 +1,6 @@
 ﻿using FM_MyStat.Core.Entities.Homeworks;
 using FM_MyStat.Core.Entities.Users;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -17,5 +18,6 @@ namespace FM_MyStat.Core.DTOs.HomeworksDTO
         public int? Mark { get; set; }
         public string? Description { get; set; }
         public string? FilePath { get; set; }
+        public IFormFileCollection File { get; set; }
     }
 }

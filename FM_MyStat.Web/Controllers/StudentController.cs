@@ -1,13 +1,16 @@
 using FluentValidation.Results;
 using FM_MyStat.Core.DTOs.GrouopsDTO;
+using FM_MyStat.Core.DTOs.HomeworksDTO;
 using FM_MyStat.Core.DTOs.HomeworksDTO.Homework;
 using FM_MyStat.Core.DTOs.UsersDTO.Admin;
 using FM_MyStat.Core.DTOs.UsersDTO.Student;
 using FM_MyStat.Core.DTOs.UsersDTO.User;
 using FM_MyStat.Core.Entities;
+using FM_MyStat.Core.Entities.Users;
 using FM_MyStat.Core.Interfaces;
 using FM_MyStat.Core.Services;
 using FM_MyStat.Core.Services.Users;
+using FM_MyStat.Core.Validation.Homework;
 using FM_MyStat.Core.Validation.User;
 using FM_MyStat.Web.Models.ViewModels;
 using FM_MyStat.Web.Models.ViewModels.Student;
@@ -23,11 +26,15 @@ namespace FM_MyStat.Web.Controllers
     {
         private readonly StudentService _studentService;
         private readonly IGroupService _groupService;
+        private readonly IHomeworkService _homeworkService;
+        private readonly IHomeworkDoneService _homeworkDoneService;
 
-        public StudentController(StudentService studentService, IGroupService groupService)
+        public StudentController(StudentService studentService, IGroupService groupService, IHomeworkService homeworkService, IHomeworkDoneService homeworkDoneService)
         {
             this._studentService = studentService;
             this._groupService = groupService;
+            this._homeworkService = homeworkService;
+            this._homeworkDoneService = homeworkDoneService;
         }
         public async Task<IActionResult> Index()
         {
@@ -154,77 +161,41 @@ namespace FM_MyStat.Web.Controllers
         public async Task<IActionResult> AllHomeworks()
         {
             var userId = ((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).FirstOrDefault();
-            List<HomeworkDTO> homeworks = new List<HomeworkDTO>();
-            homeworks.Add(new HomeworkDTO
-            {
-                Id = 1,
-                Title = "Math Assignment",
-                Description = "Solve problems 1 to 10",
-                GroupId = 101,
-                Group = "Group A",
-                LessonId = 201,
-                Lesson = "Mathematics"
-            });
-
-            homeworks.Add(new HomeworkDTO
-            {
-                Id = 2,
-                Title = "English Essay",
-                Description = "Write an essay on a chosen topic",
-                GroupId = 102,
-                Group = "Group B",
-                LessonId = 202,
-                Lesson = "English Literature"
-            });
-
-            homeworks.Add(new HomeworkDTO
-            {
-                Id = 3,
-                Title = "Science Experiment",
-                Description = "Conduct a simple experiment and write a report",
-                GroupId = 103,
-                Group = "Group C",
-                LessonId = 203,
-                Lesson = "Physics"
-            });
-            homeworks.Add(new HomeworkDTO
-            {
-                Id = 4,
-                Title = "History Research",
-                Description = "Research and write about a historical event",
-                GroupId = 104,
-                Group = "Group D",
-                LessonId = 204,
-                Lesson = "World History"
-            });
-            homeworks.Add(new HomeworkDTO
-            {
-                Id = 5,
-                Title = "Art Project",
-                Description = "Create a piece of art using your preferred medium",
-                GroupId = 105,
-                Group = "Group E",
-                LessonId = 205,
-                Lesson = "Visual Arts"
-            });
-
-            homeworks.Add(new HomeworkDTO
-            {
-                Id = 6,
-                Title = "Physical Education Challenge",
-                Description = "Complete a fitness challenge and track your progress",
-                GroupId = 106,
-                Group = "Group F",
-                LessonId = 206,
-                Lesson = "Physical Education"
-            });
+            var homeworks = await _homeworkService.GetAllByUserId(userId);
             return View(homeworks);
         }
 
-        public async Task<IActionResult> SubmitHomework()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SubmitHomework(HomeworkDoneDTO model)
         {
-            return View();
+            var userId = ((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).FirstOrDefault();
+            var student = await _studentService.GetEditUserIdAsync(userId);
+            model.StudentId = student.Payload.Id;
+            model.Description = "Homework";
+            var validator = new CreateHomeworkDoneValidation();
+            var validationResult = await validator.ValidateAsync(model);
+            if (validationResult.IsValid)
+            {
+                var groupTask = _homeworkDoneService.GetAll();
+                List<HomeworkDoneDTO> homeworksDone = await groupTask;
+                bool containsGroup = homeworksDone.Any(cat => cat.HomeworkId == model.HomeworkId && cat.StudentId == model.StudentId);
+                if (containsGroup)
+                {
+                    ViewBag.AuthError = "Such a homework already exists";
+                    return RedirectToAction(nameof(AllHomeworks));
+                }
+                await _homeworkDoneService.Create(model);
+                return RedirectToAction("Index", "Login");
+            }
+            ViewBag.AuthError = validationResult.Errors.FirstOrDefault();
+            return RedirectToAction(nameof(AllHomeworks));
         }
+
+        
+
+
+
         #region Profile page
         [Authorize(Roles = "Student")]
         public async Task<IActionResult> Profile(string Id)

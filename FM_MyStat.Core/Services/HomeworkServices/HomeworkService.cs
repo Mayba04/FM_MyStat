@@ -1,4 +1,4 @@
-﻿    using AutoMapper;
+﻿using AutoMapper;
 using FM_MyStat.Core.DTOs.GrouopsDTO;
 using FM_MyStat.Core.DTOs.HomeworksDTO.Homework;
 using FM_MyStat.Core.DTOs.LessonsDTO.Lessons;
@@ -11,13 +11,16 @@ using FM_MyStat.Core.Entities.Users;
 using FM_MyStat.Core.Interfaces;
 using FM_MyStat.Core.Services.Users;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Group = FM_MyStat.Core.Entities.Group;
 
 namespace FM_MyStat.Core.Services.HomeworkServices
 {
@@ -29,8 +32,9 @@ namespace FM_MyStat.Core.Services.HomeworkServices
         private readonly IRepository<Lesson> _lessonRepo;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IConfiguration _configuration;
+        private readonly StudentService _studentService;
 
-        public HomeworkService(IMapper mapper, IRepository<Homework> homeRepo, IRepository<Group> groupRepo, IRepository<Lesson> lessonRepo, IWebHostEnvironment webHostEnvironment, IConfiguration configuration)
+        public HomeworkService(StudentService studentService, IMapper mapper, IRepository<Homework> homeRepo, IRepository<Group> groupRepo, IRepository<Lesson> lessonRepo, IWebHostEnvironment webHostEnvironment, IConfiguration configuration)
         {
             _homeworkRepo = homeRepo;
             _mapper = mapper;
@@ -38,6 +42,7 @@ namespace FM_MyStat.Core.Services.HomeworkServices
             _lessonRepo = lessonRepo;
             _webHostEnvironment = webHostEnvironment;
             _configuration = configuration;
+            _studentService = studentService;
         }
 
         public async Task Create(CreateHomeworkDTO model)
@@ -105,6 +110,27 @@ namespace FM_MyStat.Core.Services.HomeworkServices
             var result = await _homeworkRepo.GetAll();
             List<HomeworkDTO> mappedHomeworks = result.Select(u => _mapper.Map<Homework, HomeworkDTO>(u)).ToList();
             for (int i = 0; i < result.Count(); i++)
+            {
+                Group? group = await _groupRepo.GetByID(mappedHomeworks[i].GroupId);
+                mappedHomeworks[i].Group = (group == null) ? "GROUP NOT FOUND" : group.Name;
+                Lesson? lesson = await _lessonRepo.GetByID(mappedHomeworks[i].LessonId);
+                mappedHomeworks[i].Lesson = (lesson == null) ? "LESSON NOT FOUND" : lesson.Name;
+            }
+            return mappedHomeworks;
+        }
+
+        public async Task<List<HomeworkDTO>> GetAllByUserId(string studentId)
+        {
+            var student = await _studentService.GetEditUserDtoByIdAsync(studentId);
+            if (student?.Payload?.GroupId == null)
+            {
+                return new List<HomeworkDTO>();
+            }
+            var allHomeworks = await _homeworkRepo.GetAll();
+            var filteredHomeworks = allHomeworks.Where(h => h.GroupId == student.Payload.GroupId).ToList();
+            
+            List<HomeworkDTO> mappedHomeworks = filteredHomeworks.Select(u => _mapper.Map<Homework, HomeworkDTO>(u)).ToList();
+            for (int i = 0; i < filteredHomeworks.Count(); i++)
             {
                 Group? group = await _groupRepo.GetByID(mappedHomeworks[i].GroupId);
                 mappedHomeworks[i].Group = (group == null) ? "GROUP NOT FOUND" : group.Name;
@@ -192,6 +218,33 @@ namespace FM_MyStat.Core.Services.HomeworkServices
             //await _homeworkRepo.Save();
         }
 
-       
+        public async Task<(byte[] fileContents, string contentType, string fileName)> DownloadHomeworkFileAsync(int homeworkId)
+        {
+            var homework = await _homeworkRepo.GetByID(homeworkId);
+            if (homework == null)
+            {
+                return (null, null, null); 
+            }
+
+            string webPathRoot = _webHostEnvironment.WebRootPath;
+            string upload = webPathRoot + _configuration.GetValue<string>("FileSettings:FilePath");
+
+            string filePath = Path.Combine(_webHostEnvironment.WebRootPath, upload, homework.PathFile);
+
+            filePath = Path.GetFullPath(filePath);
+
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                return (null, null, null); 
+            }
+
+            byte[] fileContents = await System.IO.File.ReadAllBytesAsync(filePath);
+            string contentType = "application/octet-stream"; 
+            string fileName = Path.GetFileName(filePath);
+
+            return (fileContents, contentType, fileName);
+        }
+
     }
 }

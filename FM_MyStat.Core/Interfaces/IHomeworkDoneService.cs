@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FM_MyStat.Core.Interfaces
 {
-    internal interface IHomeworkDoneService
+    public interface IHomeworkDoneService
     {
         Task<List<HomeworkDoneDTO>> GetAll();
 

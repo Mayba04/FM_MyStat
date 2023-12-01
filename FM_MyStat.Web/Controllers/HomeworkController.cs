@@ -8,8 +8,10 @@ using FM_MyStat.Core.Services.LessonServices;
 using FM_MyStat.Core.Validation.Group;
 using FM_MyStat.Core.Validation.Homework;
 using FM_MyStat.Core.Validation.Subject;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
 
 namespace FM_MyStat.Web.Controllers

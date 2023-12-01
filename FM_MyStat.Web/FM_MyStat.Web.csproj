@@ -28,6 +28,7 @@
 
 	<ItemGroup>
 	  <Folder Include="wwwroot\Filepath\homework\" />
+	  <Folder Include="wwwroot\Filepath\homeworkDone\" />
 	</ItemGroup>
 	
 </Project>

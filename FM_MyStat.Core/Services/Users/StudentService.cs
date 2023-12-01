@@ -156,6 +156,22 @@ namespace FM_MyStat.Core.Services.Users
             }
             return new ServiceResponse<EditStudentDTO, object>(response.Success, response.Message, errors:response.Errors);
         }
+
+        public async Task<ServiceResponse<Student, object>> GetEditUserIdAsync(string Id)
+        {
+            ServiceResponse<EditUserDTO, object> response = await this._userService.GetEditUserDtoByIdAsync(Id);
+            if (response.Success)
+            {
+                Student? student = await _studentRepo.GetItemBySpec(new StudentSpecification.GetByAppUserId(response.Payload.Id));
+                if (student != null)
+                {
+                    return new ServiceResponse<Student, object>(true, "", payload: student);
+                }
+                return new ServiceResponse<Student, object>(false, "", errors: new object[] { "Student not found" });
+            }
+            return new ServiceResponse<Student, object>(response.Success, response.Message, errors: response.Errors);
+        }
+
         public async Task<ServiceResponse<DeleteUserDTO, object>> GetDeleteUserDtoByIdAsync(string Id) => await this._userService.GetDeleteUserDtoByIdAsync(Id);
 
         public async Task<ServiceResponse<DashboardStudentInfo, object>> GetDashboardStudentInfo(string Id)
@@ -188,7 +204,19 @@ namespace FM_MyStat.Core.Services.Users
                     studentsingroup[i].SurName = dtouser.Payload.SurName;
                 }
             }
-            studentsingroup.Sort((user1, user2) => user1.Rating >= user2.Rating ? 1 : -1);
+            //studentsingroup.Sort((user1, user2) => user1.Rating >= user2.Rating ? 1 : -1);
+            studentsingroup.Sort((user1, user2) => user2.Rating.CompareTo(user1.Rating));
+
+            //for(int i = 0; i < studentsingroup.Count; i++)
+            //{
+            //    if (studentsingroup[i].FirstName == StudentInfo.FirstName && studentsingroup[i].SurName == StudentInfo.SurName && studentsingroup[i].LastName == StudentInfo.LastName)
+            //    {
+            //        dashboardStudentInfo.RatingGroup = i;
+            //    }
+            //}
+
+            dashboardStudentInfo.RatingGroup = studentsingroup.FindIndex(s => s.FirstName == StudentInfo.FirstName && s.SurName == StudentInfo.SurName && s.LastName == StudentInfo.LastName) + 1;
+            
             dashboardStudentInfo.RatingList = studentsingroup;
             // HomeworksAll
             IEnumerable<Homework> allHomeworks = await _homeworkRepo.GetListBySpec(new HomeworkSpecification.GetByGroupId(group.Id));
