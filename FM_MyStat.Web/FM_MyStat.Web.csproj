@@ -25,10 +25,5 @@
 	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 	  </Content>
 	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="wwwroot\Filepath\homeworkDone\" />
-	  <Folder Include="wwwroot\Filepath\homework\" />
-	</ItemGroup>
 	
 </Project>
