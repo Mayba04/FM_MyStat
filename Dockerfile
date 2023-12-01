@@ -11,7 +11,7 @@ COPY . .
 RUN dotnet restore "FM_MyStat.Web/FM_MyStat.Web.csproj"
 
 # Install the dotnet-ef tools
-RUN dotnet tool install -g dotnet-ef:7.0 AS base
+RUN dotnet tool install -g dotnet-ef@7.0
 ENV PATH $PATH:/root/.dotnet/tools
 
 RUN dotnet-ef database update --startup-project "FM_MyStat.Web" --project "FM_MyStat.Infrastructure/FM_MyStat.Infrastructure.csproj"
