@@ -1,4 +1,4 @@
-﻿@* @using FM_MyStat.Core.DTOs.UsersDTO.Student;
+﻿@using FM_MyStat.Core.DTOs.UsersDTO.Student;
 @model List<StudentMarkDTO>;
 @{
     Layout = "~/Views/Shared/_TeacherLayout.cshtml";
@@ -6,70 +6,46 @@
 
 
 <h2>Lesson Marks</h2>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>First Name</th>
-            <th>Surname</th>
-            <th>Last Name</th>
-            <th>Mark</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var student in Model)
-        {
+<div class="content-wrapper">
+    <div class="container">
+        <div class="container-fluid">
             <tr>
-                <td>@student.FirstName</td>
-                <td>@student.SurName</td>
-                <td>@student.LastName</td>
-                <td>
-                    <button class="btn btn-primary" data-toggle="modal" data-target="#markModal" data-student-id="@student.Id">Mark</button>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-<!-- Mark Modal -->
-<div class="modal fade" id="markModal" tabindex="-1" role="dialog" aria-labelledby="markModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="markModalLabel">Mark Student</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form method="post" asp-controller="LessonMarkController" asp-action="SubmitMark">
-                    <input type="hidden" id="studentId" name="mark.StudentId" />
-                    <input type="hidden" id="lessonId" name="mark.LessonId" />
-                    <div class="form-group">
-                        <label for="mark">Select Mark:</label>
-                        <select class="form-control" id="Mark" asp-for="mark.Mark" name="mark.Mark">
-                            @for (int i = 1; i <= 12; i++)
+                <form asp-controller="LessonMark" asp-action="SubmitMark" method="post">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>First Name</th>
+                                <th>Surname</th>
+                                <th>Last Name</th>
+                                <th>Mark</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.Count; i++)
                             {
-                                <option value="@i">@i</option>
+                                <tr>
+                                    <td>@Model[i].FirstName</td>
+                                    <td>@Model[i].SurName</td>
+                                    <td>@Model[i].LastName</td>
+                                    <td>
+                                        <select class="form-control" asp-for="@Model[i].Mark" name="@Model[@i].Mark">
+                                            @for (int mark = 1; mark <= 12; mark++)
+                                            {
+                                                <option value="@mark">@mark</option>
+                                            }
+                                        </select>
+                                        <input type="hidden" id="@Model[@i].LessonMarkId" name="@Model[@i].LessonMarkId" value="@Model[i].LessonMarkId" />
+                                    </td>
+                                </tr>
                             }
-                        </select>
+                        </tbody>
+                    </table>
+
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
-            </div>
+            </tr>
         </div>
     </div>
 </div>
-
-@section scripts
-    {
-    <script>
-        $(document).ready(function () {
-            $('#markModal').on('show.bs.modal', function (event) {
-                var button = $(event.relatedTarget);
-                var studentId = button.data('student-id');
-                $('#studentId').val(studentId);
-            });
-        });
-    </script>
-} *@
