@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace FM_MyStat.Infrastructure.Context
 {
-    internal class AppDBContext : IdentityDbContext
+    public class AppDBContext : IdentityDbContext
     {
         public AppDBContext() : base() { }
         public AppDBContext(DbContextOptions<AppDBContext> options) : base(options) { }

@@ -6,13 +6,16 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 string connStr = builder.Configuration.GetConnectionString("DefaultConnection");
 // Database context
-builder.Services.AddDbContext(connStr);
+builder.Services.AddDbContext<AppDBContext>(
+    o => o.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+    );
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
