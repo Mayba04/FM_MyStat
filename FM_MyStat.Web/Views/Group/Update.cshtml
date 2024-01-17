@@ -58,13 +58,28 @@
                                 }
                                 <form method="post" asp-controller="Group" asp-action="Update">
                                     <div class="card-body">
+                                        <div class="mb-3">
                                         <div class="form-group">
                                             <label>Group</label>
                                             <input type="text" asp-for="Name" name="name" class="form-control" placeholder="Group name">
                                             <span class="text-danger" asp-validation-for="Name"></span>
                                         </div>
                                     </div>
+                                    </div>
                                     <!-- /.card-body -->
+                                    <div class="card-body">
+                                    <div class="mb-3">
+                                            <label for="TeacherId">Teacher</label>
+                                            @if (ViewBag.TeacherList != null)
+                                            {
+                                                @Html.DropDownList("TeacherID", ViewBag.TeacherList as SelectList, "-- Select Teacher --", new { @class = "form-control" })
+                                            }
+                                            else
+                                            {
+                                                <p>Teacher list is not available.</p>
+                                            }
+                                        </div>
+                                        </div>
                                     <div class="card-footer">
                                         <button type="submit" class="btn btn-warning">Update</button>
                                     </div>
