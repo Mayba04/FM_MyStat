@@ -55,8 +55,29 @@ namespace FM_MyStat.Core.Services
 
         public async Task<List<GroupDTO>> GetAll()
         {
-            var result = await _groupRepo.GetAll();
-            return _mapper.Map<List<GroupDTO>>(result);
+            List<Group> result = (await _groupRepo.GetAll()).ToList();
+            List<GroupDTO> mappedTeachers = _mapper.Map<List<GroupDTO>>(result);
+            for (int i = 0; i < mappedTeachers.Count(); i++)
+            {
+                if(mappedTeachers[i].TeacherId == null)
+                {
+                    mappedTeachers[i].Teacher = "Teacher not found";
+                }
+                else
+                {
+                    Teacher? teacher = await _teacherRepo.GetByID(mappedTeachers[i].TeacherId);
+                    var appUser = await _userService.GetUserById(teacher.AppUserId);
+                    if (appUser.Success)
+                    {
+                        mappedTeachers[i].Teacher = $"{appUser.Payload.FirstName} {appUser.Payload.SurName} {appUser.Payload.LastName}";
+                    }
+                    else
+                    {
+                        mappedTeachers[i].Teacher = "Teacher not found";
+                    }
+                }
+            }
+            return mappedTeachers;
         }
 
         public async Task<ServiceResponse> GetByName(string name)
