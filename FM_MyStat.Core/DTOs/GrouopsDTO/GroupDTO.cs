@@ -15,5 +15,6 @@ namespace FM_MyStat.Core.DTOs.GrouopsDTO
         public int Id { get; set; }
         public string Name { get; set; }
         public int? TeacherId { get; set; }
+        public string Teacher { get;set; }
     }
 }

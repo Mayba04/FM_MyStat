@@ -85,6 +85,7 @@ namespace FM_MyStat.Web.Controllers
             var result = await _groupService.GetEditGroupDTO(id);
             if (result.Success)
             {
+                await LoadTeachers();
                 return View(result.Payload);
             }
             ViewBag.AuthError = result.Errors.FirstOrDefault();
