@@ -135,7 +135,7 @@ namespace FM_MyStat.Web.Controllers
                 ServiceResponse response = await _teacherService.CreateTeacherAsync(model);
                 if (response.Success)
                 {
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(GetAll));
                 }
                 ViewBag.CreateUserError = response.Errors.FirstOrDefault();
                 return View();
