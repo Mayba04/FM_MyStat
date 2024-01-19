@@ -35,10 +35,9 @@ namespace FM_MyStat.Web.Controllers
         private async Task LoadTeachers()
         {
             var serviceResponse = await _teacherService.GetAllAsync();
-            if (serviceResponse != null && serviceResponse.Success)
+            if (serviceResponse.Success)
             {
-                List<TeacherDTO> result = serviceResponse.Payload;
-                var teacherSelectList = result.Select(t => new SelectListItem
+                var teacherSelectList = serviceResponse.Payload.Select(t => new SelectListItem
                 {
                     Value = t.TeacherId.ToString(), 
                     Text = $"{t.FirstName} {t.SurName} {t.LastName}"
