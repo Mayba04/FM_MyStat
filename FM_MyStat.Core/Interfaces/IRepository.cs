@@ -1,6 +1,8 @@
 ﻿using Ardalis.Specification;
+using FM_MyStat.Core.DTOs.UsersDTO.User;
 using FM_MyStat.Core.Entities.Specifications;
 using FM_MyStat.Core.Entities.Users;
+using FM_MyStat.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
