@@ -3,6 +3,7 @@ using FM_MyStat.Core.DTOs.UsersDTO.Student;
 using FM_MyStat.Core.DTOs.UsersDTO.User;
 using FM_MyStat.Core.Entities;
 using FM_MyStat.Core.Entities.Homeworks;
+using FM_MyStat.Core.Entities.Lessons;
 using FM_MyStat.Core.Entities.Specifications;
 using FM_MyStat.Core.Entities.Users;
 using FM_MyStat.Core.Interfaces;
@@ -23,6 +24,7 @@ namespace FM_MyStat.Core.Services.Users
         private readonly IRepository<Homework> _homeworkRepo;
         private readonly IMapper _mapper;
         private readonly IRepository<HomeworkDone> _homeworkDoneRepo;
+        private readonly IRepository<LessonMark> _lessonsMarkRepo;
 
         public StudentService(
                 UserService userService,
@@ -30,7 +32,8 @@ namespace FM_MyStat.Core.Services.Users
                 IMapper mapper,
                 IRepository<Group> groupRepo,
                 IRepository<Homework> homeworkRepo,
-                IRepository<HomeworkDone> homeworkDoneRepo
+                IRepository<HomeworkDone> homeworkDoneRepo,
+                IRepository<LessonMark> lessonMarkRepo
             )
         {
             this._userService = userService;
@@ -39,6 +42,8 @@ namespace FM_MyStat.Core.Services.Users
             this._groupRepo = groupRepo;
             this._homeworkRepo = homeworkRepo;
             this._homeworkDoneRepo = homeworkDoneRepo;
+            this._lessonsMarkRepo = lessonMarkRepo;
+
         }
         #region SignIn, SignOut
         public async Task<ServiceResponse> LoginStudentAsync(UserLoginDTO model)
@@ -229,6 +234,24 @@ namespace FM_MyStat.Core.Services.Users
             // HomeworksOnInspection
             dashboardStudentInfo.HomeworksOnInspection = 0;
             return new ServiceResponse<DashboardStudentInfo, object>(true, "", payload: dashboardStudentInfo);
+        }
+
+        public async Task UpdateStudentRating(int studentId)
+        {
+            var lessonMarks = await _lessonsMarkRepo.GetListBySpec(new LessonsMarkSpecification.GetByStudentId(studentId));
+            var homeworkMarks = await _homeworkDoneRepo.GetListBySpec(new HomeworkDoneSpecification.GetByStudentId(studentId));
+            if (lessonMarks.Any() || homeworkMarks.Any())
+            {
+                double overallRating = lessonMarks.Sum(mark => mark.Mark);
+                double markHomework = (double)homeworkMarks.Sum(mark => mark.Mark);
+                var student = await _studentRepo.GetByID(studentId);
+                if (student != null)
+                {
+                    student.Rating = Convert.ToInt32(overallRating + markHomework);
+                    await _studentRepo.Update(student);
+                    await _studentRepo.Save();
+                }
+            }
         }
     }
 }

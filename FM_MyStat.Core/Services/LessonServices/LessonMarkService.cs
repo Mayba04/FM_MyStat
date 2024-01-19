@@ -2,6 +2,7 @@
 using FM_MyStat.Core.DTOs.LessonsDTO.LessonMark;
 using FM_MyStat.Core.DTOs.LessonsDTO.Lessons;
 using FM_MyStat.Core.DTOs.UsersDTO.Student;
+using FM_MyStat.Core.Entities.Homeworks;
 using FM_MyStat.Core.Entities.Lessons;
 using FM_MyStat.Core.Entities.Specifications;
 using FM_MyStat.Core.Entities.Users;
@@ -22,14 +23,16 @@ namespace FM_MyStat.Core.Services.LessonServices
         private readonly IRepository<Student> _studentRepo;
         private readonly IRepository<Lesson> _lessonRepo;
         private readonly UserService _userService;
+        private readonly StudentService _studentService;
 
-        public LessonMarkService(UserService userService, IMapper mapper, IRepository<LessonMark> lessonMarkRepo, IRepository<Lesson> lessonRepo, IRepository<Student> studentRepo)
+        public LessonMarkService(UserService userService, StudentService studentService,  IMapper mapper, IRepository<LessonMark> lessonMarkRepo, IRepository<Lesson> lessonRepo, IRepository<Student> studentRepo)
         {
             _lessonsMarkRepo = lessonMarkRepo;
             _mapper = mapper;
             _lessonRepo = lessonRepo;
             _studentRepo = studentRepo;
             _userService = userService;
+            _studentService = studentService;
         }
 
         public async Task Create(CreateLessonMarkDTO model)
@@ -100,22 +103,6 @@ namespace FM_MyStat.Core.Services.LessonServices
             await _lessonsMarkRepo.Save();
         }
 
-        private async Task UpdateStudentRating(int studentId)
-        {
-            var lessonMarks = await _lessonsMarkRepo.GetListBySpec(new LessonsMarkSpecification.GetByStudentId(studentId));
-            if (lessonMarks.Any())
-            {
-                double overallRating = lessonMarks.Average(mark => mark.Mark);
-                var student = await _studentRepo.GetByID(studentId);
-                if (student != null)
-                {
-                    student.Rating = Convert.ToInt32(overallRating);
-                    await _studentRepo.Update(student);
-                    await _studentRepo.Save();
-                }
-            }
-        }
-
         public async Task<List<StudentDTO>> GetAllStudents()
         {
             var students = await _studentRepo.GetAll();
@@ -163,7 +150,7 @@ namespace FM_MyStat.Core.Services.LessonServices
                 lessonMark.Mark = studentMark.Mark;
                 await _lessonsMarkRepo.Update(lessonMark);
                 await _lessonsMarkRepo.Save();
-                await UpdateStudentRating(lessonMark.StudentId);
+                await _studentService.UpdateStudentRating(lessonMark.StudentId);
             }
         }
     }

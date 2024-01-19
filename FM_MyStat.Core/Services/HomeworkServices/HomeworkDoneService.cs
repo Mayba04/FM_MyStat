@@ -23,19 +23,19 @@ namespace FM_MyStat.Core.Services.HomeworkServices
         private readonly IMapper _mapper;
         private readonly IRepository<HomeworkDone> _homeworkDoneRepo;
         private readonly IRepository<Homework> _homeworkRepo;
-        private readonly IRepository<Student> _studentRepo;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IConfiguration _configuration;
         private readonly UserService _userService;
+        private readonly StudentService _studentService;
 
-        public HomeworkDoneService(IMapper mapper, UserService userService, IRepository<HomeworkDone> homeRepo, IWebHostEnvironment webHostEnvironment, IConfiguration configuration, IRepository<Student> studentRepo)
+        public HomeworkDoneService(IMapper mapper, UserService userService, StudentService studentService, IRepository<HomeworkDone> homeRepo, IWebHostEnvironment webHostEnvironment, IConfiguration configuration, IRepository<Student> studentRepo)
         {
             _userService = userService;
             _homeworkDoneRepo = homeRepo;
             _mapper = mapper;
             _webHostEnvironment = webHostEnvironment;
             _configuration = configuration;
-            _studentRepo = studentRepo;
+            _studentService = studentService;
         }
 
         public async Task Create(HomeworkDoneDTO model)
@@ -149,6 +149,7 @@ namespace FM_MyStat.Core.Services.HomeworkServices
         {
             await _homeworkDoneRepo.Update(_mapper.Map<HomeworkDone>(model));
             await _homeworkDoneRepo.Save();
+            await _studentService.UpdateStudentRating(model.StudentId);
         }
 
         public async Task<(byte[] fileContents, string contentType, string fileName)> DownloadHomeworkFileAsync(int homeworkId)
