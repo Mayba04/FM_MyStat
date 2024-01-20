@@ -155,7 +155,7 @@ namespace FM_MyStat.Web.Controllers
             }
             ViewBag.AuthError = validationResult.Errors.FirstOrDefault();
             await LoadGroups();
-            return RedirectToAction(nameof(Edit));
+            return View(nameof(Edit));
         }
         #endregion
         public async Task<IActionResult> AllHomeworks()
