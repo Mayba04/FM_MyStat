@@ -12,10 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 string connStr = builder.Configuration.GetConnectionString("DefaultConnection");
-// Database context
+//Database context
 builder.Services.AddDbContext<AppDBContext>(
     o => o.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
     );
+//builder.Services.AddDbContext(connStr);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

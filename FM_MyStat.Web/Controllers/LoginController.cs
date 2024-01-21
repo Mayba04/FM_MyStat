@@ -50,6 +50,7 @@ namespace FM_MyStat.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(UserLoginDTO model)
         {
+            model.RememberMe = true;
             var validator = new UserLoginValidation();
             var validationResult = validator.Validate(model);
             if (!validationResult.IsValid)
