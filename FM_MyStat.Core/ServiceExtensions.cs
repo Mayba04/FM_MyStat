@@ -31,6 +31,7 @@ namespace FM_MyStat.Core
             services.AddScoped<IHomeworkDoneService,HomeworkDoneService>();
             services.AddScoped<ISubjectService, SubjectService>();
             services.AddScoped<IGroupService, GroupService>();
+            services.AddScoped<INewsService, NewsService>();
         }
         public static void AddMapping(this IServiceCollection services)
         {
@@ -44,6 +45,7 @@ namespace FM_MyStat.Core
             services.AddAutoMapper(typeof(AutoMapperGroupProfile));
             services.AddAutoMapper(typeof(AutoMapperLessons));
             services.AddAutoMapper(typeof(AutoMapperLessonMark));
+            services.AddAutoMapper(typeof(AutoMapperNewsProfile));
         }
     }
 }
