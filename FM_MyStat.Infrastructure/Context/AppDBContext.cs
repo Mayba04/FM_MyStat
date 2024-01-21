@@ -32,6 +32,7 @@ namespace FM_MyStat.Infrastructure.Context
         public DbSet<Lesson> Lessons { get; set; }
         public DbSet<LessonMark> LessonMarks { get; set; }
         public DbSet<TeacherSubject> TeachersSubjects { get; set; }
+        public DbSet<News> News { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
