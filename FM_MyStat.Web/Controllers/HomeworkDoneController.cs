@@ -6,6 +6,7 @@ using FM_MyStat.Core.Services.HomeworkServices;
 using FM_MyStat.Core.Services.Users;
 using FM_MyStat.Core.Validation.Homework;
 using FM_MyStat.Web.Models.ViewModels.Student;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -32,6 +33,7 @@ namespace FM_MyStat.Web.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> Homeinspection(int Id)
         {
             var homeworks = await _homeworkDoneService.GetAll(Id);

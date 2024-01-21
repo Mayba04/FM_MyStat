@@ -71,25 +71,8 @@ namespace FM_MyStat.Core.Services.LessonServices
 
         public async Task<List<LessonDTO>> GetAll()
         {
-            List<Lesson> result = (await _lessonsRepo.GetAll()).ToList();
-            List<LessonDTO> mappedLessons = result.Select(u => _mapper.Map<Lesson, LessonDTO>(u)).ToList();
-            for (int i = 0; i < result.Count(); i++)
-            {
-                Teacher? teacher = await _teacherRepo.GetByID(mappedLessons[i].TeacherId);
-                if (teacher == null)
-                {
-                    mappedLessons[i].Teacher = "TEACHER NOT FOUND";
-                }
-                else
-                {
-                    ServiceResponse<UserDTO, object> teacherAppUser = await _userService.GetUserById(teacher.AppUserId);
-                    mappedLessons[i].Teacher = (teacherAppUser.Success) ? teacherAppUser.Payload.Email : "TEACHER NOT FOUND";
-                }
-                Group? group = await _groupRepo.GetByID(mappedLessons[i].GroupId);
-                mappedLessons[i].Group = (group == null) ? "GROUP NOT FOUND" : group.Name;
-                Subject? subject = await _subjectRepo.GetByID(mappedLessons[i].SubjectId);
-                mappedLessons[i].Subject = (subject == null) ? "SUBJECT NOT FOUND" : subject.Name;
-            }
+            List<Lesson> lessons = (await _lessonsRepo.GetAll()).ToList();
+            List<LessonDTO> mappedLessons = await this.UploadDataFromDatabaseForLessonDTOAsync(lessons);
             return mappedLessons;
         }
 
@@ -113,17 +96,6 @@ namespace FM_MyStat.Core.Services.LessonServices
             };
         }
 
-        public async Task<LessonDTO> GetByName(string NameHomework)
-        {
-            var result = await _lessonsRepo.GetItemBySpec(new LessonsSpecification.GetByName(NameHomework));
-            if (result != null)
-            {
-                LessonDTO categoryDTO = _mapper.Map<LessonDTO>(result);
-                return categoryDTO;
-            }
-            return null;
-        }
-
         public async Task<ServiceResponse<List<LessonDTO>, object>> GetLessonDTOByTeacher(string id)
         {
             ServiceResponse<UserDTO, object> userDTO = await _userService.GetUserById(id);
@@ -134,11 +106,34 @@ namespace FM_MyStat.Core.Services.LessonServices
                 {
                     return new ServiceResponse<List<LessonDTO>, object>(false, "", errors: new object[] { "Lesson not found" });
                 }
-                IEnumerable<Lesson> lessons = await _lessonsRepo.GetListBySpec(new LessonsSpecification.GetByteacherId(teacher.Id));
-                List<LessonDTO> mappedLessons = lessons.Select(u => _mapper.Map<Lesson, LessonDTO>(u)).ToList();
-                return new ServiceResponse<List<LessonDTO>, object>(true, "", payload: mappedLessons);
+                List<Lesson> lessons = (await _lessonsRepo.GetListBySpec(new LessonsSpecification.GetByteacherId(teacher.Id))).ToList();
+                List<LessonDTO> mappedLessons = await this.UploadDataFromDatabaseForLessonDTOAsync(lessons);
+                return new ServiceResponse<List<LessonDTO>, object>(true, "", payload:mappedLessons);
             }
             return new ServiceResponse<List<LessonDTO>, object>(false, "", errors: new object[] { "Something went wrong" });
+        }
+
+        private async Task<List<LessonDTO>> UploadDataFromDatabaseForLessonDTOAsync(List<Lesson> lessons)
+        {
+            List<LessonDTO> mappedLessons = lessons.Select(u => _mapper.Map<Lesson, LessonDTO>(u)).ToList();
+            for (int i = 0; i < lessons.Count(); i++)
+            {
+                Teacher? teacherinlesson = await _teacherRepo.GetByID(mappedLessons[i].TeacherId);
+                if (teacherinlesson == null)
+                {
+                    mappedLessons[i].Teacher = "TEACHER NOT FOUND";
+                }
+                else
+                {
+                    ServiceResponse<UserDTO, object> teacherAppUser = await _userService.GetUserById(teacherinlesson.AppUserId);
+                    mappedLessons[i].Teacher = (teacherAppUser.Success) ? teacherAppUser.Payload.Email : "TEACHER NOT FOUND";
+                }
+                Group? group = await _groupRepo.GetByID(mappedLessons[i].GroupId);
+                mappedLessons[i].Group = (group == null) ? "GROUP NOT FOUND" : group.Name;
+                Subject? subject = await _subjectRepo.GetByID(mappedLessons[i].SubjectId);
+                mappedLessons[i].Subject = (subject == null) ? "SUBJECT NOT FOUND" : subject.Name;
+            }
+            return mappedLessons;
         }
 
         public async Task Update(EditLessonsDTO model)
@@ -146,7 +141,5 @@ namespace FM_MyStat.Core.Services.LessonServices
             await _lessonsRepo.Update(_mapper.Map<Lesson>(model));
             await _lessonsRepo.Save();
         }
-
-
     }
 }

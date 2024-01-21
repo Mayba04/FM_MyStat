@@ -5,6 +5,7 @@ using FM_MyStat.Core.Services;
 using FM_MyStat.Core.Services.Users;
 using FM_MyStat.Core.Validation.Group;
 using FM_MyStat.Core.Validation.Subject;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using X.PagedList;
@@ -51,6 +52,7 @@ namespace FM_MyStat.Web.Controllers
             }
         }
 
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> CreateAsync()
         {
             await LoadTeachers();
@@ -79,6 +81,7 @@ namespace FM_MyStat.Web.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Update(int id)
         {
             var result = await _groupService.GetEditGroupDTO(id);
@@ -105,6 +108,7 @@ namespace FM_MyStat.Web.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int id)
         {
             var groupDto = await _groupService.Get(id);

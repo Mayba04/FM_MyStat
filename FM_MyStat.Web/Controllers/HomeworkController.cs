@@ -2,12 +2,16 @@
 using FM_MyStat.Core.DTOs.GrouopsDTO;
 using FM_MyStat.Core.DTOs.HomeworksDTO.Homework;
 using FM_MyStat.Core.DTOs.LessonsDTO.Lessons;
+using FM_MyStat.Core.DTOs.UsersDTO.Teacher;
+using FM_MyStat.Core.DTOs.UsersDTO.User;
 using FM_MyStat.Core.Interfaces;
 using FM_MyStat.Core.Services;
 using FM_MyStat.Core.Services.LessonServices;
+using FM_MyStat.Core.Services.Users;
 using FM_MyStat.Core.Validation.Group;
 using FM_MyStat.Core.Validation.Homework;
 using FM_MyStat.Core.Validation.Subject;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -21,11 +25,21 @@ namespace FM_MyStat.Web.Controllers
         private readonly IHomeworkService _homeworkService;
         private readonly IGroupService _groupService;
         private readonly ILessonService _lessonService;
-        public HomeworkController(IHomeworkService homeworkService, IGroupService groupService, ILessonService lessonService)
+        private readonly TeacherService _teacherService;
+        private readonly UserService _userService;
+        public HomeworkController(
+            IHomeworkService homeworkService,
+            IGroupService groupService,
+            ILessonService lessonService,
+            TeacherService teacherService,
+            UserService userService
+            )
         {
             _homeworkService = homeworkService;
             _groupService = groupService;
             _lessonService = lessonService;
+            _teacherService = teacherService;
+            _userService = userService;
         }
 
         public IActionResult Index()
@@ -35,11 +49,15 @@ namespace FM_MyStat.Web.Controllers
 
         public async Task<IActionResult> GetAll()
         {
-            return View(await _homeworkService.GetAll());
+            ServiceResponse<UserDTO, object> response = await _userService.GetLoggedUser(HttpContext.User);
+            List<HomeworkDTO> payload = await _homeworkService.GetByTeacherId(response.Payload.Id);
+            return View(payload);
         }
 
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> Create(int? LessonId)
         {
+            await LoadTeacher();
             @ViewBag.LessonId = LessonId;
             return View();
         }
@@ -66,6 +84,7 @@ namespace FM_MyStat.Web.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> Update(int id)
         {
             var result = await _homeworkService.GetCreateHomeworkDTO(id);
@@ -92,6 +111,7 @@ namespace FM_MyStat.Web.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> Delete(int id)
         {
             var homeworkDto = await _homeworkService.Get(id);
@@ -120,6 +140,13 @@ namespace FM_MyStat.Web.Controllers
             }
 
             return File(fileContents, contentType, fileName);
+        }
+
+        private async Task LoadTeacher()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            ServiceResponse<TeacherDTO, object> result = await _teacherService.GetTeacherByAppUserIdAsync(userId);
+            @ViewBag.IdTeacher = result.Payload.Id;
         }
     }
 }
