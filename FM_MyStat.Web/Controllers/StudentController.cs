@@ -57,6 +57,7 @@ namespace FM_MyStat.Web.Controllers
         #endregion
 
         #region Get all users page
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> GetAll()
         {
             ServiceResponse<List<StudentDTO>, object> result = await _studentService.GetAllAsync();
@@ -158,6 +159,7 @@ namespace FM_MyStat.Web.Controllers
             return View(nameof(Edit));
         }
         #endregion
+        [Authorize(Roles = "Student")]
         public async Task<IActionResult> AllHomeworks()
         {
             var userId = ((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).FirstOrDefault();
@@ -191,10 +193,6 @@ namespace FM_MyStat.Web.Controllers
             ViewBag.AuthError = validationResult.Errors.FirstOrDefault();
             return RedirectToAction(nameof(AllHomeworks));
         }
-
-        
-
-
 
         #region Profile page
         [Authorize(Roles = "Student")]

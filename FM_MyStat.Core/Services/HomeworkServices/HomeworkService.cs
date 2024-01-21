@@ -33,8 +33,20 @@ namespace FM_MyStat.Core.Services.HomeworkServices
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IConfiguration _configuration;
         private readonly StudentService _studentService;
+        private readonly IRepository<Teacher> _teacherRepo;
+        private readonly UserService _userService;
 
-        public HomeworkService(StudentService studentService, IMapper mapper, IRepository<Homework> homeRepo, IRepository<Group> groupRepo, IRepository<Lesson> lessonRepo, IWebHostEnvironment webHostEnvironment, IConfiguration configuration)
+        public HomeworkService(
+            StudentService studentService,
+            IMapper mapper,
+            IRepository<Homework> homeRepo,
+            IRepository<Group> groupRepo,
+            IRepository<Lesson> lessonRepo,
+            IWebHostEnvironment webHostEnvironment,
+            IConfiguration configuration,
+            IRepository<Teacher> teacherRepo,
+            UserService userService
+            )
         {
             _homeworkRepo = homeRepo;
             _mapper = mapper;
@@ -43,6 +55,8 @@ namespace FM_MyStat.Core.Services.HomeworkServices
             _webHostEnvironment = webHostEnvironment;
             _configuration = configuration;
             _studentService = studentService;
+            _teacherRepo = teacherRepo;
+            _userService = userService;
         }
 
         public async Task Create(CreateHomeworkDTO model)
@@ -107,9 +121,15 @@ namespace FM_MyStat.Core.Services.HomeworkServices
 
         public async Task<List<HomeworkDTO>> GetAll()
         {
-            var result = await _homeworkRepo.GetAll();
-            List<HomeworkDTO> mappedHomeworks = result.Select(u => _mapper.Map<Homework, HomeworkDTO>(u)).ToList();
-            for (int i = 0; i < result.Count(); i++)
+            List<Homework> result = (await _homeworkRepo.GetAll()).ToList();
+            List<HomeworkDTO> mappedHomeworks = await UploadDataFromDatabaseForHomeworkDTOAsync(result);
+            return mappedHomeworks;
+        }
+
+        private async Task<List<HomeworkDTO>> UploadDataFromDatabaseForHomeworkDTOAsync(List<Homework> homeworks)
+        {
+            List<HomeworkDTO> mappedHomeworks = homeworks.Select(u => _mapper.Map<Homework, HomeworkDTO>(u)).ToList();
+            for (int i = 0; i < homeworks.Count(); i++)
             {
                 Group? group = await _groupRepo.GetByID(mappedHomeworks[i].GroupId);
                 mappedHomeworks[i].Group = (group == null) ? "GROUP NOT FOUND" : group.Name;
@@ -118,6 +138,25 @@ namespace FM_MyStat.Core.Services.HomeworkServices
             }
             return mappedHomeworks;
         }
+
+        public async Task<List<HomeworkDTO>> GetByTeacherId(string Id)
+        {
+            ServiceResponse<UserDTO, object> userDTO = await _userService.GetUserById(Id);
+            if (userDTO.Success)
+            {
+                Teacher? teacher = await _teacherRepo.GetByID(userDTO.Payload.TeacherId);
+                if (teacher == null)
+                {
+                    return new List<HomeworkDTO> { };
+                }
+                List<Homework> homeworks = (await _homeworkRepo.GetListBySpec(new HomeworkSpecification.GetByTeacherId(teacher.Id))).ToList();
+                List<HomeworkDTO> mappedHomeworks = await this.UploadDataFromDatabaseForHomeworkDTOAsync(homeworks);
+                return mappedHomeworks;
+            }
+            return new List<HomeworkDTO> { };
+        }
+
+
 
         public async Task<List<HomeworkDTO>> GetAllByUserId(string studentId)
         {
@@ -213,9 +252,6 @@ namespace FM_MyStat.Core.Services.HomeworkServices
             var homeworkEntity = _mapper.Map<Homework>(model);
             await _homeworkRepo.Update(homeworkEntity);
             await _homeworkRepo.Save();
-
-            //await _homeworkRepo.Update(_mapper.Map<Homework>(model));
-            //await _homeworkRepo.Save();
         }
 
         public async Task<(byte[] fileContents, string contentType, string fileName)> DownloadHomeworkFileAsync(int homeworkId)

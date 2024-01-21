@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FM_MyStat.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -271,6 +271,7 @@ namespace FM_MyStat.Infrastructure.Migrations
                     Title = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: true),
                     GroupId = table.Column<int>(type: "integer", nullable: false),
+                    TeacherId = table.Column<int>(type: "integer", nullable: false),
                     LessonId = table.Column<int>(type: "integer", nullable: false),
                     PathFile = table.Column<string>(type: "text", nullable: true)
                 },
@@ -281,6 +282,12 @@ namespace FM_MyStat.Infrastructure.Migrations
                         name: "FK_Homeworks_Groups_GroupId",
                         column: x => x.GroupId,
                         principalTable: "Groups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Homeworks_Teachers_TeacherId",
+                        column: x => x.TeacherId,
+                        principalTable: "Teachers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -417,9 +424,9 @@ namespace FM_MyStat.Infrastructure.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "12189e68-678f-4fe9-b274-5fee6d98eedc", null, "Teacher", "TEACHER" },
-                    { "ce9e26f1-7488-4a36-8d09-99bd881ecdf9", null, "Student", "STUDENT" },
-                    { "e437f8a5-0a08-43b1-8eb3-77cbdc506d17", null, "Administrator", "ADMINISTRATOR" }
+                    { "14bf5189-2428-43c1-9698-27911260e4be", null, "Administrator", "ADMINISTRATOR" },
+                    { "5655df6a-f734-4736-b02d-67c6593d9814", null, "Teacher", "TEACHER" },
+                    { "a2ca20d2-3475-4b0c-935e-f509064a5e71", null, "Student", "STUDENT" }
                 });
 
             migrationBuilder.InsertData(
@@ -427,14 +434,14 @@ namespace FM_MyStat.Infrastructure.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "AdministratorId", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "StudentId", "SurName", "TeacherId", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "08c67ee7-8131-496f-b32c-b92e1f8aa27a", 0, null, "14df468a-de3a-474d-8faf-3fd485814433", "AppUser", "teacher@email.com", true, "John", "Connor", false, null, "TEACHER@EMAIL.COM", "TEACHER@EMAIL.COM", "AQAAAAIAAYagAAAAEMD/2zAj3myEPejGYyAfRgIrAE+7URPL2kQHypo37UJsKl3Ca36zl20fJn/76+SQqQ==", "+xx(xxx)xxx-xx-xx", true, "d54c3c63-d971-43f6-b18b-3fb8878824de", null, "Johnovych", 1, false, "teacher@email.com" },
-                    { "82112126-2c07-41e6-9c54-3a4d842e8e35", 0, null, "36611055-2d5f-42cd-9c73-c7dcaf35ef25", "AppUser", "teacher1@email.com", true, "Serhiy", "Stadnyk", false, null, "TEACHER1@EMAIL.COM", "TEACHER1@EMAIL.COM", "AQAAAAIAAYagAAAAELbwhGVqS2mff8cnZjLbAK74KK0LO0b1uy9gjcpdsmNcVPo6jcDl705ktftTl+SKRA==", "+xx(xxx)xxx-xx-xx", true, "0bf56df6-832b-4785-91bf-9385bb18972d", null, "Viacheslavovich", 2, false, "teacher1@email.com" },
-                    { "99b17a9f-42e4-42e9-abfd-9df212ecfbd6", 0, null, "dde482ce-96c9-4e9c-9496-d8062ba423a2", "AppUser", "student@email.com", true, "John", "Connor", false, null, "STUDENT@EMAIL.COM", "STUDENT@EMAIL.COM", "AQAAAAIAAYagAAAAEOIgN2NG11nWuzM9bYS9+KtXukveZYphv6AhpIfRsc1t0/bt74nYrmqh5iagVZ60sw==", "+xx(xxx)xxx-xx-xx", true, "79e6070b-200c-4e49-ad30-59edbc223c30", 1, "Johnovych", null, false, "student@email.com" },
-                    { "b125dc58-6c6b-4a94-a23b-169ad43649f0", 0, 1, "ae17ba2b-6e37-4d21-b97e-d3a3d7de43c1", "AppUser", "admin@email.com", true, "John", "Connor", false, null, "ADMIN@EMAIL.COM", "ADMIN@EMAIL.COM", "AQAAAAIAAYagAAAAEF5GkDzyNXPzVYFMMZP3lIGy7dJNv1LhvbqMHlfiJzG+v1dPlSZyDuU2FgB9Z6eWig==", "+xx(xxx)xxx-xx-xx", true, "8716adad-b99c-4266-9225-c1c7d6d8b088", null, "Johnovych", null, false, "admin@email.com" },
-                    { "ba9d2e9c-2821-43c2-8560-bcd4d253c8ae", 0, null, "16fc8600-dfb2-497c-8a6e-573608bd3cd2", "AppUser", "student2@email.com", true, "Yurii", "Bortnik", false, null, "STUDENT2@EMAIL.COM", "STUDENT2@EMAIL.COM", "AQAAAAIAAYagAAAAEMTAGgBc/c52NNsgdxETlsbAUkAkdXbF31N/3QA5Z3kj408IA9Yu1fGRzIfBFNgv6A==", "+xx(xxx)xxx-xx-xx", true, "94ee322a-0011-43f6-af09-b376d2b45611", 3, "Andriyovich", null, false, "student2@email.com" },
-                    { "d9ccb0d0-6671-4e77-ab3e-c6b0265ebedb", 0, null, "1daba77d-34ee-471a-82ad-b0c6bf557367", "AppUser", "student3@email.com", true, "Pavlo", "Mayba", false, null, "STUDENT3@EMAIL.COM", "STUDENT3@EMAIL.COM", "AQAAAAIAAYagAAAAEFFYOPFjS8ZAqXRJPqCTiOgsGOSSgr8lDVErrn5GeCqVMwF8tR+BPzMpwF4WF6xbhg==", "+xx(xxx)xxx-xx-xx", true, "cc4bf702-e593-4de1-b24b-a4e494c18a93", 4, "Ivanovich", null, false, "student3@email.com" },
-                    { "dec01fe9-bb93-4abd-b9e4-032aeaae8830", 0, null, "d96173cd-7cd6-4c23-838b-f7fe354653a2", "AppUser", "student1@email.com", true, "Dima", "Shostak", false, null, "STUDENT1@EMAIL.COM", "STUDENT1@EMAIL.COM", "AQAAAAIAAYagAAAAECrFL0K2hlGObZ2jHURWQt1NxW5dQ7Ga3RXuAAmmFhS8nYP5u7yZrLWyx0Xkg90J4Q==", "+xx(xxx)xxx-xx-xx", true, "2937f0f6-48a7-4766-a03c-4a338b3b1f46", 2, "Oleksiyovich", null, false, "student1@email.com" },
-                    { "e399f828-072e-49de-b91e-71eab6ef3741", 0, 2, "4b28874c-1ca9-435f-baad-e0caf8dffe40", "AppUser", "admin1@email.com", true, "John", "Connor", false, null, "ADMIN1@EMAIL.COM", "ADMIN1@EMAIL.COM", "AQAAAAIAAYagAAAAEOWNFaIFWOgpbj8NN8iZP2AQMZ9+2HuhDYMxk7Akb6Rv9yXrmalLUJT0qdRqw/OoIQ==", "+xx(xxx)xxx-xx-xx", true, "7ba17115-8b6b-413d-88aa-3ce119a83bed", null, "Johnovych", null, false, "admin1@email.com" }
+                    { "025b1da6-30b8-4a5e-98f9-ba0b148f5975", 0, null, "1af8820d-3ea8-422f-a127-2307d3aa26f4", "AppUser", "teacher1@email.com", true, "Serhiy", "Stadnyk", false, null, "TEACHER1@EMAIL.COM", "TEACHER1@EMAIL.COM", "AQAAAAIAAYagAAAAEPwT1nrwUEjG6YCwNrLc3xtwyuRaPFcj51gDlabMHgqdIldCul3M+GQo62vW2fWqDQ==", "+xx(xxx)xxx-xx-xx", true, "bb461a64-13b3-42e1-9857-56cd6bbb0261", null, "Viacheslavovich", 2, false, "teacher1@email.com" },
+                    { "0670f416-2b23-41df-a7ab-a54c297c0abd", 0, null, "a99c67d9-56a0-470d-ad58-ec111f369843", "AppUser", "teacher@email.com", true, "John", "Connor", false, null, "TEACHER@EMAIL.COM", "TEACHER@EMAIL.COM", "AQAAAAIAAYagAAAAEMgncYDw2OiTibJeyRT/FTAIM73zKLu1ptbUivaQM5LCVrPDtmMJ8D51NI/HNAzXVQ==", "+xx(xxx)xxx-xx-xx", true, "42bfcbbe-9842-4053-86a1-83f959a06430", null, "Johnovych", 1, false, "teacher@email.com" },
+                    { "13b39419-03e0-4df1-873c-4d6a42ff6a2f", 0, null, "4c9b5d70-c96d-4df6-8fb6-b3ed85a97a84", "AppUser", "student1@email.com", true, "Dima", "Shostak", false, null, "STUDENT1@EMAIL.COM", "STUDENT1@EMAIL.COM", "AQAAAAIAAYagAAAAEH0BjRMAwFXAgfOIbMB514X7YbrtWpWLh/tNrgVRsUqQd8wduPgJCU7cBJqaAcZQEQ==", "+xx(xxx)xxx-xx-xx", true, "c59eb153-533b-40e7-bd83-867f11b2e393", 2, "Oleksiyovich", null, false, "student1@email.com" },
+                    { "362db844-fc19-4e3e-8143-387ad1405378", 0, 1, "91f512e4-470f-4861-98f0-202643dd27d5", "AppUser", "admin@email.com", true, "John", "Connor", false, null, "ADMIN@EMAIL.COM", "ADMIN@EMAIL.COM", "AQAAAAIAAYagAAAAEEAzmlAKgzUI4gfeIqOCjjPCBeDPo4RDmihhDvvxJqQnJtCkXY7azza5rjygXQEbOQ==", "+xx(xxx)xxx-xx-xx", true, "33d4f6fa-99d0-4902-8c8b-83f2bf71da6f", null, "Johnovych", null, false, "admin@email.com" },
+                    { "687a7a8d-7625-4b2c-b6c7-e1ef66bdc172", 0, null, "b3e5ff13-b26d-47be-9c27-9fd0414608f6", "AppUser", "student3@email.com", true, "Pavlo", "Mayba", false, null, "STUDENT3@EMAIL.COM", "STUDENT3@EMAIL.COM", "AQAAAAIAAYagAAAAEG2zlxq080lgiAjECYkIrjrKoL9Uhh2+UQ2Hy8rfLof/sxGmqwwfwwPP4SFAFKCchQ==", "+xx(xxx)xxx-xx-xx", true, "aac09a03-2cd9-45a9-bf5b-3d7b6654847a", 4, "Ivanovich", null, false, "student3@email.com" },
+                    { "6ad015ea-94fb-4df1-9919-7881f7a37499", 0, null, "2891e590-7bc8-4e79-89cc-64178707c476", "AppUser", "student2@email.com", true, "Yurii", "Bortnik", false, null, "STUDENT2@EMAIL.COM", "STUDENT2@EMAIL.COM", "AQAAAAIAAYagAAAAEF2Eg4mVKCSOHheB4bVxoU8dSfaeDa0uEdcEsaZsp00OjAOJvda5BMtUu7uDxJdKjQ==", "+xx(xxx)xxx-xx-xx", true, "14bd2137-cefb-4114-b1b4-42fb6d3cb730", 3, "Andriyovich", null, false, "student2@email.com" },
+                    { "94591836-2a4a-4636-aedb-4f24cd9c2a30", 0, null, "fd6a4cc1-7512-41c1-a8d3-844e1980b09a", "AppUser", "student@email.com", true, "John", "Connor", false, null, "STUDENT@EMAIL.COM", "STUDENT@EMAIL.COM", "AQAAAAIAAYagAAAAEMjppWyReCXFBlyTj5pG1EeUGqE+kFqWQJuptjtKG8LQaCDrNQfsEfbQeBSNNUNrUA==", "+xx(xxx)xxx-xx-xx", true, "37ba5fbf-8d1f-4ab9-b9b1-4121c2c23565", 1, "Johnovych", null, false, "student@email.com" },
+                    { "d78b6675-cd92-4b50-8ad6-a968f88d17ce", 0, 2, "d1b2f030-5c40-4cc9-b655-bdd4e4c047b5", "AppUser", "admin1@email.com", true, "John", "Connor", false, null, "ADMIN1@EMAIL.COM", "ADMIN1@EMAIL.COM", "AQAAAAIAAYagAAAAEOpD6ocAp0Ihxv3+hb7eR/rOlJXZvpMaPI7diQLnSoFep++wJ/tRh0rsmwZrw4vdbA==", "+xx(xxx)xxx-xx-xx", true, "d17abc54-dc77-4944-b20a-4c063bef07ce", null, "Johnovych", null, false, "admin1@email.com" }
                 });
 
             migrationBuilder.InsertData(
@@ -447,8 +454,8 @@ namespace FM_MyStat.Infrastructure.Migrations
                 columns: new[] { "Id", "AppUserId" },
                 values: new object[,]
                 {
-                    { 1, "b125dc58-6c6b-4a94-a23b-169ad43649f0" },
-                    { 2, "e399f828-072e-49de-b91e-71eab6ef3741" }
+                    { 1, "362db844-fc19-4e3e-8143-387ad1405378" },
+                    { 2, "d78b6675-cd92-4b50-8ad6-a968f88d17ce" }
                 });
 
             migrationBuilder.InsertData(
@@ -456,14 +463,14 @@ namespace FM_MyStat.Infrastructure.Migrations
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { "12189e68-678f-4fe9-b274-5fee6d98eedc", "08c67ee7-8131-496f-b32c-b92e1f8aa27a" },
-                    { "12189e68-678f-4fe9-b274-5fee6d98eedc", "82112126-2c07-41e6-9c54-3a4d842e8e35" },
-                    { "ce9e26f1-7488-4a36-8d09-99bd881ecdf9", "99b17a9f-42e4-42e9-abfd-9df212ecfbd6" },
-                    { "e437f8a5-0a08-43b1-8eb3-77cbdc506d17", "b125dc58-6c6b-4a94-a23b-169ad43649f0" },
-                    { "ce9e26f1-7488-4a36-8d09-99bd881ecdf9", "ba9d2e9c-2821-43c2-8560-bcd4d253c8ae" },
-                    { "ce9e26f1-7488-4a36-8d09-99bd881ecdf9", "d9ccb0d0-6671-4e77-ab3e-c6b0265ebedb" },
-                    { "ce9e26f1-7488-4a36-8d09-99bd881ecdf9", "dec01fe9-bb93-4abd-b9e4-032aeaae8830" },
-                    { "e437f8a5-0a08-43b1-8eb3-77cbdc506d17", "e399f828-072e-49de-b91e-71eab6ef3741" }
+                    { "5655df6a-f734-4736-b02d-67c6593d9814", "025b1da6-30b8-4a5e-98f9-ba0b148f5975" },
+                    { "5655df6a-f734-4736-b02d-67c6593d9814", "0670f416-2b23-41df-a7ab-a54c297c0abd" },
+                    { "a2ca20d2-3475-4b0c-935e-f509064a5e71", "13b39419-03e0-4df1-873c-4d6a42ff6a2f" },
+                    { "14bf5189-2428-43c1-9698-27911260e4be", "362db844-fc19-4e3e-8143-387ad1405378" },
+                    { "a2ca20d2-3475-4b0c-935e-f509064a5e71", "687a7a8d-7625-4b2c-b6c7-e1ef66bdc172" },
+                    { "a2ca20d2-3475-4b0c-935e-f509064a5e71", "6ad015ea-94fb-4df1-9919-7881f7a37499" },
+                    { "a2ca20d2-3475-4b0c-935e-f509064a5e71", "94591836-2a4a-4636-aedb-4f24cd9c2a30" },
+                    { "14bf5189-2428-43c1-9698-27911260e4be", "d78b6675-cd92-4b50-8ad6-a968f88d17ce" }
                 });
 
             migrationBuilder.InsertData(
@@ -471,8 +478,8 @@ namespace FM_MyStat.Infrastructure.Migrations
                 columns: new[] { "Id", "AppUserId" },
                 values: new object[,]
                 {
-                    { 1, "08c67ee7-8131-496f-b32c-b92e1f8aa27a" },
-                    { 2, "82112126-2c07-41e6-9c54-3a4d842e8e35" }
+                    { 1, "0670f416-2b23-41df-a7ab-a54c297c0abd" },
+                    { 2, "025b1da6-30b8-4a5e-98f9-ba0b148f5975" }
                 });
 
             migrationBuilder.InsertData(
@@ -492,17 +499,17 @@ namespace FM_MyStat.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "Lessons",
                 columns: new[] { "Id", "Description", "End", "GroupId", "HomeworkId", "Name", "Start", "SubjectId", "TeacherId" },
-                values: new object[] { 1, "First steps into c# today", new DateTime(2024, 1, 19, 21, 27, 21, 9, DateTimeKind.Utc).AddTicks(422), 1, null, "C# beginning", new DateTime(2024, 1, 19, 19, 27, 21, 9, DateTimeKind.Utc).AddTicks(417), 1, 1 });
+                values: new object[] { 1, "First steps into c# today", new DateTime(2024, 1, 20, 21, 12, 48, 766, DateTimeKind.Utc).AddTicks(3228), 1, null, "C# beginning", new DateTime(2024, 1, 20, 19, 12, 48, 766, DateTimeKind.Utc).AddTicks(3219), 1, 1 });
 
             migrationBuilder.InsertData(
                 table: "Students",
                 columns: new[] { "Id", "AppUserId", "GroupId", "Rating" },
                 values: new object[,]
                 {
-                    { 1, "99b17a9f-42e4-42e9-abfd-9df212ecfbd6", 1, 0 },
-                    { 2, "dec01fe9-bb93-4abd-b9e4-032aeaae8830", 1, 0 },
-                    { 3, "ba9d2e9c-2821-43c2-8560-bcd4d253c8ae", 2, 0 },
-                    { 4, "d9ccb0d0-6671-4e77-ab3e-c6b0265ebedb", 2, 0 }
+                    { 1, "94591836-2a4a-4636-aedb-4f24cd9c2a30", 1, 0 },
+                    { 2, "13b39419-03e0-4df1-873c-4d6a42ff6a2f", 1, 0 },
+                    { 3, "6ad015ea-94fb-4df1-9919-7881f7a37499", 2, 0 },
+                    { 4, "687a7a8d-7625-4b2c-b6c7-e1ef66bdc172", 2, 0 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -557,6 +564,11 @@ namespace FM_MyStat.Infrastructure.Migrations
                 name: "IX_Homeworks_GroupId",
                 table: "Homeworks",
                 column: "GroupId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Homeworks_TeacherId",
+                table: "Homeworks",
+                column: "TeacherId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_HomeworksDone_HomeworkId",

@@ -4,11 +4,13 @@ using FM_MyStat.Core.DTOs.UsersDTO.Student;
 using FM_MyStat.Core.Interfaces;
 using FM_MyStat.Core.Services.LessonServices;
 using FM_MyStat.Web.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.RegularExpressions;
 
 namespace FM_MyStat.Web.Controllers
 {
+    [Authorize(Roles = "Teacher")]
     public class LessonMarkController : Controller
     {
         private readonly ILessonMarkService _lessonMarkService;

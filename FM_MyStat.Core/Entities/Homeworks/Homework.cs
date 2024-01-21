@@ -1,4 +1,5 @@
 ﻿using FM_MyStat.Core.Entities.Lessons;
+using FM_MyStat.Core.Entities.Users;
 using FM_MyStat.Core.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,8 @@ namespace FM_MyStat.Core.Entities.Homeworks
         public string? Description { get; set; }
         public int GroupId { get; set; }
         public Group Group { get; set; }
+        public int TeacherId { get; set; }
+        public Teacher Teacher { get; set; }
         public IEnumerable<HomeworkDone> HomeworksDone { get; set; }
         public int LessonId { get; set; }
         public Lesson Lesson { get; set; }

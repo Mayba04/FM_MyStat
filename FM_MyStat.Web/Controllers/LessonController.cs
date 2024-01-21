@@ -66,8 +66,13 @@ namespace FM_MyStat.Web.Controllers
 
         public async Task<IActionResult> GetAll()
         {
-            var result = await _lessonService.GetAll();
-            return View(result);
+            ServiceResponse<UserDTO, object> response = await _userService.GetLoggedUser(HttpContext.User);
+            if (response.Success)
+            {
+                ServiceResponse<List<LessonDTO>, object> result = await _lessonService.GetLessonDTOByTeacher(response.Payload.Id);
+                return View(result.Payload);
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Create()
@@ -111,12 +116,6 @@ namespace FM_MyStat.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(EditLessonsDTO model)
         {
-            var result = await _lessonService.GetByName(model.Name);
-            if (result != null)
-            {
-                ViewBag.AuthError = "Subjects exists.";
-                return View(model);
-            }
             var validator = new EditLessonValidation();
             var validationResult = await validator.ValidateAsync(model);
             if (validationResult.IsValid)

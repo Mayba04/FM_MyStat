@@ -15,7 +15,6 @@ namespace FM_MyStat.Core.Interfaces
         Task<List<LessonDTO>> GetAll();
         Task<LessonDTO?> Get(int id);
         Task<ServiceResponse> GetByName(LessonDTO model);
-        Task<LessonDTO> GetByName(string Name);
         Task Create(CreateLessonsDTO model);
         Task Update(EditLessonsDTO model);
         Task Delete(int id);

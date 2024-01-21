@@ -152,7 +152,7 @@ namespace FM_MyStat.Web.Controllers
         public async Task<IActionResult> Profiles(EditUserPasswordDTO model)
         {
 
-            var validator = new EditPasswordValidation();// model.GetType();
+            var validator = new EditPasswordValidation();
             var validationResult = await validator.ValidateAsync(model);
             if (validationResult.IsValid)
             {

@@ -25,12 +25,14 @@ namespace FM_MyStat.Web.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> GetAll()
         {
             var subject = await _subjectService.GetAll();
             return View(subject);
         }
 
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Create()
         {
             return View();
@@ -59,6 +61,7 @@ namespace FM_MyStat.Web.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int id)
         {
             var subjectDto = await _subjectService.Get(id);
@@ -79,6 +82,7 @@ namespace FM_MyStat.Web.Controllers
             return RedirectToAction(nameof(GetAll));
         }
 
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int Id)
         {
             var result = await _subjectService.GetEditSubjectDTO(Id);
