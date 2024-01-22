@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FM_MyStat.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20240121180105_init")]
+    [Migration("20240122164405_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -188,10 +188,10 @@ namespace FM_MyStat.Infrastructure.Migrations
                         {
                             Id = 1,
                             Description = "First steps into c# today",
-                            End = new DateTime(2024, 1, 21, 21, 1, 5, 262, DateTimeKind.Utc).AddTicks(8626),
+                            End = new DateTime(2024, 1, 22, 19, 44, 4, 899, DateTimeKind.Utc).AddTicks(4765),
                             GroupId = 1,
                             Name = "C# beginning",
-                            Start = new DateTime(2024, 1, 21, 19, 1, 5, 262, DateTimeKind.Utc).AddTicks(8616),
+                            Start = new DateTime(2024, 1, 22, 17, 44, 4, 899, DateTimeKind.Utc).AddTicks(4755),
                             SubjectId = 1,
                             TeacherId = 1
                         });
@@ -248,6 +248,48 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("News");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Опис до новини 1",
+                            Time = new DateTime(2024, 1, 23, 16, 44, 4, 899, DateTimeKind.Utc).AddTicks(4905),
+                            TimePublication = new DateTime(2024, 1, 21, 16, 44, 4, 899, DateTimeKind.Utc).AddTicks(4907),
+                            Title = "Новина 1"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Опис до новини 2",
+                            Time = new DateTime(2024, 1, 24, 16, 44, 4, 899, DateTimeKind.Utc).AddTicks(4923),
+                            TimePublication = new DateTime(2024, 1, 21, 16, 44, 4, 899, DateTimeKind.Utc).AddTicks(4923),
+                            Title = "Новина 2"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Опис до новини 3",
+                            Time = new DateTime(2024, 1, 25, 16, 44, 4, 899, DateTimeKind.Utc).AddTicks(4949),
+                            TimePublication = new DateTime(2024, 1, 21, 16, 44, 4, 899, DateTimeKind.Utc).AddTicks(4950),
+                            Title = "Новина 3"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "Опис до новини 4",
+                            Time = new DateTime(2024, 1, 26, 16, 44, 4, 899, DateTimeKind.Utc).AddTicks(4959),
+                            TimePublication = new DateTime(2024, 1, 21, 16, 44, 4, 899, DateTimeKind.Utc).AddTicks(4960),
+                            Title = "Новина 4"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Description = "Опис до новини 5",
+                            Time = new DateTime(2024, 1, 27, 16, 44, 4, 899, DateTimeKind.Utc).AddTicks(4968),
+                            TimePublication = new DateTime(2024, 1, 21, 16, 44, 4, 899, DateTimeKind.Utc).AddTicks(4969),
+                            Title = "Новина 5"
+                        });
                 });
 
             modelBuilder.Entity("FM_MyStat.Core.Entities.Subject", b =>
@@ -328,12 +370,12 @@ namespace FM_MyStat.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            AppUserId = "f260b5a1-28ba-48b3-95ab-d98c9441f3b0"
+                            AppUserId = "b050e166-f269-4074-b0fd-7eb073cac869"
                         },
                         new
                         {
                             Id = 2,
-                            AppUserId = "e9e309a7-51dd-4197-ba38-f3a89f256871"
+                            AppUserId = "90b720f0-740b-4a5e-9fea-4e4fa3604118"
                         });
                 });
 
@@ -367,28 +409,28 @@ namespace FM_MyStat.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            AppUserId = "205c1ae6-6d3b-4f75-a301-432ad75e5526",
+                            AppUserId = "7dcb8905-8d8a-42bc-b066-97e9b154cb39",
                             GroupId = 1,
                             Rating = 0
                         },
                         new
                         {
                             Id = 2,
-                            AppUserId = "72e4cf0d-1353-47ff-83d3-d07828ca7071",
+                            AppUserId = "bcdc54e3-64b7-42ef-8e1f-eb5902cc298e",
                             GroupId = 1,
                             Rating = 0
                         },
                         new
                         {
                             Id = 3,
-                            AppUserId = "85af61cf-fe22-4e49-87d3-7370e00f5c83",
+                            AppUserId = "26dd25c5-de0b-4815-b470-d53c3bcb9c52",
                             GroupId = 2,
                             Rating = 0
                         },
                         new
                         {
                             Id = 4,
-                            AppUserId = "7edfa31b-89ea-4ada-8739-e766ed59a75a",
+                            AppUserId = "ae859c11-3c4f-4bc9-9e22-65037a0411e5",
                             GroupId = 2,
                             Rating = 0
                         });
@@ -416,12 +458,12 @@ namespace FM_MyStat.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            AppUserId = "f7c3e4bd-0d6d-41f1-9b4c-f22d65cf1864"
+                            AppUserId = "def129f6-f42a-427c-bdf8-67b6afd7863d"
                         },
                         new
                         {
                             Id = 2,
-                            AppUserId = "2948160d-a5aa-442d-8aad-138e9ac4b6e3"
+                            AppUserId = "362c30f1-f5ad-4445-a23c-bf2887b810a8"
                         });
                 });
 
@@ -453,19 +495,19 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9347bf2c-a9c3-4616-94f4-2965e27a1d2b",
+                            Id = "08aab4b9-cd9d-4230-9837-baf83aed4d56",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "0558b633-0bd7-4f74-8d7f-98ff2dd95031",
+                            Id = "d5ceda32-c8f1-46ee-a1af-21cc098ba25c",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
-                            Id = "66fa09dc-bc64-461d-b442-016e57ff01d9",
+                            Id = "1c2d3479-a3e1-4976-907a-bd6db1846894",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         });
@@ -632,43 +674,43 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "f260b5a1-28ba-48b3-95ab-d98c9441f3b0",
-                            RoleId = "9347bf2c-a9c3-4616-94f4-2965e27a1d2b"
+                            UserId = "b050e166-f269-4074-b0fd-7eb073cac869",
+                            RoleId = "08aab4b9-cd9d-4230-9837-baf83aed4d56"
                         },
                         new
                         {
-                            UserId = "e9e309a7-51dd-4197-ba38-f3a89f256871",
-                            RoleId = "9347bf2c-a9c3-4616-94f4-2965e27a1d2b"
+                            UserId = "90b720f0-740b-4a5e-9fea-4e4fa3604118",
+                            RoleId = "08aab4b9-cd9d-4230-9837-baf83aed4d56"
                         },
                         new
                         {
-                            UserId = "f7c3e4bd-0d6d-41f1-9b4c-f22d65cf1864",
-                            RoleId = "0558b633-0bd7-4f74-8d7f-98ff2dd95031"
+                            UserId = "def129f6-f42a-427c-bdf8-67b6afd7863d",
+                            RoleId = "d5ceda32-c8f1-46ee-a1af-21cc098ba25c"
                         },
                         new
                         {
-                            UserId = "2948160d-a5aa-442d-8aad-138e9ac4b6e3",
-                            RoleId = "0558b633-0bd7-4f74-8d7f-98ff2dd95031"
+                            UserId = "362c30f1-f5ad-4445-a23c-bf2887b810a8",
+                            RoleId = "d5ceda32-c8f1-46ee-a1af-21cc098ba25c"
                         },
                         new
                         {
-                            UserId = "205c1ae6-6d3b-4f75-a301-432ad75e5526",
-                            RoleId = "66fa09dc-bc64-461d-b442-016e57ff01d9"
+                            UserId = "7dcb8905-8d8a-42bc-b066-97e9b154cb39",
+                            RoleId = "1c2d3479-a3e1-4976-907a-bd6db1846894"
                         },
                         new
                         {
-                            UserId = "72e4cf0d-1353-47ff-83d3-d07828ca7071",
-                            RoleId = "66fa09dc-bc64-461d-b442-016e57ff01d9"
+                            UserId = "bcdc54e3-64b7-42ef-8e1f-eb5902cc298e",
+                            RoleId = "1c2d3479-a3e1-4976-907a-bd6db1846894"
                         },
                         new
                         {
-                            UserId = "85af61cf-fe22-4e49-87d3-7370e00f5c83",
-                            RoleId = "66fa09dc-bc64-461d-b442-016e57ff01d9"
+                            UserId = "26dd25c5-de0b-4815-b470-d53c3bcb9c52",
+                            RoleId = "1c2d3479-a3e1-4976-907a-bd6db1846894"
                         },
                         new
                         {
-                            UserId = "7edfa31b-89ea-4ada-8739-e766ed59a75a",
-                            RoleId = "66fa09dc-bc64-461d-b442-016e57ff01d9"
+                            UserId = "ae859c11-3c4f-4bc9-9e22-65037a0411e5",
+                            RoleId = "1c2d3479-a3e1-4976-907a-bd6db1846894"
                         });
                 });
 
@@ -724,18 +766,18 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f260b5a1-28ba-48b3-95ab-d98c9441f3b0",
+                            Id = "b050e166-f269-4074-b0fd-7eb073cac869",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f5426996-94aa-4807-bace-427696f9601e",
+                            ConcurrencyStamp = "a6a4b70d-71db-4510-be37-a1303864d5fc",
                             Email = "admin@email.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@EMAIL.COM",
                             NormalizedUserName = "ADMIN@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOgfbWUOmPKxEIiQn87A8MGJmZrf5yJt7CapORo3e7k+FLpDEv0npzW61qy8fvL3Fw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBQ/hfwqvwCGnO7FVddW2xmLogvT1ypwWzU9ut+qCJcVsO/3rh0cuiZ5c8XBRSp11g==",
                             PhoneNumber = "+xx(xxx)xxx-xx-xx",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "24d2cf9d-4a8d-48fb-9eff-bab4344bd36e",
+                            SecurityStamp = "121929f6-0c55-49f0-8913-30698b4b198f",
                             TwoFactorEnabled = false,
                             UserName = "admin@email.com",
                             AdministratorId = 1,
@@ -745,18 +787,18 @@ namespace FM_MyStat.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = "e9e309a7-51dd-4197-ba38-f3a89f256871",
+                            Id = "90b720f0-740b-4a5e-9fea-4e4fa3604118",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "792f6072-5a2b-4222-9468-495202f9a970",
+                            ConcurrencyStamp = "4e8087bc-2d18-48d2-9ad3-80f10b1794ed",
                             Email = "admin1@email.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN1@EMAIL.COM",
                             NormalizedUserName = "ADMIN1@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFvAF7o5wHsnR+14m3MWxJG2xvQx6Pn5ixL8BbCh42rOC0bJwYdQH0fa3ruLNjEo9g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMOL6dY9INiUpa7vMSmHXV97E6lU4vvhlXHMgg7VAhpWasnl3/TlnPCbjng0Gz3rSA==",
                             PhoneNumber = "+xx(xxx)xxx-xx-xx",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "90dd748c-57a2-4168-9c01-be93128d5267",
+                            SecurityStamp = "04024278-c3ef-4ded-b52c-63290be555a2",
                             TwoFactorEnabled = false,
                             UserName = "admin1@email.com",
                             AdministratorId = 2,
@@ -766,18 +808,18 @@ namespace FM_MyStat.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = "f7c3e4bd-0d6d-41f1-9b4c-f22d65cf1864",
+                            Id = "def129f6-f42a-427c-bdf8-67b6afd7863d",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ab5cd165-d362-409d-a5d5-3f3ac90f170e",
+                            ConcurrencyStamp = "75d04568-5593-4e4f-8738-c859a6446ae2",
                             Email = "teacher@email.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "TEACHER@EMAIL.COM",
                             NormalizedUserName = "TEACHER@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEElHfZgboLP8q+1QpUZo005AMdbUuCYerzTtcUTCkQg3EdxvmM2VO4n1/oskKaGKQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHZAekRmGUZClOtWRzhsbrsIJGSljULHHI5PTAqzPLxE1vqH6+cQJHVik6PrpbcXqw==",
                             PhoneNumber = "+xx(xxx)xxx-xx-xx",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "9622f39e-9439-4f77-9ef0-75c649761300",
+                            SecurityStamp = "5fdd1c57-d76e-47b0-8b58-0da525fa03b4",
                             TwoFactorEnabled = false,
                             UserName = "teacher@email.com",
                             FirstName = "John",
@@ -787,18 +829,18 @@ namespace FM_MyStat.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = "2948160d-a5aa-442d-8aad-138e9ac4b6e3",
+                            Id = "362c30f1-f5ad-4445-a23c-bf2887b810a8",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6497cead-1003-4b79-abc2-c00c32e8bca5",
+                            ConcurrencyStamp = "5652027c-66d1-491f-b2fe-bb61d62bfb1f",
                             Email = "teacher1@email.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "TEACHER1@EMAIL.COM",
                             NormalizedUserName = "TEACHER1@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGJvL74ki9D7Gp+K7MNwY3sI7gELW6J0CrD/3S6kvqD7hjyt2gWZYOfPshwBpoUUpg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELG/ELvNMGusB92B50JeUQXJtDhO1Nnx1uLTPuob+ZzML1v4zbYvYZB3FSCaSXIooQ==",
                             PhoneNumber = "+xx(xxx)xxx-xx-xx",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "0c5d942d-7333-4db2-b922-06c4f0ab29f2",
+                            SecurityStamp = "7c043c67-aa1e-4da7-b6e8-5adca07ed07e",
                             TwoFactorEnabled = false,
                             UserName = "teacher1@email.com",
                             FirstName = "Serhiy",
@@ -808,18 +850,18 @@ namespace FM_MyStat.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = "205c1ae6-6d3b-4f75-a301-432ad75e5526",
+                            Id = "7dcb8905-8d8a-42bc-b066-97e9b154cb39",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "24ab4e9b-c6de-4122-b9c7-2c373c35ac9d",
+                            ConcurrencyStamp = "e2720c50-15e7-4b61-b07c-704c5c1f9916",
                             Email = "student@email.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "STUDENT@EMAIL.COM",
                             NormalizedUserName = "STUDENT@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEE9atS1dIaLYAl6KynlxGvL0yfmX+ay/viDSWt/h+r4zxs2pyZZDs5w8HKWwqwoJSg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHpUKSHh32uaRWR8KrIFZjtBIWemOjnvf4JzAFnncIBL93YaqfkyqFxyvMU61rj8lA==",
                             PhoneNumber = "+xx(xxx)xxx-xx-xx",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "2ff5d481-92e8-4079-8fad-7f400040d79a",
+                            SecurityStamp = "fa3de70e-792e-49df-ad63-213097deda01",
                             TwoFactorEnabled = false,
                             UserName = "student@email.com",
                             FirstName = "John",
@@ -829,18 +871,18 @@ namespace FM_MyStat.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = "72e4cf0d-1353-47ff-83d3-d07828ca7071",
+                            Id = "bcdc54e3-64b7-42ef-8e1f-eb5902cc298e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e09be196-60aa-4973-ae05-4d5ef2a4504b",
+                            ConcurrencyStamp = "20484eb6-93a1-4047-8411-d0b6957265b1",
                             Email = "student1@email.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "STUDENT1@EMAIL.COM",
                             NormalizedUserName = "STUDENT1@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDWxueqIHT2l9rtTJ3kggk1vt6BZkpL9bxXPpSsHcTtbq0yDn4w2IWsyu6TXKgA4EQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHFV06pND3eDkRj1FyY865SJtPhEblNkvoFmyQb+silXJc57cmoBNmXAo7RKJRrmXw==",
                             PhoneNumber = "+xx(xxx)xxx-xx-xx",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "c05750d4-c06a-4c22-937d-9118f619a100",
+                            SecurityStamp = "ac1e6eb8-4c03-4d9b-bce9-be2e3ce7bc83",
                             TwoFactorEnabled = false,
                             UserName = "student1@email.com",
                             FirstName = "Dima",
@@ -850,18 +892,18 @@ namespace FM_MyStat.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = "85af61cf-fe22-4e49-87d3-7370e00f5c83",
+                            Id = "26dd25c5-de0b-4815-b470-d53c3bcb9c52",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3eaf49df-b54b-4f0c-8575-56f80436f018",
+                            ConcurrencyStamp = "60dae6cc-d8f7-4a45-9162-f8453f52aab2",
                             Email = "student2@email.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "STUDENT2@EMAIL.COM",
                             NormalizedUserName = "STUDENT2@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEM7yZCAhVwx3ZlWxFVrcVfSuGIj9fRiOeQsd3izJwdOXmD6NJndx1bQw+GmNJ8ylkw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKZ5IYR8ZJcwj+jDtSxD+Vk50ZwpXmxl7miAShMFSBMXep9uBcJYRBk99oscGWdUxA==",
                             PhoneNumber = "+xx(xxx)xxx-xx-xx",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "646551dd-74a6-4bfc-8a91-e6ab3928a0d9",
+                            SecurityStamp = "8a989278-f81e-45ae-b00d-5c5387ac0b90",
                             TwoFactorEnabled = false,
                             UserName = "student2@email.com",
                             FirstName = "Yurii",
@@ -871,18 +913,18 @@ namespace FM_MyStat.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = "7edfa31b-89ea-4ada-8739-e766ed59a75a",
+                            Id = "ae859c11-3c4f-4bc9-9e22-65037a0411e5",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9aa84bd7-dba6-48d0-b752-29bd4c88f5a7",
+                            ConcurrencyStamp = "9fac6f5d-ee49-4749-bb65-5ed8e447826f",
                             Email = "student3@email.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "STUDENT3@EMAIL.COM",
                             NormalizedUserName = "STUDENT3@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFT/LaiRWtvV+NA1MCDax6REFTa6BvMyQcbI0yUNIRu7l49ELne83a48B86E5DK8aA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPbawnc1UBXHMHytYX7hisfyw9r+FY3dw7MPZr3SX9+HkvKE59stqcSyHySAvZBnbg==",
                             PhoneNumber = "+xx(xxx)xxx-xx-xx",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "ac218be1-e16a-4bcb-99e9-0600e3f6e675",
+                            SecurityStamp = "b64d9223-6030-4387-8054-3c78088f7f5b",
                             TwoFactorEnabled = false,
                             UserName = "student3@email.com",
                             FirstName = "Pavlo",
