@@ -12,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 string connStr = builder.Configuration.GetConnectionString("DefaultConnection");
+
 // Database context
 
 // SQLServer
@@ -22,7 +23,6 @@ builder.Services.AddDbContext<AppDBContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
