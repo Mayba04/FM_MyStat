@@ -242,6 +242,7 @@ namespace FM_MyStat.Core.Services.Users
 
             List<NewsDTO> newsList = new List<NewsDTO>();
 
+
             if (response.Success)
             {
                 newsList = response.Payload;
