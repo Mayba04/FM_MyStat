@@ -47,14 +47,15 @@ namespace FM_MyStat.Web.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Teacher, Administrator")]
         public async Task<IActionResult> GetAll()
         {
             ServiceResponse<UserDTO, object> response = await _userService.GetLoggedUser(HttpContext.User);
-            List<HomeworkDTO> payload = await _homeworkService.GetByTeacherId(response.Payload.Id);
+            List<HomeworkDTO> payload = (response.Payload.Role == "Teacher") ? await _homeworkService.GetByTeacherId(response.Payload.Id) : await _homeworkService.GetAll();
             return View(payload);
         }
 
-        [Authorize(Roles = "Teacher")]
+        [Authorize(Roles = "Teacher, Administrator")]
         public async Task<IActionResult> Create(int? LessonId)
         {
             await LoadTeacher();
@@ -84,7 +85,7 @@ namespace FM_MyStat.Web.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Teacher")]
+        [Authorize(Roles = "Teacher, Administrator")]
         public async Task<IActionResult> Update(int id)
         {
             var result = await _homeworkService.GetCreateHomeworkDTO(id);
@@ -111,7 +112,7 @@ namespace FM_MyStat.Web.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Teacher")]
+        [Authorize(Roles = "Teacher, Administrator")]
         public async Task<IActionResult> Delete(int id)
         {
             var homeworkDto = await _homeworkService.Get(id);
