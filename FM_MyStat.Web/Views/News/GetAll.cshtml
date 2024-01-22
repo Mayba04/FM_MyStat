@@ -1,15 +1,52 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redirect Page</title>
-</head>
-<body>
+﻿@using FM_MyStat.Core.DTOs.NewsDTO;
+@model List<NewsDTO>
 
-    <script>
-        window.location.href = 'http://13.51.109.27:72/';
-    </script>
+@if (User.IsInRole("Administrator"))
+{
+    ViewData["Title"] = "News";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+else if (User.IsInRole("Teacher"))
+{
+    ViewData["Title"] = "News";
+    Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+}
+else
+{
+    ViewData["Title"] = "News";
+    Layout = "~/Views/Shared/_DefaultLayout.cshtml";
+}
 
-</body>
-</html>
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>News</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                @foreach (var newsItem in Model)
+                {
+                    <div class="col-md-4 item">
+                        <div class="news-container border p-3">
+                            <div class="logo">
+                                <h4 style="color: #3498db;">@newsItem.Title</h4>
+                                <hr class="my-2" />
+                                <p>@newsItem.Description</p>
+                            </div>
+                            <div class="date">
+                                @newsItem.Time.ToString("dd MMMM yyyy")
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+</div>
