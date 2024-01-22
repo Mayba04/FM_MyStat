@@ -1,4 +1,5 @@
-﻿using FM_MyStat.Core.DTOs.UsersDTO.Student;
+﻿using FM_MyStat.Core.DTOs.NewsDTO;
+using FM_MyStat.Core.DTOs.UsersDTO.Student;
 using FM_MyStat.Core.DTOs.UsersDTO.User;
 
 namespace FM_MyStat.Web.Models.ViewModels.Student
@@ -13,6 +14,7 @@ namespace FM_MyStat.Web.Models.ViewModels.Student
         public int HomeworksCurrent { get; set; } // поточні
         public int HomeworksOnInspection { get; set; } //  на перевірці
         public int HomeworksOverdue { get; set; } //  протерміновано    
-        public List<StudentDTO> RatingList { get; set; }
+        public List<StudentDTO> RatingList { get; set; } 
+        public List<NewsDTO> NewsList { get; set; }
     }
 }
