@@ -92,8 +92,6 @@ namespace FM_MyStat.Web.Controllers
             }
             return View(newsDto);
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Deletenews(int Id)
         {
             await _newsService.Delete(Id);

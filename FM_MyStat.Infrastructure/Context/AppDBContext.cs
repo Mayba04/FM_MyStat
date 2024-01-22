@@ -111,6 +111,7 @@ namespace FM_MyStat.Infrastructure.Context
             modelBuilder.SeedSubject();
             modelBuilder.SeedLesson();
             modelBuilder.SeedTeacherSubject();
+            modelBuilder.SeedNews();
         }
     }
 }

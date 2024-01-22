@@ -336,5 +336,48 @@ namespace FM_MyStat.Infrastructure.Initializers
                 TeacherId = 1
             });
         }
+        public static void SeedNews(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<News>().HasData(new News
+            {
+                Id = 1,
+                Title = "Новина 1",
+                Description = "Опис до новини 1",
+                Time = DateTime.UtcNow.AddDays(1),
+                TimePublication = DateTime.UtcNow.AddDays(-1)
+            });
+            modelBuilder.Entity<News>().HasData(new News
+            {
+                Id = 2,
+                Title = "Новина 2",
+                Description = "Опис до новини 2",
+                Time = DateTime.UtcNow.AddDays(2),
+                TimePublication = DateTime.UtcNow.AddDays(-1)
+            });
+            modelBuilder.Entity<News>().HasData(new News
+            {
+                Id = 3,
+                Title = "Новина 3",
+                Description = "Опис до новини 3",
+                Time = DateTime.UtcNow.AddDays(3),
+                TimePublication = DateTime.UtcNow.AddDays(-1)
+            });
+            modelBuilder.Entity<News>().HasData(new News
+            {
+                Id = 4,
+                Title = "Новина 4",
+                Description = "Опис до новини 4",
+                Time = DateTime.UtcNow.AddDays(4),
+                TimePublication = DateTime.UtcNow.AddDays(-1)
+            });
+            modelBuilder.Entity<News>().HasData(new News
+            {
+                Id = 5,
+                Title = "Новина 5",
+                Description = "Опис до новини 5",
+                Time = DateTime.UtcNow.AddDays(5),
+                TimePublication = DateTime.UtcNow.AddDays(-1)
+            });
+        }
     }
 }
