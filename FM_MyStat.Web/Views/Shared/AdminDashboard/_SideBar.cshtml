@@ -1,157 +1,106 @@
 ﻿ <!-- Main Sidebar Container -->
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-dark-primary elevation-4 sidebar_cs">
     <!-- Brand Logo -->
-    <a class="brand-link">
-        <img src="~/Dashboard/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">FM_MyStat</span>
-    </a>
+    @*  <a class="brand-link">
+    <img src="~/Dashboard/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+    <span class="brand-text font-weight-light">FM_MyStat</span>
+    </a> *@
+    <style>
+        .navbar_bg {
+            background-color: hsl(218, 41%, 15%);
+            background-image: radial-gradient(15px circle at 0% 0%, hsl(218, 41%, 35%) 15%, hsl(218, 41%, 30%) 35%, hsl(218, 41%, 20%) 75%, hsl(218, 41%, 19%) 80%, transparent 100%), radial-gradient(25px circle at 100% 100%, hsl(218, 41%, 45%) 15%, hsl(218, 41%, 30%) 35%, hsl(218, 41%, 20%) 75%, hsl(218, 41%, 19%) 80%, transparent 100%);
+            height: auto;
+            width: 100%;
+            padding: 10px; /* Add padding for better appearance */
+            box-sizing: border-box; /* Include padding in width calculation */
+        }
+
+        .sidebar_cs {
+            background: rgb(17,32,62);
+            background: linear-gradient(207deg, rgba(17,32,62,1) 0%, rgba(105,153,238,1) 99%);
+        }
+
+        .sidebar-image-container {
+            position: relative;
+        }
+
+        .sidebar-image {
+            width: 100%;
+            height: auto;
+        }
+
+        .transparent-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(26, 42, 120, 0.8);
+        }
+
+        hr {
+            border-top: 1px solid #bbb;
+            border-radius: 100px;
+        }
+
+    </style>
+
+    <div class="sidebar-image-container">
+        <img src="~/dashboard/img/sidebar_bg.jpg" alt="Sidebar Image" class="sidebar-image">
+        <div class="transparent-layer">
+
+        </div>
+    </div>
 
     <!-- Sidebar -->
     <div class="sidebar">
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <!-- Add icons to the links using the .nav-icon class
-                                     with font-awesome or any other icon font library -->
-                <li class="nav-item">
-                    <a href="#" class="nav-link active">
-                        <i class="nav-icon fas fa-users"></i>
-                        <p>
-                            Admins
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a asp-controller="Admin"  asp-action="GetAll" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>All admins</p>
-                            </a>
-                        </li>
-                         
-                        
-                        <li class="nav-item">
-                            <a asp-controller="Admin" asp-action="Create" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Add new admin</p>
-                            </a>
-                        </li>
-                        
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link active">
-                        <i class="nav-icon fas fa-users"></i>
-                        <p>
-                            Teachers
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a asp-controller="Teacher" asp-action="GetAll" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>All teachers</p>
-                            </a>
-                        </li>
-    
-                        <li class="nav-item">
-                        <a asp-controller="Teacher" asp-action="Create" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Add new teacher</p>
-                            </a>
-                        </li>
-                        
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link active">
-                        <i class="nav-icon fas fa-users"></i>
-                        <p>
-                            Students
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a asp-controller="Student" asp-action="GetAll" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>All students</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                        <a asp-controller="Student" asp-action="Create" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Add new student</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link active">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>
-                            Subject
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a asp-controller="Subject" asp-action="GetAll" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>All Subject</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                        <a asp-controller="Subject" asp-action="Create" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                            <p>Add Subject</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link active">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>
-                            Group
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a asp-controller="Group" asp-action="GetAll" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>All Group</p>
-                            </a>
-                        </li>
+                <!-- Add icons to the links using the .nav-icon class --!>
 
+                                <li class="nav-item">
+                                    <a asp-controller="Admin"  asp-action="GetAll" class="nav-link">
+                                         <i class="nav-icon fas fa-users"></i>
+                                        <p>All admins</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+ <hr />
+                                            
+                                <li class="nav-item">
+                                    <a asp-controller="Teacher" asp-action="GetAll" class="nav-link">
+                                        <i class="nav-icon fas fa-users"></i>
+                                        <p>All teachers</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+ <hr />
+                                       
+                                <li class="nav-item">
+                                    <a asp-controller="Student" asp-action="GetAll" class="nav-link">
+                                        <i class="nav-icon fas fa-users"></i>
+                                        <p>All students</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
 
-                        <li class="nav-item">
-                            <a asp-controller="Group" asp-action="Create" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Add Group</p>
-                            </a>
-                        </li>
+ <hr />
+                                            
 
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link active">
-                        <i class="nav-icon fas fa-comments"></i>
-                        <p>
-                            Homeworks
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a asp-controller="Homework" asp-action="GetAll" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>All homework</p>
-                            </a>
-                        </li>
+                                <li class="nav-item">
+                                    <a asp-controller="Subject" asp-action="GetAll" class="nav-link">
+                                        <i class="nav-icon fas fa-th"></i>
+                                        <p>All Subject</p>
+                                    </a>
+                                </li>
 
+                                <li class="nav-item">
+                                <a asp-controller="Subject" asp-action="Create" class="nav-link">
+                                <i class="nav-icon fas fa-th"></i>
+                                    <p>Add Subject</p>
+                                    </a>
+                                </li>
                     </ul>
                 </li>
 
@@ -171,25 +120,64 @@
                             </a>
                         </li>
 
-                        <li class="nav-item">
-                            <a asp-controller="News" asp-action="ManageNews" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Manage news</p>
-                            </a>
-                        </li>
+                                <li class="nav-item">
+ <hr />
+                                            
+
+                                <li class="nav-item">
+                                    <a asp-controller="Group" asp-action="GetAll" class="nav-link">
+                                <i class="nav-icon fas fa-th"></i>
+                                        <p>All Group</p>
+                                    </a>
+                                </li>
+
+
+                                <li class="nav-item">
+                                    <a asp-controller="Group" asp-action="Create" class="nav-link">
+                                <i class="nav-icon fas fa-th"></i>
+                                        <p>Add Group</p>
+                                    </a>
+                                </li>
+
+                                                                <li class="nav-item">
+ <hr />
+                                            
 
                         <li class="nav-item">
-                            <a asp-controller="News" asp-action="Create" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Add news</p>
+                            <a href="#" class="nav-link dark">
+                                <i class="nav-icon fas fa-th"></i>
+                                <p>
+                                    News
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
                             </a>
-                        </li>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a asp-controller="News" asp-action="GetAll" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>All news (DO NOT PRESS THIS BUTTON IF YOU ARE SPREADING THE SCREEN)</p>
+                                    </a>
+                                </li>
 
+                                <li class="nav-item">
+                                    <a asp-controller="News" asp-action="ManageNews" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Manage news</p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a asp-controller="News" asp-action="Create" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Add news</p>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
                     </ul>
-                </li>
-            </ul>
-        </nav>
-        <!-- /.sidebar-menu -->
+                </nav>
+                <!-- /.sidebar-menu -->
     </div>
     <!-- /.sidebar -->
 </aside>
