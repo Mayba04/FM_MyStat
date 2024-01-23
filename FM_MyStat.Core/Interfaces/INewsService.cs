@@ -12,6 +12,7 @@ namespace FM_MyStat.Core.Interfaces
     public interface INewsService
     {
         Task<List<NewsDTO>> GetAll();
+        Task<ServiceResponse<List<NewsDTO>, object>> GetAllBySpec();
         Task<NewsDTO?> Get(int id);
         Task Create(CreateNewsDTO model);
         Task Update(EditNewsDTO model);

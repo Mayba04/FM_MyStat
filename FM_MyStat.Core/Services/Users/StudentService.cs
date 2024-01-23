@@ -1,4 +1,5 @@
 using AutoMapper;
+using FM_MyStat.Core.DTOs.NewsDTO;
 using FM_MyStat.Core.DTOs.UsersDTO.Student;
 using FM_MyStat.Core.DTOs.UsersDTO.User;
 using FM_MyStat.Core.Entities;
@@ -25,9 +26,11 @@ namespace FM_MyStat.Core.Services.Users
         private readonly IMapper _mapper;
         private readonly IRepository<HomeworkDone> _homeworkDoneRepo;
         private readonly IRepository<LessonMark> _lessonsMarkRepo;
+        private readonly INewsService _newsService;
 
         public StudentService(
                 UserService userService,
+                INewsService newsService,
                 IRepository<Student> StudentRepo,
                 IMapper mapper,
                 IRepository<Group> groupRepo,
@@ -36,6 +39,7 @@ namespace FM_MyStat.Core.Services.Users
                 IRepository<LessonMark> lessonMarkRepo
             )
         {
+            this._newsService = newsService;
             this._userService = userService;
             this._studentRepo = StudentRepo;
             this._mapper = mapper;
@@ -233,6 +237,19 @@ namespace FM_MyStat.Core.Services.Users
             dashboardStudentInfo.HomeworksCurrent = 0;
             // HomeworksOnInspection
             dashboardStudentInfo.HomeworksOnInspection = 0;
+
+            ServiceResponse<List<NewsDTO>, object> response = await _newsService.GetAllBySpec();
+
+            List<NewsDTO> newsList = new List<NewsDTO>();
+
+
+            if (response.Success)
+            {
+                newsList = response.Payload;
+            }
+
+            dashboardStudentInfo.NewsList = newsList;
+
             return new ServiceResponse<DashboardStudentInfo, object>(true, "", payload: dashboardStudentInfo);
         }
 

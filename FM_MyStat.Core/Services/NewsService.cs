@@ -1,12 +1,16 @@
 ﻿using AutoMapper;
+using FM_MyStat.Core.DTOs.GrouopsDTO;
 using FM_MyStat.Core.DTOs.NewsDTO;
+using FM_MyStat.Core.DTOs.UsersDTO.Student;
 using FM_MyStat.Core.Entities;
+using FM_MyStat.Core.Entities.Specifications;
 using FM_MyStat.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace FM_MyStat.Core.Services
 {
@@ -45,6 +49,20 @@ namespace FM_MyStat.Core.Services
             return (await _newsRepo.GetAll()).Select(item => _mapper.Map<News, NewsDTO>(item)).ToList();
         }
 
+
+        public async Task<ServiceResponse<List<NewsDTO>, object>> GetAllBySpec()
+        {
+            var result = await _newsRepo.GetListBySpec(new NewsSpecification.GetByTop3News_Fuhrer_is_not_a_good_person());
+            if (result == null)
+            {
+                return new ServiceResponse<List<NewsDTO>, object>(false, "Group exists.");
+            }
+
+            var news = _mapper.Map<List<NewsDTO>>(result);
+            return new ServiceResponse<List<NewsDTO>, object>(true, "", payload: news);
+        }
+
+
         public async Task Update(EditNewsDTO model)
         {
             await _newsRepo.Update(_mapper.Map<EditNewsDTO, News>(model));
@@ -56,5 +74,7 @@ namespace FM_MyStat.Core.Services
             News news = await _newsRepo.GetByID(id);
             return (news == null) ? null : _mapper.Map<News, EditNewsDTO>(news);
         }
+
+
     }
 }

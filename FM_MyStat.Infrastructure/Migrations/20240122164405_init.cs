@@ -440,9 +440,9 @@ namespace FM_MyStat.Infrastructure.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "0558b633-0bd7-4f74-8d7f-98ff2dd95031", null, "Teacher", "TEACHER" },
-                    { "66fa09dc-bc64-461d-b442-016e57ff01d9", null, "Student", "STUDENT" },
-                    { "9347bf2c-a9c3-4616-94f4-2965e27a1d2b", null, "Administrator", "ADMINISTRATOR" }
+                    { "08aab4b9-cd9d-4230-9837-baf83aed4d56", null, "Administrator", "ADMINISTRATOR" },
+                    { "1c2d3479-a3e1-4976-907a-bd6db1846894", null, "Student", "STUDENT" },
+                    { "d5ceda32-c8f1-46ee-a1af-21cc098ba25c", null, "Teacher", "TEACHER" }
                 });
 
             migrationBuilder.InsertData(
@@ -450,14 +450,26 @@ namespace FM_MyStat.Infrastructure.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "AdministratorId", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "StudentId", "SurName", "TeacherId", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "205c1ae6-6d3b-4f75-a301-432ad75e5526", 0, null, "24ab4e9b-c6de-4122-b9c7-2c373c35ac9d", "AppUser", "student@email.com", true, "John", "Connor", false, null, "STUDENT@EMAIL.COM", "STUDENT@EMAIL.COM", "AQAAAAIAAYagAAAAEE9atS1dIaLYAl6KynlxGvL0yfmX+ay/viDSWt/h+r4zxs2pyZZDs5w8HKWwqwoJSg==", "+xx(xxx)xxx-xx-xx", true, "2ff5d481-92e8-4079-8fad-7f400040d79a", 1, "Johnovych", null, false, "student@email.com" },
-                    { "2948160d-a5aa-442d-8aad-138e9ac4b6e3", 0, null, "6497cead-1003-4b79-abc2-c00c32e8bca5", "AppUser", "teacher1@email.com", true, "Serhiy", "Stadnyk", false, null, "TEACHER1@EMAIL.COM", "TEACHER1@EMAIL.COM", "AQAAAAIAAYagAAAAEGJvL74ki9D7Gp+K7MNwY3sI7gELW6J0CrD/3S6kvqD7hjyt2gWZYOfPshwBpoUUpg==", "+xx(xxx)xxx-xx-xx", true, "0c5d942d-7333-4db2-b922-06c4f0ab29f2", null, "Viacheslavovich", 2, false, "teacher1@email.com" },
-                    { "72e4cf0d-1353-47ff-83d3-d07828ca7071", 0, null, "e09be196-60aa-4973-ae05-4d5ef2a4504b", "AppUser", "student1@email.com", true, "Dima", "Shostak", false, null, "STUDENT1@EMAIL.COM", "STUDENT1@EMAIL.COM", "AQAAAAIAAYagAAAAEDWxueqIHT2l9rtTJ3kggk1vt6BZkpL9bxXPpSsHcTtbq0yDn4w2IWsyu6TXKgA4EQ==", "+xx(xxx)xxx-xx-xx", true, "c05750d4-c06a-4c22-937d-9118f619a100", 2, "Oleksiyovich", null, false, "student1@email.com" },
-                    { "7edfa31b-89ea-4ada-8739-e766ed59a75a", 0, null, "9aa84bd7-dba6-48d0-b752-29bd4c88f5a7", "AppUser", "student3@email.com", true, "Pavlo", "Mayba", false, null, "STUDENT3@EMAIL.COM", "STUDENT3@EMAIL.COM", "AQAAAAIAAYagAAAAEFT/LaiRWtvV+NA1MCDax6REFTa6BvMyQcbI0yUNIRu7l49ELne83a48B86E5DK8aA==", "+xx(xxx)xxx-xx-xx", true, "ac218be1-e16a-4bcb-99e9-0600e3f6e675", 4, "Ivanovich", null, false, "student3@email.com" },
-                    { "85af61cf-fe22-4e49-87d3-7370e00f5c83", 0, null, "3eaf49df-b54b-4f0c-8575-56f80436f018", "AppUser", "student2@email.com", true, "Yurii", "Bortnik", false, null, "STUDENT2@EMAIL.COM", "STUDENT2@EMAIL.COM", "AQAAAAIAAYagAAAAEM7yZCAhVwx3ZlWxFVrcVfSuGIj9fRiOeQsd3izJwdOXmD6NJndx1bQw+GmNJ8ylkw==", "+xx(xxx)xxx-xx-xx", true, "646551dd-74a6-4bfc-8a91-e6ab3928a0d9", 3, "Andriyovich", null, false, "student2@email.com" },
-                    { "e9e309a7-51dd-4197-ba38-f3a89f256871", 0, 2, "792f6072-5a2b-4222-9468-495202f9a970", "AppUser", "admin1@email.com", true, "John", "Connor", false, null, "ADMIN1@EMAIL.COM", "ADMIN1@EMAIL.COM", "AQAAAAIAAYagAAAAEFvAF7o5wHsnR+14m3MWxJG2xvQx6Pn5ixL8BbCh42rOC0bJwYdQH0fa3ruLNjEo9g==", "+xx(xxx)xxx-xx-xx", true, "90dd748c-57a2-4168-9c01-be93128d5267", null, "Johnovych", null, false, "admin1@email.com" },
-                    { "f260b5a1-28ba-48b3-95ab-d98c9441f3b0", 0, 1, "f5426996-94aa-4807-bace-427696f9601e", "AppUser", "admin@email.com", true, "John", "Connor", false, null, "ADMIN@EMAIL.COM", "ADMIN@EMAIL.COM", "AQAAAAIAAYagAAAAEOgfbWUOmPKxEIiQn87A8MGJmZrf5yJt7CapORo3e7k+FLpDEv0npzW61qy8fvL3Fw==", "+xx(xxx)xxx-xx-xx", true, "24d2cf9d-4a8d-48fb-9eff-bab4344bd36e", null, "Johnovych", null, false, "admin@email.com" },
-                    { "f7c3e4bd-0d6d-41f1-9b4c-f22d65cf1864", 0, null, "ab5cd165-d362-409d-a5d5-3f3ac90f170e", "AppUser", "teacher@email.com", true, "John", "Connor", false, null, "TEACHER@EMAIL.COM", "TEACHER@EMAIL.COM", "AQAAAAIAAYagAAAAEEElHfZgboLP8q+1QpUZo005AMdbUuCYerzTtcUTCkQg3EdxvmM2VO4n1/oskKaGKQ==", "+xx(xxx)xxx-xx-xx", true, "9622f39e-9439-4f77-9ef0-75c649761300", null, "Johnovych", 1, false, "teacher@email.com" }
+                    { "26dd25c5-de0b-4815-b470-d53c3bcb9c52", 0, null, "60dae6cc-d8f7-4a45-9162-f8453f52aab2", "AppUser", "student2@email.com", true, "Yurii", "Bortnik", false, null, "STUDENT2@EMAIL.COM", "STUDENT2@EMAIL.COM", "AQAAAAIAAYagAAAAEKZ5IYR8ZJcwj+jDtSxD+Vk50ZwpXmxl7miAShMFSBMXep9uBcJYRBk99oscGWdUxA==", "+xx(xxx)xxx-xx-xx", true, "8a989278-f81e-45ae-b00d-5c5387ac0b90", 3, "Andriyovich", null, false, "student2@email.com" },
+                    { "362c30f1-f5ad-4445-a23c-bf2887b810a8", 0, null, "5652027c-66d1-491f-b2fe-bb61d62bfb1f", "AppUser", "teacher1@email.com", true, "Serhiy", "Stadnyk", false, null, "TEACHER1@EMAIL.COM", "TEACHER1@EMAIL.COM", "AQAAAAIAAYagAAAAELG/ELvNMGusB92B50JeUQXJtDhO1Nnx1uLTPuob+ZzML1v4zbYvYZB3FSCaSXIooQ==", "+xx(xxx)xxx-xx-xx", true, "7c043c67-aa1e-4da7-b6e8-5adca07ed07e", null, "Viacheslavovich", 2, false, "teacher1@email.com" },
+                    { "7dcb8905-8d8a-42bc-b066-97e9b154cb39", 0, null, "e2720c50-15e7-4b61-b07c-704c5c1f9916", "AppUser", "student@email.com", true, "John", "Connor", false, null, "STUDENT@EMAIL.COM", "STUDENT@EMAIL.COM", "AQAAAAIAAYagAAAAEHpUKSHh32uaRWR8KrIFZjtBIWemOjnvf4JzAFnncIBL93YaqfkyqFxyvMU61rj8lA==", "+xx(xxx)xxx-xx-xx", true, "fa3de70e-792e-49df-ad63-213097deda01", 1, "Johnovych", null, false, "student@email.com" },
+                    { "90b720f0-740b-4a5e-9fea-4e4fa3604118", 0, 2, "4e8087bc-2d18-48d2-9ad3-80f10b1794ed", "AppUser", "admin1@email.com", true, "John", "Connor", false, null, "ADMIN1@EMAIL.COM", "ADMIN1@EMAIL.COM", "AQAAAAIAAYagAAAAEMOL6dY9INiUpa7vMSmHXV97E6lU4vvhlXHMgg7VAhpWasnl3/TlnPCbjng0Gz3rSA==", "+xx(xxx)xxx-xx-xx", true, "04024278-c3ef-4ded-b52c-63290be555a2", null, "Johnovych", null, false, "admin1@email.com" },
+                    { "ae859c11-3c4f-4bc9-9e22-65037a0411e5", 0, null, "9fac6f5d-ee49-4749-bb65-5ed8e447826f", "AppUser", "student3@email.com", true, "Pavlo", "Mayba", false, null, "STUDENT3@EMAIL.COM", "STUDENT3@EMAIL.COM", "AQAAAAIAAYagAAAAEPbawnc1UBXHMHytYX7hisfyw9r+FY3dw7MPZr3SX9+HkvKE59stqcSyHySAvZBnbg==", "+xx(xxx)xxx-xx-xx", true, "b64d9223-6030-4387-8054-3c78088f7f5b", 4, "Ivanovich", null, false, "student3@email.com" },
+                    { "b050e166-f269-4074-b0fd-7eb073cac869", 0, 1, "a6a4b70d-71db-4510-be37-a1303864d5fc", "AppUser", "admin@email.com", true, "John", "Connor", false, null, "ADMIN@EMAIL.COM", "ADMIN@EMAIL.COM", "AQAAAAIAAYagAAAAEBQ/hfwqvwCGnO7FVddW2xmLogvT1ypwWzU9ut+qCJcVsO/3rh0cuiZ5c8XBRSp11g==", "+xx(xxx)xxx-xx-xx", true, "121929f6-0c55-49f0-8913-30698b4b198f", null, "Johnovych", null, false, "admin@email.com" },
+                    { "bcdc54e3-64b7-42ef-8e1f-eb5902cc298e", 0, null, "20484eb6-93a1-4047-8411-d0b6957265b1", "AppUser", "student1@email.com", true, "Dima", "Shostak", false, null, "STUDENT1@EMAIL.COM", "STUDENT1@EMAIL.COM", "AQAAAAIAAYagAAAAEHFV06pND3eDkRj1FyY865SJtPhEblNkvoFmyQb+silXJc57cmoBNmXAo7RKJRrmXw==", "+xx(xxx)xxx-xx-xx", true, "ac1e6eb8-4c03-4d9b-bce9-be2e3ce7bc83", 2, "Oleksiyovich", null, false, "student1@email.com" },
+                    { "def129f6-f42a-427c-bdf8-67b6afd7863d", 0, null, "75d04568-5593-4e4f-8738-c859a6446ae2", "AppUser", "teacher@email.com", true, "John", "Connor", false, null, "TEACHER@EMAIL.COM", "TEACHER@EMAIL.COM", "AQAAAAIAAYagAAAAEHZAekRmGUZClOtWRzhsbrsIJGSljULHHI5PTAqzPLxE1vqH6+cQJHVik6PrpbcXqw==", "+xx(xxx)xxx-xx-xx", true, "5fdd1c57-d76e-47b0-8b58-0da525fa03b4", null, "Johnovych", 1, false, "teacher@email.com" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "News",
+                columns: new[] { "Id", "Description", "Time", "TimePublication", "Title" },
+                values: new object[,]
+                {
+                    { 1, "Опис до новини 1", new DateTime(2024, 1, 23, 16, 44, 4, 899, DateTimeKind.Utc).AddTicks(4905), new DateTime(2024, 1, 21, 16, 44, 4, 899, DateTimeKind.Utc).AddTicks(4907), "Новина 1" },
+                    { 2, "Опис до новини 2", new DateTime(2024, 1, 24, 16, 44, 4, 899, DateTimeKind.Utc).AddTicks(4923), new DateTime(2024, 1, 21, 16, 44, 4, 899, DateTimeKind.Utc).AddTicks(4923), "Новина 2" },
+                    { 3, "Опис до новини 3", new DateTime(2024, 1, 25, 16, 44, 4, 899, DateTimeKind.Utc).AddTicks(4949), new DateTime(2024, 1, 21, 16, 44, 4, 899, DateTimeKind.Utc).AddTicks(4950), "Новина 3" },
+                    { 4, "Опис до новини 4", new DateTime(2024, 1, 26, 16, 44, 4, 899, DateTimeKind.Utc).AddTicks(4959), new DateTime(2024, 1, 21, 16, 44, 4, 899, DateTimeKind.Utc).AddTicks(4960), "Новина 4" },
+                    { 5, "Опис до новини 5", new DateTime(2024, 1, 27, 16, 44, 4, 899, DateTimeKind.Utc).AddTicks(4968), new DateTime(2024, 1, 21, 16, 44, 4, 899, DateTimeKind.Utc).AddTicks(4969), "Новина 5" }
                 });
 
             migrationBuilder.InsertData(
@@ -470,8 +482,8 @@ namespace FM_MyStat.Infrastructure.Migrations
                 columns: new[] { "Id", "AppUserId" },
                 values: new object[,]
                 {
-                    { 1, "f260b5a1-28ba-48b3-95ab-d98c9441f3b0" },
-                    { 2, "e9e309a7-51dd-4197-ba38-f3a89f256871" }
+                    { 1, "b050e166-f269-4074-b0fd-7eb073cac869" },
+                    { 2, "90b720f0-740b-4a5e-9fea-4e4fa3604118" }
                 });
 
             migrationBuilder.InsertData(
@@ -479,14 +491,14 @@ namespace FM_MyStat.Infrastructure.Migrations
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { "66fa09dc-bc64-461d-b442-016e57ff01d9", "205c1ae6-6d3b-4f75-a301-432ad75e5526" },
-                    { "0558b633-0bd7-4f74-8d7f-98ff2dd95031", "2948160d-a5aa-442d-8aad-138e9ac4b6e3" },
-                    { "66fa09dc-bc64-461d-b442-016e57ff01d9", "72e4cf0d-1353-47ff-83d3-d07828ca7071" },
-                    { "66fa09dc-bc64-461d-b442-016e57ff01d9", "7edfa31b-89ea-4ada-8739-e766ed59a75a" },
-                    { "66fa09dc-bc64-461d-b442-016e57ff01d9", "85af61cf-fe22-4e49-87d3-7370e00f5c83" },
-                    { "9347bf2c-a9c3-4616-94f4-2965e27a1d2b", "e9e309a7-51dd-4197-ba38-f3a89f256871" },
-                    { "9347bf2c-a9c3-4616-94f4-2965e27a1d2b", "f260b5a1-28ba-48b3-95ab-d98c9441f3b0" },
-                    { "0558b633-0bd7-4f74-8d7f-98ff2dd95031", "f7c3e4bd-0d6d-41f1-9b4c-f22d65cf1864" }
+                    { "1c2d3479-a3e1-4976-907a-bd6db1846894", "26dd25c5-de0b-4815-b470-d53c3bcb9c52" },
+                    { "d5ceda32-c8f1-46ee-a1af-21cc098ba25c", "362c30f1-f5ad-4445-a23c-bf2887b810a8" },
+                    { "1c2d3479-a3e1-4976-907a-bd6db1846894", "7dcb8905-8d8a-42bc-b066-97e9b154cb39" },
+                    { "08aab4b9-cd9d-4230-9837-baf83aed4d56", "90b720f0-740b-4a5e-9fea-4e4fa3604118" },
+                    { "1c2d3479-a3e1-4976-907a-bd6db1846894", "ae859c11-3c4f-4bc9-9e22-65037a0411e5" },
+                    { "08aab4b9-cd9d-4230-9837-baf83aed4d56", "b050e166-f269-4074-b0fd-7eb073cac869" },
+                    { "1c2d3479-a3e1-4976-907a-bd6db1846894", "bcdc54e3-64b7-42ef-8e1f-eb5902cc298e" },
+                    { "d5ceda32-c8f1-46ee-a1af-21cc098ba25c", "def129f6-f42a-427c-bdf8-67b6afd7863d" }
                 });
 
             migrationBuilder.InsertData(
@@ -494,8 +506,8 @@ namespace FM_MyStat.Infrastructure.Migrations
                 columns: new[] { "Id", "AppUserId" },
                 values: new object[,]
                 {
-                    { 1, "f7c3e4bd-0d6d-41f1-9b4c-f22d65cf1864" },
-                    { 2, "2948160d-a5aa-442d-8aad-138e9ac4b6e3" }
+                    { 1, "def129f6-f42a-427c-bdf8-67b6afd7863d" },
+                    { 2, "362c30f1-f5ad-4445-a23c-bf2887b810a8" }
                 });
 
             migrationBuilder.InsertData(
@@ -515,17 +527,17 @@ namespace FM_MyStat.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "Lessons",
                 columns: new[] { "Id", "Description", "End", "GroupId", "HomeworkId", "Name", "Start", "SubjectId", "TeacherId" },
-                values: new object[] { 1, "First steps into c# today", new DateTime(2024, 1, 21, 21, 1, 5, 262, DateTimeKind.Utc).AddTicks(8626), 1, null, "C# beginning", new DateTime(2024, 1, 21, 19, 1, 5, 262, DateTimeKind.Utc).AddTicks(8616), 1, 1 });
+                values: new object[] { 1, "First steps into c# today", new DateTime(2024, 1, 22, 19, 44, 4, 899, DateTimeKind.Utc).AddTicks(4765), 1, null, "C# beginning", new DateTime(2024, 1, 22, 17, 44, 4, 899, DateTimeKind.Utc).AddTicks(4755), 1, 1 });
 
             migrationBuilder.InsertData(
                 table: "Students",
                 columns: new[] { "Id", "AppUserId", "GroupId", "Rating" },
                 values: new object[,]
                 {
-                    { 1, "205c1ae6-6d3b-4f75-a301-432ad75e5526", 1, 0 },
-                    { 2, "72e4cf0d-1353-47ff-83d3-d07828ca7071", 1, 0 },
-                    { 3, "85af61cf-fe22-4e49-87d3-7370e00f5c83", 2, 0 },
-                    { 4, "7edfa31b-89ea-4ada-8739-e766ed59a75a", 2, 0 }
+                    { 1, "7dcb8905-8d8a-42bc-b066-97e9b154cb39", 1, 0 },
+                    { 2, "bcdc54e3-64b7-42ef-8e1f-eb5902cc298e", 1, 0 },
+                    { 3, "26dd25c5-de0b-4815-b470-d53c3bcb9c52", 2, 0 },
+                    { 4, "ae859c11-3c4f-4bc9-9e22-65037a0411e5", 2, 0 }
                 });
 
             migrationBuilder.CreateIndex(
