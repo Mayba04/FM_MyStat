@@ -22,11 +22,12 @@
 
         .sidebar-image-container {
             position: relative;
+            
         }
 
         .sidebar-image {
-            width: 100%;
-            height: auto;
+            margin-bottom:20px;
+            margin-top: 20px;
         }
 
         .transparent-layer {
@@ -40,87 +41,113 @@
 
         hr {
             border-top: 1px solid #bbb;
-            border-radius: 100px;
+            margin-top: 0px;
+            margin-bottom: 15px;
+            margin-left: 0px;
+            margin-right: 0px
+        }
+
+        .nav-it{
+            display: flex;
+            justify-content: space-between;
+        }
+
+/*         a{
+            display:flex;
+                }*/
+        .nav-item{
+            justify-content: space-between; 
+        }
+
+        .brand-letter {
+            display: none;
+            color: white;
+            font-size: 24px;
+            margin-left: 10px;
         }
 
     </style>
 
-    <div class="sidebar-image-container">
-        <img src="~/dashboard/img/sidebar_bg.jpg" alt="Sidebar Image" class="sidebar-image">
-        <div class="transparent-layer">
+    <div class="sidebar-image-container d-flex align-items-center justify-content-center mt-3">
 
-        </div>
+        <img id="sidebar-image" src="~/dashboard/img/logo_m.png" alt="Sidebar Image" class="sidebar-image">
+
+        <div id="brand-letter" class="brand-letter" style="font-family:'Eras ITC'">M</div>
     </div>
 
+    
+    <hr />
     <div class="sidebar">
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <li class="nav-item">
-                    <a asp-controller="Admin"  asp-action="GetAll" class="nav-link">
-                        <i class="nav-icon fas fa-users"></i>
+                <li class="nav-item" style="margin-bottom: 30px">
+                    <a asp-controller="Admin" asp-action="GetAll" class="nav-link d-inline">
+                        <i class="nav-icon fas fa-user-lock"></i>
                         <p>Admins</p>
                     </a>
-                </li>
-                
-                <li class="nav-item">
-                    <a asp-controller="Teacher" asp-action="GetAll" class="nav-link">
-                        <i class="nav-icon fas fa-users"></i>
-                        <p>Teachers</p>
-                    </a>
-                </li>
-                                       
-                <li class="nav-item">
-                    <a asp-controller="Student" asp-action="GetAll" class="nav-link">
-                        <i class="nav-icon fas fa-users"></i>
-                        <p>Students</p>
+                    <a asp-controller="Admin" asp-action="Create" class="nav-link d-inline">
+                        <i class="nav-icon fa fa-plus-circle"></i>
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a asp-controller="Subject" asp-action="GetAll" class="nav-link">
+                <li class="nav-item" style="margin-bottom: 30px">
+                    <a asp-controller="Teacher" asp-action="GetAll" class="nav-link d-inline">
+                        <i class="nav-icon fas fa-user-tie"></i>
+                        <p>Teachers</p>
+                    </a>
+                    <a asp-controller="Teacher" asp-action="Create" class="nav-link d-inline">
+                        <i class="nav-icon fa fa-plus-circle"></i>
+                    </a>
+                </li>
+
+                <li class="nav-item" style="margin-bottom: 30px">
+                    <a asp-controller="Student" asp-action="GetAll" class="nav-link d-inline">
+                        <i class="nav-icon fas fa-user-graduate"></i>
+                        <p>Students</p>
+                    </a>
+                    <a asp-controller="Student" asp-action="Create" class="nav-link d-inline">
+                        <i class="nav-icon fa fa-plus-circle"></i>
+                    </a>
+                </li>
+
+                <li class="nav-item" style="margin-bottom: 30px">
+                    <a asp-controller="Subject" asp-action="GetAll" class="nav-link d-inline">
                         <i class="nav-icon fas fa-th"></i>
                         <p>Subjects</p>
                     </a>
+                    <a asp-controller="Admin" asp-action="Create" class="nav-link d-inline">
+                        <i class="nav-icon fa fa-plus-circle"></i>
+                    </a>
                 </li>
 
-                <li class="nav-item">
-                    <a asp-controller="Subject" asp-action="Create" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>Add Subject</p>
-                    </a>
-                </li>                                           
-
-                <li class="nav-item">
-                    <a asp-controller="Group" asp-action="GetAll" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
+                <li class="nav-item" style="margin-bottom: 30px">
+                    <a asp-controller="Group" asp-action="GetAll" class="nav-link d-inline">
+                        <i class="nav-icon fas fa-users"></i>
                         <p>Groups</p>
                     </a>
-                </li>
-
-                <li class="nav-item">
-                    <a asp-controller="Group" asp-action="Create" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>Add Group</p>
+                    <a asp-controller="Group" asp-action="Create" class="nav-link d-inline">
+                        <i class="nav-icon fa fa-plus-circle"></i>
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a asp-controller="News" asp-action="GetAll" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
+
+                <li class="nav-item" style="margin-bottom: 30px">
+                    <a asp-controller="News" asp-action="GetAll" class="nav-link d-inline">
+                        <i class="fas fa-paper-plane nav-icon"></i>
                         <p>News</p>
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a asp-controller="News" asp-action="ManageNews" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
+                <li class="nav-item" style="margin-bottom: 30px">
+                    <a asp-controller="News" asp-action="ManageNews" class="nav-link d-inline">
+                        <i class="fa fa-wrench nav-icon"></i>
                         <p>Manage news</p>
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a asp-controller="News" asp-action="Create" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
+                <li class="nav-item" style="margin-bottom: 30px">
+                    <a asp-controller="News" asp-action="Create" class="nav-link d-inline">
+                        <i class="fa fa-plus-circle nav-icon"></i>
                         <p>Add news</p>
                     </a>
                 </li>
@@ -129,3 +156,22 @@
         </nav>
     </div>
 </aside>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var sidebarImage = document.getElementById('sidebar-image');
+        var brandLetter = document.getElementById('brand-letter');
+
+        // Initially hide the letter M
+        brandLetter.style.display = 'none';
+
+        // Toggle the visibility of the image and letter M when the sidebar button is clicked
+        document.querySelector('.nav-item a[data-widget="pushmenu"]').addEventListener('click', function () {
+            setTimeout(function () {
+                sidebarImage.style.display = sidebarImage.style.display === 'none' ? 'block' : 'none';
+                brandLetter.style.display = brandLetter.style.display === 'none' ? 'block' : 'none';
+            }, 300); // Adjust the delay (in milliseconds) based on your layout transition duration
+        });
+    });
+</script>
