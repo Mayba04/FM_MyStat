@@ -98,7 +98,7 @@ namespace FM_MyStat.Web.Controllers
                 return RedirectToAction();
             }
             ViewBag.CreateUserError = validationResult.Errors.FirstOrDefault();
-           // await LoadGroups();
+            await LoadGroups();
             return View(nameof(Create));
         }
         #endregion
