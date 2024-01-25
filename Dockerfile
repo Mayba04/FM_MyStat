@@ -14,8 +14,6 @@ RUN dotnet restore "FM_MyStat.Web/FM_MyStat.Web.csproj"
 RUN dotnet tool install -g dotnet-ef --version 7.0
 ENV PATH $PATH:/root/.dotnet/tools
 
-RUN dotnet-ef database update --startup-project "FM_MyStat.Web" --project "FM_MyStat.Infrastructure/FM_MyStat.Infrastructure.csproj"
-
 RUN dotnet publish "FM_MyStat.Web/FM_MyStat.Web.csproj" -c Release -o /app/build
 WORKDIR /app/build
 EXPOSE 80
