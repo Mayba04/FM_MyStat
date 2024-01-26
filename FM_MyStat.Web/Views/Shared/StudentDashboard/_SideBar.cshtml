@@ -1,34 +1,98 @@
 ﻿ <!-- Main Sidebar Container -->
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-dark-primary elevation-4 sidebar_cs">
     <!-- Brand Logo -->
-    <a class="brand-link">
-        <img src="~/Dashboard/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">FM_MyStat</span>
-    </a>
+    @*  <a class="brand-link">
+    <img src="~/Dashboard/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+    <span class="brand-text font-weight-light">FM_MyStat</span>
+    </a> *@
+    <style>
+        .navbar_bg {
+            background-color: hsl(218, 41%, 15%);
+            background-image: radial-gradient(15px circle at 0% 0%, hsl(218, 41%, 35%) 15%, hsl(218, 41%, 30%) 35%, hsl(218, 41%, 20%) 75%, hsl(218, 41%, 19%) 80%, transparent 100%), radial-gradient(25px circle at 100% 100%, hsl(218, 41%, 45%) 15%, hsl(218, 41%, 30%) 35%, hsl(218, 41%, 20%) 75%, hsl(218, 41%, 19%) 80%, transparent 100%);
+            height: auto;
+            width: 100%;
+            padding: 10px; /* Add padding for better appearance */
+            box-sizing: border-box; /* Include padding in width calculation */
+        }
 
-    <!-- Sidebar -->
+        .sidebar_cs {
+            background: rgb(17,32,62);
+            background: linear-gradient(207deg, rgba(17,32,62,1) 0%, rgba(105,153,238,1) 99%);
+        }
+
+        .sidebar-image-container {
+            position: relative;
+        }
+
+        .sidebar-image {
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
+        .transparent-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(26, 42, 120, 0.8);
+        }
+
+        hr {
+            border-top: 1px solid #bbb;
+            margin-top: 0px;
+            margin-bottom: 15px;
+            margin-left: 0px;
+            margin-right: 0px
+        }
+
+        .nav-it {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /*         a{
+                            display:flex;
+                                }*/
+        .nav-item {
+            justify-content: space-between;
+        }
+
+        .brand-letter {
+            display: none;
+            color: white;
+            font-size: 24px;
+            margin-left: 10px;
+        }
+
+    </style>
+
+    <div class="sidebar-image-container d-flex align-items-center justify-content-center mt-3">
+
+        <img id="sidebar-image" src="~/dashboard/img/logo_m.png" alt="Sidebar Image" class="sidebar-image">
+
+        <div id="brand-letter" class="brand-letter" style="font-family:'Eras ITC'">M</div>
+    </div>
+
+
+    <hr />
     <div class="sidebar">
 
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <li class="nav-item">
-                    <a href="#" class="nav-link active">
-                        <i class="nav-icon fas fa-comments"></i>
-                        <p>
-                            Homeworks
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
+                <li class="nav-item" style="margin-bottom: 30px">
+                    <a asp-controller="Student" asp-action="AllHomeworks" class="nav-link d-inline">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Your homeworks</p>
                     </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a asp-controller="Student" asp-action="AllHomeworks" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Your homeworks</p>
-                            </a>
-                        </li>
-                    </ul>
+                </li>
+                <li class="nav-item" style="margin-bottom: 30px">
+                    <a asp-controller="News" asp-action="GetAll" class="nav-link d-inline">
+                        <i class="fas fa-paper-plane nav-icon"></i>
+                        <p>News</p>
+                    </a>
                 </li>
             </ul>
         </nav>
@@ -36,3 +100,21 @@
     </div>
     <!-- /.sidebar -->
 </aside>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var sidebarImage = document.getElementById('sidebar-image');
+        var brandLetter = document.getElementById('brand-letter');
+
+        // Initially hide the letter M
+        brandLetter.style.display = 'none';
+
+        // Toggle the visibility of the image and letter M when the sidebar button is clicked
+        document.querySelector('.nav-item a[data-widget="pushmenu"]').addEventListener('click', function () {
+            setTimeout(function () {
+                sidebarImage.style.display = sidebarImage.style.display === 'none' ? 'block' : 'none';
+                brandLetter.style.display = brandLetter.style.display === 'none' ? 'block' : 'none';
+            }, 300); // Adjust the delay (in milliseconds) based on your layout transition duration
+        });
+    });
+</script>
