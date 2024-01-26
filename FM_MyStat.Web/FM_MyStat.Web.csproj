@@ -6,6 +6,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Views\Shared\StudentDashboard\_SideBar.cshtml~RF94a0d.TMP" />
+  </ItemGroup>
+
 	<ItemGroup>
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.8">
 			<PrivateAssets>all</PrivateAssets>

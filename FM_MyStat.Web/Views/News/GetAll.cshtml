@@ -11,6 +11,11 @@ else if (User.IsInRole("Teacher"))
     ViewData["Title"] = "News";
     Layout = "~/Views/Shared/_TeacherLayout.cshtml";
 }
+else if (User.IsInRole("Student"))
+{
+    ViewData["Title"] = "News";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+} 
 else
 {
     ViewData["Title"] = "News";
