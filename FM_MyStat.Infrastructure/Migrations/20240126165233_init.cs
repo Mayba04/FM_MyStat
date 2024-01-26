@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -18,10 +17,10 @@ namespace FM_MyStat.Infrastructure.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -32,28 +31,28 @@ namespace FM_MyStat.Infrastructure.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
-                    Discriminator = table.Column<string>(type: "text", nullable: false),
-                    FirstName = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
-                    SurName = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
-                    LastName = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
-                    StudentId = table.Column<int>(type: "integer", nullable: true),
-                    TeacherId = table.Column<int>(type: "integer", nullable: true),
-                    AdministratorId = table.Column<int>(type: "integer", nullable: true),
-                    UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "boolean", nullable: false),
-                    PasswordHash = table.Column<string>(type: "text", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "text", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "text", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "boolean", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "boolean", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "boolean", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    SurName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    StudentId = table.Column<int>(type: "int", nullable: true),
+                    TeacherId = table.Column<int>(type: "int", nullable: true),
+                    AdministratorId = table.Column<int>(type: "int", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -64,12 +63,12 @@ namespace FM_MyStat.Infrastructure.Migrations
                 name: "News",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Title = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false),
-                    TimePublication = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Time = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TimePublication = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Time = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -80,9 +79,9 @@ namespace FM_MyStat.Infrastructure.Migrations
                 name: "Subjects",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -93,11 +92,11 @@ namespace FM_MyStat.Infrastructure.Migrations
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    RoleId = table.Column<string>(type: "text", nullable: false),
-                    ClaimType = table.Column<string>(type: "text", nullable: true),
-                    ClaimValue = table.Column<string>(type: "text", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -114,9 +113,9 @@ namespace FM_MyStat.Infrastructure.Migrations
                 name: "Administrators",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    AppUserId = table.Column<string>(type: "text", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -133,11 +132,11 @@ namespace FM_MyStat.Infrastructure.Migrations
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId = table.Column<string>(type: "text", nullable: false),
-                    ClaimType = table.Column<string>(type: "text", nullable: true),
-                    ClaimValue = table.Column<string>(type: "text", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -154,10 +153,10 @@ namespace FM_MyStat.Infrastructure.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "text", nullable: false),
-                    ProviderKey = table.Column<string>(type: "text", nullable: false),
-                    ProviderDisplayName = table.Column<string>(type: "text", nullable: true),
-                    UserId = table.Column<string>(type: "text", nullable: false)
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -174,8 +173,8 @@ namespace FM_MyStat.Infrastructure.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "text", nullable: false),
-                    RoleId = table.Column<string>(type: "text", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -198,10 +197,10 @@ namespace FM_MyStat.Infrastructure.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "text", nullable: false),
-                    LoginProvider = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Value = table.Column<string>(type: "text", nullable: true)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -218,9 +217,9 @@ namespace FM_MyStat.Infrastructure.Migrations
                 name: "Teachers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    AppUserId = table.Column<string>(type: "text", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -237,10 +236,10 @@ namespace FM_MyStat.Infrastructure.Migrations
                 name: "Groups",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
-                    TeacherId = table.Column<int>(type: "integer", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    TeacherId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -256,10 +255,10 @@ namespace FM_MyStat.Infrastructure.Migrations
                 name: "TeachersSubjects",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    TeacherId = table.Column<int>(type: "integer", nullable: false),
-                    SubjectId = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TeacherId = table.Column<int>(type: "int", nullable: false),
+                    SubjectId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -282,14 +281,14 @@ namespace FM_MyStat.Infrastructure.Migrations
                 name: "Homeworks",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Title = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: true),
-                    GroupId = table.Column<int>(type: "integer", nullable: false),
-                    TeacherId = table.Column<int>(type: "integer", nullable: false),
-                    LessonId = table.Column<int>(type: "integer", nullable: false),
-                    PathFile = table.Column<string>(type: "text", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    GroupId = table.Column<int>(type: "int", nullable: false),
+                    TeacherId = table.Column<int>(type: "int", nullable: false),
+                    LessonId = table.Column<int>(type: "int", nullable: false),
+                    PathFile = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -312,11 +311,11 @@ namespace FM_MyStat.Infrastructure.Migrations
                 name: "Students",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    AppUserId = table.Column<string>(type: "text", nullable: true),
-                    Rating = table.Column<int>(type: "integer", nullable: false),
-                    GroupId = table.Column<int>(type: "integer", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Rating = table.Column<int>(type: "int", nullable: false),
+                    GroupId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -339,16 +338,16 @@ namespace FM_MyStat.Infrastructure.Migrations
                 name: "Lessons",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
-                    Description = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: false),
-                    Start = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    End = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    TeacherId = table.Column<int>(type: "integer", nullable: false),
-                    HomeworkId = table.Column<int>(type: "integer", nullable: true),
-                    GroupId = table.Column<int>(type: "integer", nullable: false),
-                    SubjectId = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false),
+                    Start = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    End = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TeacherId = table.Column<int>(type: "int", nullable: false),
+                    HomeworkId = table.Column<int>(type: "int", nullable: true),
+                    GroupId = table.Column<int>(type: "int", nullable: false),
+                    SubjectId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -383,13 +382,13 @@ namespace FM_MyStat.Infrastructure.Migrations
                 name: "HomeworksDone",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    HomeworkId = table.Column<int>(type: "integer", nullable: false),
-                    StudentId = table.Column<int>(type: "integer", nullable: false),
-                    Mark = table.Column<int>(type: "integer", nullable: true),
-                    Description = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: false),
-                    FilePath = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    HomeworkId = table.Column<int>(type: "int", nullable: false),
+                    StudentId = table.Column<int>(type: "int", nullable: false),
+                    Mark = table.Column<int>(type: "int", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false),
+                    FilePath = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -412,11 +411,11 @@ namespace FM_MyStat.Infrastructure.Migrations
                 name: "LessonMarks",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Mark = table.Column<int>(type: "integer", nullable: false),
-                    LessonId = table.Column<int>(type: "integer", nullable: false),
-                    StudentId = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Mark = table.Column<int>(type: "int", nullable: false),
+                    LessonId = table.Column<int>(type: "int", nullable: false),
+                    StudentId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -440,9 +439,9 @@ namespace FM_MyStat.Infrastructure.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "08aab4b9-cd9d-4230-9837-baf83aed4d56", null, "Administrator", "ADMINISTRATOR" },
-                    { "1c2d3479-a3e1-4976-907a-bd6db1846894", null, "Student", "STUDENT" },
-                    { "d5ceda32-c8f1-46ee-a1af-21cc098ba25c", null, "Teacher", "TEACHER" }
+                    { "6409a216-d91f-40ba-8b60-908d294b3e85", null, "Student", "STUDENT" },
+                    { "f0758146-0d4f-4911-9f66-ec93dd5326f2", null, "Administrator", "ADMINISTRATOR" },
+                    { "fe01c14c-cdac-4de9-a290-7e49d3fe5d8f", null, "Teacher", "TEACHER" }
                 });
 
             migrationBuilder.InsertData(
@@ -450,14 +449,14 @@ namespace FM_MyStat.Infrastructure.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "AdministratorId", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "StudentId", "SurName", "TeacherId", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "26dd25c5-de0b-4815-b470-d53c3bcb9c52", 0, null, "60dae6cc-d8f7-4a45-9162-f8453f52aab2", "AppUser", "student2@email.com", true, "Yurii", "Bortnik", false, null, "STUDENT2@EMAIL.COM", "STUDENT2@EMAIL.COM", "AQAAAAIAAYagAAAAEKZ5IYR8ZJcwj+jDtSxD+Vk50ZwpXmxl7miAShMFSBMXep9uBcJYRBk99oscGWdUxA==", "+xx(xxx)xxx-xx-xx", true, "8a989278-f81e-45ae-b00d-5c5387ac0b90", 3, "Andriyovich", null, false, "student2@email.com" },
-                    { "362c30f1-f5ad-4445-a23c-bf2887b810a8", 0, null, "5652027c-66d1-491f-b2fe-bb61d62bfb1f", "AppUser", "teacher1@email.com", true, "Serhiy", "Stadnyk", false, null, "TEACHER1@EMAIL.COM", "TEACHER1@EMAIL.COM", "AQAAAAIAAYagAAAAELG/ELvNMGusB92B50JeUQXJtDhO1Nnx1uLTPuob+ZzML1v4zbYvYZB3FSCaSXIooQ==", "+xx(xxx)xxx-xx-xx", true, "7c043c67-aa1e-4da7-b6e8-5adca07ed07e", null, "Viacheslavovich", 2, false, "teacher1@email.com" },
-                    { "7dcb8905-8d8a-42bc-b066-97e9b154cb39", 0, null, "e2720c50-15e7-4b61-b07c-704c5c1f9916", "AppUser", "student@email.com", true, "John", "Connor", false, null, "STUDENT@EMAIL.COM", "STUDENT@EMAIL.COM", "AQAAAAIAAYagAAAAEHpUKSHh32uaRWR8KrIFZjtBIWemOjnvf4JzAFnncIBL93YaqfkyqFxyvMU61rj8lA==", "+xx(xxx)xxx-xx-xx", true, "fa3de70e-792e-49df-ad63-213097deda01", 1, "Johnovych", null, false, "student@email.com" },
-                    { "90b720f0-740b-4a5e-9fea-4e4fa3604118", 0, 2, "4e8087bc-2d18-48d2-9ad3-80f10b1794ed", "AppUser", "admin1@email.com", true, "John", "Connor", false, null, "ADMIN1@EMAIL.COM", "ADMIN1@EMAIL.COM", "AQAAAAIAAYagAAAAEMOL6dY9INiUpa7vMSmHXV97E6lU4vvhlXHMgg7VAhpWasnl3/TlnPCbjng0Gz3rSA==", "+xx(xxx)xxx-xx-xx", true, "04024278-c3ef-4ded-b52c-63290be555a2", null, "Johnovych", null, false, "admin1@email.com" },
-                    { "ae859c11-3c4f-4bc9-9e22-65037a0411e5", 0, null, "9fac6f5d-ee49-4749-bb65-5ed8e447826f", "AppUser", "student3@email.com", true, "Pavlo", "Mayba", false, null, "STUDENT3@EMAIL.COM", "STUDENT3@EMAIL.COM", "AQAAAAIAAYagAAAAEPbawnc1UBXHMHytYX7hisfyw9r+FY3dw7MPZr3SX9+HkvKE59stqcSyHySAvZBnbg==", "+xx(xxx)xxx-xx-xx", true, "b64d9223-6030-4387-8054-3c78088f7f5b", 4, "Ivanovich", null, false, "student3@email.com" },
-                    { "b050e166-f269-4074-b0fd-7eb073cac869", 0, 1, "a6a4b70d-71db-4510-be37-a1303864d5fc", "AppUser", "admin@email.com", true, "John", "Connor", false, null, "ADMIN@EMAIL.COM", "ADMIN@EMAIL.COM", "AQAAAAIAAYagAAAAEBQ/hfwqvwCGnO7FVddW2xmLogvT1ypwWzU9ut+qCJcVsO/3rh0cuiZ5c8XBRSp11g==", "+xx(xxx)xxx-xx-xx", true, "121929f6-0c55-49f0-8913-30698b4b198f", null, "Johnovych", null, false, "admin@email.com" },
-                    { "bcdc54e3-64b7-42ef-8e1f-eb5902cc298e", 0, null, "20484eb6-93a1-4047-8411-d0b6957265b1", "AppUser", "student1@email.com", true, "Dima", "Shostak", false, null, "STUDENT1@EMAIL.COM", "STUDENT1@EMAIL.COM", "AQAAAAIAAYagAAAAEHFV06pND3eDkRj1FyY865SJtPhEblNkvoFmyQb+silXJc57cmoBNmXAo7RKJRrmXw==", "+xx(xxx)xxx-xx-xx", true, "ac1e6eb8-4c03-4d9b-bce9-be2e3ce7bc83", 2, "Oleksiyovich", null, false, "student1@email.com" },
-                    { "def129f6-f42a-427c-bdf8-67b6afd7863d", 0, null, "75d04568-5593-4e4f-8738-c859a6446ae2", "AppUser", "teacher@email.com", true, "John", "Connor", false, null, "TEACHER@EMAIL.COM", "TEACHER@EMAIL.COM", "AQAAAAIAAYagAAAAEHZAekRmGUZClOtWRzhsbrsIJGSljULHHI5PTAqzPLxE1vqH6+cQJHVik6PrpbcXqw==", "+xx(xxx)xxx-xx-xx", true, "5fdd1c57-d76e-47b0-8b58-0da525fa03b4", null, "Johnovych", 1, false, "teacher@email.com" }
+                    { "0bce2006-9a70-4967-b707-0d03e836b6da", 0, null, "aede0707-068d-4bc8-bffc-937e597338a6", "AppUser", "student3@email.com", true, "Pavlo", "Mayba", false, null, "STUDENT3@EMAIL.COM", "STUDENT3@EMAIL.COM", "AQAAAAIAAYagAAAAENRL/BhSCdjQ0LLk1+BePS7YTSh4NbRmdSgRxrNaOWzZjljL742HI1UVh+9Rp+BRdA==", "+xx(xxx)xxx-xx-xx", true, "b78dbad2-7b13-4cda-93bc-c8dc0b84296f", 4, "Ivanovich", null, false, "student3@email.com" },
+                    { "0d44cee7-2a63-44be-b856-c22676e9ae44", 0, null, "906f0711-a61d-41ca-a49d-5e133ac3ed8f", "AppUser", "teacher@email.com", true, "John", "Connor", false, null, "TEACHER@EMAIL.COM", "TEACHER@EMAIL.COM", "AQAAAAIAAYagAAAAEA4Y+n2uyqtXsiSd/Ss9GjDzrJWykLw6rqPNmO0Dpt3lND/KuRNYly8JxPoypl8hpw==", "+xx(xxx)xxx-xx-xx", true, "3d49d342-b4ad-4859-9a68-d51bc9e265d1", null, "Johnovych", 1, false, "teacher@email.com" },
+                    { "1e7a0c67-e816-44ee-ba7a-506a7c4d5f25", 0, 2, "45d2d4e8-58a1-446a-b948-789f90fa6d6f", "AppUser", "admin1@email.com", true, "John", "Connor", false, null, "ADMIN1@EMAIL.COM", "ADMIN1@EMAIL.COM", "AQAAAAIAAYagAAAAEN2iOlYYapVNgCqDr5DCCJ1/oqTZiwRKHbf0LRZnzHwWXsmIOq6IjCgNYUpDGiQpog==", "+xx(xxx)xxx-xx-xx", true, "dc7b660b-13af-4748-aeef-ee84857527de", null, "Johnovych", null, false, "admin1@email.com" },
+                    { "395bb86a-a0f3-42df-a4d1-efc4c648a502", 0, null, "b58f0b27-8e09-41b4-814b-3bcdbe2b2910", "AppUser", "student@email.com", true, "John", "Connor", false, null, "STUDENT@EMAIL.COM", "STUDENT@EMAIL.COM", "AQAAAAIAAYagAAAAEH6EJT4gmXibiBL3AOsDNh6t5K4hzrbivfqToPGiP+87TeS0HCgz4/UougBGyZmklg==", "+xx(xxx)xxx-xx-xx", true, "907b61d4-cd38-482a-ac65-f893e945345c", 1, "Johnovych", null, false, "student@email.com" },
+                    { "6a7897b7-2e41-4e78-9ca6-5cdf06d1f175", 0, null, "2c79f5d4-6a2a-4703-b840-a78c80dbe4ab", "AppUser", "student1@email.com", true, "Dima", "Shostak", false, null, "STUDENT1@EMAIL.COM", "STUDENT1@EMAIL.COM", "AQAAAAIAAYagAAAAEC+f45mGQ+m67fXopo8MbjfVjDyinHfMI5OK+ShG/FSfAX3Y++KE9P/BkT610wCerw==", "+xx(xxx)xxx-xx-xx", true, "0b8dc280-557b-45f4-a7f4-6bfacd9f2bd5", 2, "Oleksiyovich", null, false, "student1@email.com" },
+                    { "7b9a41a7-2bdd-4412-b287-0c25c8c8a35d", 0, null, "39218991-6890-43bf-aedb-8a81aa3d5e6f", "AppUser", "teacher1@email.com", true, "Serhiy", "Stadnyk", false, null, "TEACHER1@EMAIL.COM", "TEACHER1@EMAIL.COM", "AQAAAAIAAYagAAAAEO1mwfbBy9PQttjs4WZXt3DwTuYXcWikMK1MH9Ai2U2Zsc8Wb7IxZ0qItWRn8YoQ5w==", "+xx(xxx)xxx-xx-xx", true, "cfa8f62d-131e-4c92-9218-7c1a8f7c4558", null, "Viacheslavovich", 2, false, "teacher1@email.com" },
+                    { "a71366a7-5ddd-4e5e-858d-0ac4bc82014d", 0, 1, "0bf7887b-9f60-4636-9a6e-3e1127529ccb", "AppUser", "admin@email.com", true, "John", "Connor", false, null, "ADMIN@EMAIL.COM", "ADMIN@EMAIL.COM", "AQAAAAIAAYagAAAAEAtjkd31OASuEbhCb4nEvjs7ocxih7/S9ZWhuKfge/TtGm8N1jitfKsU3iy7UvaqRg==", "+xx(xxx)xxx-xx-xx", true, "e45495a9-8d66-4e1b-8629-264c80bb9f48", null, "Johnovych", null, false, "admin@email.com" },
+                    { "cc1d9934-720d-4315-a4af-180ef4f14f46", 0, null, "9678a274-a80e-4974-a84f-278ce8f3dcb3", "AppUser", "student2@email.com", true, "Yurii", "Bortnik", false, null, "STUDENT2@EMAIL.COM", "STUDENT2@EMAIL.COM", "AQAAAAIAAYagAAAAEJMv5zHVbSmhSBhU2zEndSZFFO67XkwXxbQREMSEvNlIZ0AivdnLTRUXFGZLbUqjnA==", "+xx(xxx)xxx-xx-xx", true, "1a74520a-6eeb-4d26-9469-e21a770506e0", 3, "Andriyovich", null, false, "student2@email.com" }
                 });
 
             migrationBuilder.InsertData(
@@ -465,11 +464,11 @@ namespace FM_MyStat.Infrastructure.Migrations
                 columns: new[] { "Id", "Description", "Time", "TimePublication", "Title" },
                 values: new object[,]
                 {
-                    { 1, "Опис до новини 1", new DateTime(2024, 1, 23, 16, 44, 4, 899, DateTimeKind.Utc).AddTicks(4905), new DateTime(2024, 1, 21, 16, 44, 4, 899, DateTimeKind.Utc).AddTicks(4907), "Новина 1" },
-                    { 2, "Опис до новини 2", new DateTime(2024, 1, 24, 16, 44, 4, 899, DateTimeKind.Utc).AddTicks(4923), new DateTime(2024, 1, 21, 16, 44, 4, 899, DateTimeKind.Utc).AddTicks(4923), "Новина 2" },
-                    { 3, "Опис до новини 3", new DateTime(2024, 1, 25, 16, 44, 4, 899, DateTimeKind.Utc).AddTicks(4949), new DateTime(2024, 1, 21, 16, 44, 4, 899, DateTimeKind.Utc).AddTicks(4950), "Новина 3" },
-                    { 4, "Опис до новини 4", new DateTime(2024, 1, 26, 16, 44, 4, 899, DateTimeKind.Utc).AddTicks(4959), new DateTime(2024, 1, 21, 16, 44, 4, 899, DateTimeKind.Utc).AddTicks(4960), "Новина 4" },
-                    { 5, "Опис до новини 5", new DateTime(2024, 1, 27, 16, 44, 4, 899, DateTimeKind.Utc).AddTicks(4968), new DateTime(2024, 1, 21, 16, 44, 4, 899, DateTimeKind.Utc).AddTicks(4969), "Новина 5" }
+                    { 1, "Опис до новини 1", new DateTime(2024, 1, 27, 16, 52, 33, 376, DateTimeKind.Utc).AddTicks(3146), new DateTime(2024, 1, 25, 16, 52, 33, 376, DateTimeKind.Utc).AddTicks(3150), "Новина 1" },
+                    { 2, "Опис до новини 2", new DateTime(2024, 1, 28, 16, 52, 33, 376, DateTimeKind.Utc).AddTicks(3172), new DateTime(2024, 1, 25, 16, 52, 33, 376, DateTimeKind.Utc).AddTicks(3174), "Новина 2" },
+                    { 3, "Опис до новини 3", new DateTime(2024, 1, 29, 16, 52, 33, 376, DateTimeKind.Utc).AddTicks(3209), new DateTime(2024, 1, 25, 16, 52, 33, 376, DateTimeKind.Utc).AddTicks(3211), "Новина 3" },
+                    { 4, "Опис до новини 4", new DateTime(2024, 1, 30, 16, 52, 33, 376, DateTimeKind.Utc).AddTicks(3225), new DateTime(2024, 1, 25, 16, 52, 33, 376, DateTimeKind.Utc).AddTicks(3226), "Новина 4" },
+                    { 5, "Опис до новини 5", new DateTime(2024, 1, 31, 16, 52, 33, 376, DateTimeKind.Utc).AddTicks(3239), new DateTime(2024, 1, 25, 16, 52, 33, 376, DateTimeKind.Utc).AddTicks(3240), "Новина 5" }
                 });
 
             migrationBuilder.InsertData(
@@ -482,8 +481,8 @@ namespace FM_MyStat.Infrastructure.Migrations
                 columns: new[] { "Id", "AppUserId" },
                 values: new object[,]
                 {
-                    { 1, "b050e166-f269-4074-b0fd-7eb073cac869" },
-                    { 2, "90b720f0-740b-4a5e-9fea-4e4fa3604118" }
+                    { 1, "a71366a7-5ddd-4e5e-858d-0ac4bc82014d" },
+                    { 2, "1e7a0c67-e816-44ee-ba7a-506a7c4d5f25" }
                 });
 
             migrationBuilder.InsertData(
@@ -491,14 +490,14 @@ namespace FM_MyStat.Infrastructure.Migrations
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { "1c2d3479-a3e1-4976-907a-bd6db1846894", "26dd25c5-de0b-4815-b470-d53c3bcb9c52" },
-                    { "d5ceda32-c8f1-46ee-a1af-21cc098ba25c", "362c30f1-f5ad-4445-a23c-bf2887b810a8" },
-                    { "1c2d3479-a3e1-4976-907a-bd6db1846894", "7dcb8905-8d8a-42bc-b066-97e9b154cb39" },
-                    { "08aab4b9-cd9d-4230-9837-baf83aed4d56", "90b720f0-740b-4a5e-9fea-4e4fa3604118" },
-                    { "1c2d3479-a3e1-4976-907a-bd6db1846894", "ae859c11-3c4f-4bc9-9e22-65037a0411e5" },
-                    { "08aab4b9-cd9d-4230-9837-baf83aed4d56", "b050e166-f269-4074-b0fd-7eb073cac869" },
-                    { "1c2d3479-a3e1-4976-907a-bd6db1846894", "bcdc54e3-64b7-42ef-8e1f-eb5902cc298e" },
-                    { "d5ceda32-c8f1-46ee-a1af-21cc098ba25c", "def129f6-f42a-427c-bdf8-67b6afd7863d" }
+                    { "6409a216-d91f-40ba-8b60-908d294b3e85", "0bce2006-9a70-4967-b707-0d03e836b6da" },
+                    { "fe01c14c-cdac-4de9-a290-7e49d3fe5d8f", "0d44cee7-2a63-44be-b856-c22676e9ae44" },
+                    { "f0758146-0d4f-4911-9f66-ec93dd5326f2", "1e7a0c67-e816-44ee-ba7a-506a7c4d5f25" },
+                    { "6409a216-d91f-40ba-8b60-908d294b3e85", "395bb86a-a0f3-42df-a4d1-efc4c648a502" },
+                    { "6409a216-d91f-40ba-8b60-908d294b3e85", "6a7897b7-2e41-4e78-9ca6-5cdf06d1f175" },
+                    { "fe01c14c-cdac-4de9-a290-7e49d3fe5d8f", "7b9a41a7-2bdd-4412-b287-0c25c8c8a35d" },
+                    { "f0758146-0d4f-4911-9f66-ec93dd5326f2", "a71366a7-5ddd-4e5e-858d-0ac4bc82014d" },
+                    { "6409a216-d91f-40ba-8b60-908d294b3e85", "cc1d9934-720d-4315-a4af-180ef4f14f46" }
                 });
 
             migrationBuilder.InsertData(
@@ -506,8 +505,8 @@ namespace FM_MyStat.Infrastructure.Migrations
                 columns: new[] { "Id", "AppUserId" },
                 values: new object[,]
                 {
-                    { 1, "def129f6-f42a-427c-bdf8-67b6afd7863d" },
-                    { 2, "362c30f1-f5ad-4445-a23c-bf2887b810a8" }
+                    { 1, "0d44cee7-2a63-44be-b856-c22676e9ae44" },
+                    { 2, "7b9a41a7-2bdd-4412-b287-0c25c8c8a35d" }
                 });
 
             migrationBuilder.InsertData(
@@ -527,24 +526,25 @@ namespace FM_MyStat.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "Lessons",
                 columns: new[] { "Id", "Description", "End", "GroupId", "HomeworkId", "Name", "Start", "SubjectId", "TeacherId" },
-                values: new object[] { 1, "First steps into c# today", new DateTime(2024, 1, 22, 19, 44, 4, 899, DateTimeKind.Utc).AddTicks(4765), 1, null, "C# beginning", new DateTime(2024, 1, 22, 17, 44, 4, 899, DateTimeKind.Utc).AddTicks(4755), 1, 1 });
+                values: new object[] { 1, "First steps into c# today", new DateTime(2024, 1, 26, 19, 52, 33, 376, DateTimeKind.Utc).AddTicks(2766), 1, null, "C# beginning", new DateTime(2024, 1, 26, 17, 52, 33, 376, DateTimeKind.Utc).AddTicks(2755), 1, 1 });
 
             migrationBuilder.InsertData(
                 table: "Students",
                 columns: new[] { "Id", "AppUserId", "GroupId", "Rating" },
                 values: new object[,]
                 {
-                    { 1, "7dcb8905-8d8a-42bc-b066-97e9b154cb39", 1, 0 },
-                    { 2, "bcdc54e3-64b7-42ef-8e1f-eb5902cc298e", 1, 0 },
-                    { 3, "26dd25c5-de0b-4815-b470-d53c3bcb9c52", 2, 0 },
-                    { 4, "ae859c11-3c4f-4bc9-9e22-65037a0411e5", 2, 0 }
+                    { 1, "395bb86a-a0f3-42df-a4d1-efc4c648a502", 1, 0 },
+                    { 2, "6a7897b7-2e41-4e78-9ca6-5cdf06d1f175", 1, 0 },
+                    { 3, "cc1d9934-720d-4315-a4af-180ef4f14f46", 2, 0 },
+                    { 4, "0bce2006-9a70-4967-b707-0d03e836b6da", 2, 0 }
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Administrators_AppUserId",
                 table: "Administrators",
                 column: "AppUserId",
-                unique: true);
+                unique: true,
+                filter: "[AppUserId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -555,7 +555,8 @@ namespace FM_MyStat.Infrastructure.Migrations
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true);
+                unique: true,
+                filter: "[NormalizedName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -581,7 +582,8 @@ namespace FM_MyStat.Infrastructure.Migrations
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
-                unique: true);
+                unique: true,
+                filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Groups_TeacherId",
@@ -627,7 +629,8 @@ namespace FM_MyStat.Infrastructure.Migrations
                 name: "IX_Lessons_HomeworkId",
                 table: "Lessons",
                 column: "HomeworkId",
-                unique: true);
+                unique: true,
+                filter: "[HomeworkId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Lessons_SubjectId",
@@ -643,7 +646,8 @@ namespace FM_MyStat.Infrastructure.Migrations
                 name: "IX_Students_AppUserId",
                 table: "Students",
                 column: "AppUserId",
-                unique: true);
+                unique: true,
+                filter: "[AppUserId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Students_GroupId",
@@ -654,7 +658,8 @@ namespace FM_MyStat.Infrastructure.Migrations
                 name: "IX_Teachers_AppUserId",
                 table: "Teachers",
                 column: "AppUserId",
-                unique: true);
+                unique: true,
+                filter: "[AppUserId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TeachersSubjects_SubjectId",
