@@ -270,5 +270,28 @@ namespace FM_MyStat.Core.Services.Users
                 }
             }
         }
+
+        public async Task<List<StudentDTO>?> GetStudentByGroupId(int Id)
+        {
+            List<Student> students = (await _studentRepo.GetListBySpec(new StudentSpecification.GetByGroupId(Id))).ToList();
+            if (!students.Any())
+            {
+                return null;
+            }
+            List<StudentDTO> studentDTOs = new List<StudentDTO>();
+            for(int i = 0; i< students.Count(); i++ )
+            {
+                ServiceResponse<AppUser?, string> appuser = await _userService.GetAppUserById((string)students[i].AppUserId);
+                if (appuser.Success)
+                {
+                    StudentDTO studentDTO = _mapper.Map<UserDTO, StudentDTO>(_mapper.Map<AppUser, UserDTO>(appuser.Payload));
+                    studentDTO.Rating = students[i].Rating;
+                    Group? group = await _groupRepo.GetByID(students[i].GroupId);
+                    studentDTO.Group = (group == null) ? "GROUP NOT FOUND" : group.Name;
+                    studentDTOs.Add(studentDTO);
+                }
+            }
+            return studentDTOs;
+        }
     }
 }

@@ -18,5 +18,6 @@ namespace FM_MyStat.Core.Interfaces
         Task Delete(int id);
         Task<ServiceResponse<EditGroupDTO, object>> GetEditGroupDTO(int id);
         Task<ServiceResponse<List<GroupDTO>, object>> GetGroupDTOByTeacher(string id);
+        Task<bool> IsGroupEmpty(int Id);
     }
 }

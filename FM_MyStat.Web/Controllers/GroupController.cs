@@ -6,6 +6,7 @@ using FM_MyStat.Core.Services.Users;
 using FM_MyStat.Core.Validation.Group;
 using FM_MyStat.Core.Validation.Subject;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using X.PagedList;
@@ -111,21 +112,27 @@ namespace FM_MyStat.Web.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int id)
         {
-            var groupDto = await _groupService.Get(id);
-
-            if (groupDto == null)
+            if (await _groupService.IsGroupEmpty(id))
             {
-                ViewBag.AuthError = "Group not found.";
-                return RedirectToAction(nameof(GetAll));
-            }
+                var groupDto = await _groupService.Get(id);
 
-            return View(groupDto);
+                if (groupDto == null)
+                {
+                    ViewBag.AuthError = "Group not found.";
+                    return RedirectToAction(nameof(GetAll));
+                }
+
+                return View(groupDto);
+            }
+            else
+            {
+                return RedirectToAction("GetByGroupId", "Student", new { Id = id });
+            }
         }
         public async Task<IActionResult> DeleteGroup(int Id)
         {
             await _groupService.Delete(Id);
             return RedirectToAction(nameof(GetAll));
         }
-
     }
 }
