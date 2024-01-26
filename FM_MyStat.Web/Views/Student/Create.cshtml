@@ -3,6 +3,82 @@
 }
 @using FM_MyStat.Core.DTOs.UsersDTO.Student;
 @model CreateStudentDTO
+
+<style>
+    .card-header {
+        background: rgb(92,121,171);
+        background: linear-gradient(38deg, rgba(92,121,171,1) 0%, rgba(52,79,126,1) 57%, rgba(39,39,99,1) 100%, rgba(32,48,76,1) 100%);
+        color: white;
+    }
+
+    .btn-primary {
+        background: rgb(92,121,171);
+        background: linear-gradient(38deg, rgba(92,121,171,1) 0%, rgba(52,79,126,1) 57%, rgba(39,39,99,1) 100%, rgba(32,48,76,1) 100%);
+        color: white;
+    }
+
+    .form__group {
+        position: relative;
+        padding: 15px 0 0;
+        margin-top: 10px;
+        width: 100%;
+    }
+
+    .form__field {
+        font-family: inherit;
+        width: 100%;
+        border: 0;
+        border-bottom: 2px solid #9b9b9b;
+        outline: 0;
+        font-size: 1.3rem;
+        color: black;
+        padding: 7px 0;
+        background: transparent;
+        transition: border-color 0.2s;
+    }
+
+        .form__field::placeholder {
+            color: transparent;
+        }
+
+        .form__field:placeholder-shown ~ .form__label {
+            font-size: 1.3rem;
+            cursor: text;
+            top: 20px;
+        }
+
+    .form__label {
+        position: absolute;
+        top: 0;
+        display: block;
+        transition: 0.2s;
+        font-size: 1rem;
+        color: #9b9b9b;
+    }
+
+    .form__field:focus ~ .form__label {
+        position: absolute;
+        top: 0;
+        display: block;
+        transition: 0.2s;
+        font-size: 1rem;
+        color: linear-gradient(to right, rgba(92,121,171,1), rgba(52,79,126,1));
+        font-weight: 700;
+        padding-bottom: 6px;
+        font-weight: 700;
+        border-width: 3px;
+        border-image: linear-gradient(to right, rgba(92,121,171,1) , rgba(52,79,126,1));
+        border-image-slice: 1;
+    }
+
+    /* Reset input */
+    .form__field:required,
+    .form__field:invalid {
+        box-shadow: none;
+    }
+
+    }
+</style>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -10,7 +86,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>User managament</h1>
+                    <h1>Create new student</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -27,18 +103,7 @@
         <div class="container-fluid">
             <!-- SELECT2 EXAMPLE -->
             <div class="card card-default">
-                <div class="card-header">
-                    <h3 class="card-title">Create user</h3>
-
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-tool" data-card-widget="remove">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                </div>
+                
                 <!-- /.card-header -->
                 <div class="card-body">
                     <div class="row">
@@ -55,29 +120,29 @@
                                 }
                                 <form method="post" asp-action="Create">
                                     <div class="card-body">
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">First name</label>
-                                            <input type="text" name="firstName" class="form-control" id="exampleInputEmail1" placeholder="Enter First Name">
+                                        <div class="form__group field">
+                                            <input type="text" class="form__field" placeholder="First Name" name="firstName" id='firstName' required />
+                                            <label for="firstName" class="form__label">First Name</label>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">Sur name</label>
-                                            <input type="text" name="surName" class="form-control" id="exampleInputEmail1" placeholder="Enter Sur Name">
+                                        <div class="form__group field">
+                                            <input type="text" class="form__field" placeholder="Sur Name" name="surName" id='surName' required />
+                                            <label for="surName" class="form__label">Sur Name</label>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">Last name</label>
-                                            <input type="text" name="lastName" class="form-control" id="exampleInputEmail1" placeholder="Enter Last Name">
+                                        <div class="form__group field">
+                                            <input type="text" class="form__field" placeholder="Last Name" name="lastName" id='lastName' required />
+                                            <label for="lastName" class="form__label">Last Name</label>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">Email address</label>
-                                            <input type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                                        <div class="form__group field">
+                                            <input type="email" class="form__field" placeholder="Email" name="email" id='email' required />
+                                            <label for="email" class="form__label">Email</label>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">Rating</label>
-                                            <input value="0" type="text" name="rating" class="form-control" id="exampleInputEmail1" placeholder="Enter rating">
+                                        <div class="form__group field">
+                                            <input type="text" class="form__field" placeholder="Rating" name="rating" id='rating' value="0" required />
+                                            <label for="rating" class="form__label">Rating</label>
                                         </div>
                                         <div class="mb-3">
                                             <div class="form-group">
-                                                <label>Group</label>
+                                                <label style="color:#9b9b9b">Group</label>
                                                 @Html.DropDownList("GroupId", (SelectList)ViewBag.GroupList, "-- Select Group --",  htmlAttributes: new { @class = "form-control" })
                                             </div>
                                         </div>
