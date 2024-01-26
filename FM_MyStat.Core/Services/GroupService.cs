@@ -24,12 +24,14 @@ namespace FM_MyStat.Core.Services
         private readonly IRepository<Group> _groupRepo;
         private readonly UserService _userService;
         private readonly IRepository<Teacher> _teacherRepo;
-        public GroupService(IMapper mapper, IRepository<Group> groupRepo, UserService userService, IRepository<Teacher> teacherRepo)
+        private readonly IRepository<Student> _studentRepo;
+        public GroupService(IMapper mapper, IRepository<Group> groupRepo, UserService userService, IRepository<Teacher> teacherRepo, IRepository<Student> studentRepo)
         {
             this._mapper = mapper;
             this._groupRepo = groupRepo;
             this._userService = userService;
             this._teacherRepo = teacherRepo;
+            this._studentRepo = studentRepo;
         }
         public async Task Create(CreateGroupDTO model)
         {
@@ -105,6 +107,12 @@ namespace FM_MyStat.Core.Services
                 return new ServiceResponse<EditGroupDTO, object>(true, "", payload: _mapper.Map<Group, EditGroupDTO>(group));
             }
             return new ServiceResponse<EditGroupDTO, object>(false, "", errors: new string[] { "Group not found!"});
+        }
+
+        public async Task<bool> IsGroupEmpty(int Id)
+        {
+            IEnumerable<Student> studentsingroup = await _studentRepo.GetListBySpec(new StudentSpecification.GetByGroupId(Id));
+            return !studentsingroup.Any();
         }
 
         public async Task<ServiceResponse<List<GroupDTO>, object>> GetGroupDTOByTeacher(string id)

@@ -250,5 +250,12 @@ namespace FM_MyStat.Web.Controllers
             return View(new UpdateProfileStudentVM() { StudentInfo = _studentService.GetEditUserDtoByIdAsync(model.Id).Result.Payload });
         }
         #endregion
+
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> GetByGroupId(int Id)
+        {
+            
+            return View("GetAll", await _studentService.GetStudentByGroupId(Id));
+        }
     }
 }

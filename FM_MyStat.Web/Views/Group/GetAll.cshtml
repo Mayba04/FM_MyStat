@@ -42,6 +42,7 @@
                                         <th>Id</th>
                                         <th>Name</th>
                                         <th>Teacher</th>
+                                        <th>Students</th>
                                         @if (@User.IsInRole("Administrator"))
                                         {
                                             <th>Edit</th>
@@ -56,6 +57,7 @@
                                             <td>@item.Id</td>
                                             <td>@item.Name</td>
                                             <td>@item.Teacher</td>
+                                            <td><a asp-controller="Student" asp-action="GetByGroupId" asp-route-id="@item.Id" class="btn btn-block btn-warning btn-sm">Students</a></td>
                                             @if (@User.IsInRole("Administrator"))
                                             {
                                                 <td><a asp-controller="Group" asp-action="Update" asp-route-id="@item.Id" class="btn btn-block btn-warning btn-sm">Edit</a></td>
