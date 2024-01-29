@@ -16,13 +16,13 @@ string connStr = builder.Configuration.GetConnectionString("DefaultConnection");
 // Database context
 
 // SQLServer
-builder.Services.AddDbContext(connStr);
+//builder.Services.AddDbContext(connStr);
 
 // PostgreSQL
-/*builder.Services.AddDbContext<AppDBContext>(options =>
+builder.Services.AddDbContext<AppDBContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
-});*/
+});
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -41,7 +41,7 @@ builder.Services.AddRepositories();
 
 
 var app = builder.Build();
-//AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

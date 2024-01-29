@@ -3,8 +3,8 @@ using System;
 using FM_MyStat.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -18,25 +18,25 @@ namespace FM_MyStat.Infrastructure.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.8")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("FM_MyStat.Core.Entities.Group", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("character varying(128)");
 
                     b.Property<int?>("TeacherId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -63,28 +63,28 @@ namespace FM_MyStat.Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("GroupId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("LessonId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("PathFile")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("TeacherId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -99,28 +99,28 @@ namespace FM_MyStat.Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(1024)
-                        .HasColumnType("nvarchar(1024)");
+                        .HasColumnType("character varying(1024)");
 
                     b.Property<string>("FilePath")
                         .IsRequired()
                         .HasMaxLength(1024)
-                        .HasColumnType("nvarchar(1024)");
+                        .HasColumnType("character varying(1024)");
 
                     b.Property<int>("HomeworkId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int?>("Mark")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("StudentId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -135,45 +135,44 @@ namespace FM_MyStat.Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(1024)
-                        .HasColumnType("nvarchar(1024)");
+                        .HasColumnType("character varying(1024)");
 
                     b.Property<DateTime>("End")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("GroupId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int?>("HomeworkId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("character varying(128)");
 
                     b.Property<DateTime>("Start")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("SubjectId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("TeacherId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("GroupId");
 
                     b.HasIndex("HomeworkId")
-                        .IsUnique()
-                        .HasFilter("[HomeworkId] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("SubjectId");
 
@@ -186,10 +185,10 @@ namespace FM_MyStat.Infrastructure.Migrations
                         {
                             Id = 1,
                             Description = "First steps into c# today",
-                            End = new DateTime(2024, 1, 26, 19, 52, 33, 376, DateTimeKind.Utc).AddTicks(2766),
+                            End = new DateTime(2024, 1, 29, 23, 6, 58, 67, DateTimeKind.Utc).AddTicks(9310),
                             GroupId = 1,
                             Name = "C# beginning",
-                            Start = new DateTime(2024, 1, 26, 17, 52, 33, 376, DateTimeKind.Utc).AddTicks(2755),
+                            Start = new DateTime(2024, 1, 29, 21, 6, 58, 67, DateTimeKind.Utc).AddTicks(9211),
                             SubjectId = 1,
                             TeacherId = 1
                         });
@@ -199,18 +198,18 @@ namespace FM_MyStat.Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("LessonId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Mark")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("StudentId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -225,23 +224,23 @@ namespace FM_MyStat.Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("Time")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("TimePublication")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -252,40 +251,40 @@ namespace FM_MyStat.Infrastructure.Migrations
                         {
                             Id = 1,
                             Description = "Опис до новини 1",
-                            Time = new DateTime(2024, 1, 27, 16, 52, 33, 376, DateTimeKind.Utc).AddTicks(3146),
-                            TimePublication = new DateTime(2024, 1, 25, 16, 52, 33, 376, DateTimeKind.Utc).AddTicks(3150),
+                            Time = new DateTime(2024, 1, 30, 20, 6, 58, 67, DateTimeKind.Utc).AddTicks(9837),
+                            TimePublication = new DateTime(2024, 1, 28, 20, 6, 58, 67, DateTimeKind.Utc).AddTicks(9839),
                             Title = "Новина 1"
                         },
                         new
                         {
                             Id = 2,
                             Description = "Опис до новини 2",
-                            Time = new DateTime(2024, 1, 28, 16, 52, 33, 376, DateTimeKind.Utc).AddTicks(3172),
-                            TimePublication = new DateTime(2024, 1, 25, 16, 52, 33, 376, DateTimeKind.Utc).AddTicks(3174),
+                            Time = new DateTime(2024, 1, 31, 20, 6, 58, 67, DateTimeKind.Utc).AddTicks(9856),
+                            TimePublication = new DateTime(2024, 1, 28, 20, 6, 58, 67, DateTimeKind.Utc).AddTicks(9857),
                             Title = "Новина 2"
                         },
                         new
                         {
                             Id = 3,
                             Description = "Опис до новини 3",
-                            Time = new DateTime(2024, 1, 29, 16, 52, 33, 376, DateTimeKind.Utc).AddTicks(3209),
-                            TimePublication = new DateTime(2024, 1, 25, 16, 52, 33, 376, DateTimeKind.Utc).AddTicks(3211),
+                            Time = new DateTime(2024, 2, 1, 20, 6, 58, 67, DateTimeKind.Utc).AddTicks(9900),
+                            TimePublication = new DateTime(2024, 1, 28, 20, 6, 58, 67, DateTimeKind.Utc).AddTicks(9901),
                             Title = "Новина 3"
                         },
                         new
                         {
                             Id = 4,
                             Description = "Опис до новини 4",
-                            Time = new DateTime(2024, 1, 30, 16, 52, 33, 376, DateTimeKind.Utc).AddTicks(3225),
-                            TimePublication = new DateTime(2024, 1, 25, 16, 52, 33, 376, DateTimeKind.Utc).AddTicks(3226),
+                            Time = new DateTime(2024, 2, 2, 20, 6, 58, 67, DateTimeKind.Utc).AddTicks(9913),
+                            TimePublication = new DateTime(2024, 1, 28, 20, 6, 58, 67, DateTimeKind.Utc).AddTicks(9914),
                             Title = "Новина 4"
                         },
                         new
                         {
                             Id = 5,
                             Description = "Опис до новини 5",
-                            Time = new DateTime(2024, 1, 31, 16, 52, 33, 376, DateTimeKind.Utc).AddTicks(3239),
-                            TimePublication = new DateTime(2024, 1, 25, 16, 52, 33, 376, DateTimeKind.Utc).AddTicks(3240),
+                            Time = new DateTime(2024, 2, 3, 20, 6, 58, 67, DateTimeKind.Utc).AddTicks(9924),
+                            TimePublication = new DateTime(2024, 1, 28, 20, 6, 58, 67, DateTimeKind.Utc).AddTicks(9924),
                             Title = "Новина 5"
                         });
                 });
@@ -294,14 +293,14 @@ namespace FM_MyStat.Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("character varying(128)");
 
                     b.HasKey("Id");
 
@@ -319,15 +318,15 @@ namespace FM_MyStat.Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("SubjectId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("TeacherId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -350,18 +349,17 @@ namespace FM_MyStat.Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AppUserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId")
-                        .IsUnique()
-                        .HasFilter("[AppUserId] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Administrators");
 
@@ -369,12 +367,12 @@ namespace FM_MyStat.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            AppUserId = "a71366a7-5ddd-4e5e-858d-0ac4bc82014d"
+                            AppUserId = "05e414a5-3d8f-4355-a754-f0ac9d4bb7c9"
                         },
                         new
                         {
                             Id = 2,
-                            AppUserId = "1e7a0c67-e816-44ee-ba7a-506a7c4d5f25"
+                            AppUserId = "69aa7955-c335-4fb3-929b-5852de237864"
                         });
                 });
 
@@ -382,24 +380,23 @@ namespace FM_MyStat.Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AppUserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<int?>("GroupId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Rating")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId")
-                        .IsUnique()
-                        .HasFilter("[AppUserId] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("GroupId");
 
@@ -409,28 +406,28 @@ namespace FM_MyStat.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            AppUserId = "395bb86a-a0f3-42df-a4d1-efc4c648a502",
+                            AppUserId = "cb2316a6-7ca4-4dc1-aa75-d6e826b04aa0",
                             GroupId = 1,
                             Rating = 0
                         },
                         new
                         {
                             Id = 2,
-                            AppUserId = "6a7897b7-2e41-4e78-9ca6-5cdf06d1f175",
+                            AppUserId = "5a284c53-4767-4c01-9f03-2e946cc6bccc",
                             GroupId = 1,
                             Rating = 0
                         },
                         new
                         {
                             Id = 3,
-                            AppUserId = "cc1d9934-720d-4315-a4af-180ef4f14f46",
+                            AppUserId = "11fa4a25-941a-4314-9c46-3ae02258ff30",
                             GroupId = 2,
                             Rating = 0
                         },
                         new
                         {
                             Id = 4,
-                            AppUserId = "0bce2006-9a70-4967-b707-0d03e836b6da",
+                            AppUserId = "5a37ab74-ff46-419a-b82a-c9149d3df041",
                             GroupId = 2,
                             Rating = 0
                         });
@@ -440,18 +437,17 @@ namespace FM_MyStat.Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AppUserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId")
-                        .IsUnique()
-                        .HasFilter("[AppUserId] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Teachers");
 
@@ -459,57 +455,56 @@ namespace FM_MyStat.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            AppUserId = "0d44cee7-2a63-44be-b856-c22676e9ae44"
+                            AppUserId = "69405185-98c6-4270-ab70-727f5bed536a"
                         },
                         new
                         {
                             Id = 2,
-                            AppUserId = "7b9a41a7-2bdd-4412-b287-0c25c8c8a35d"
+                            AppUserId = "31f2c536-54f9-40b8-92b7-beae31f4fa58"
                         });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
+                        .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
 
                     b.HasData(
                         new
                         {
-                            Id = "f0758146-0d4f-4911-9f66-ec93dd5326f2",
+                            Id = "0fcdfeeb-dc34-415d-8246-0f9d890da3e3",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "fe01c14c-cdac-4de9-a290-7e49d3fe5d8f",
+                            Id = "a034bece-26a7-44a3-8124-60e75ba192bc",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
-                            Id = "6409a216-d91f-40ba-8b60-908d294b3e85",
+                            Id = "36743540-e55f-417e-b3ee-f089a6380188",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         });
@@ -519,19 +514,19 @@ namespace FM_MyStat.Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("RoleId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -543,58 +538,58 @@ namespace FM_MyStat.Infrastructure.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
 
@@ -603,8 +598,7 @@ namespace FM_MyStat.Infrastructure.Migrations
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+                        .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
 
@@ -617,19 +611,19 @@ namespace FM_MyStat.Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -641,17 +635,17 @@ namespace FM_MyStat.Infrastructure.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -663,10 +657,10 @@ namespace FM_MyStat.Infrastructure.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -677,59 +671,59 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "a71366a7-5ddd-4e5e-858d-0ac4bc82014d",
-                            RoleId = "f0758146-0d4f-4911-9f66-ec93dd5326f2"
+                            UserId = "05e414a5-3d8f-4355-a754-f0ac9d4bb7c9",
+                            RoleId = "0fcdfeeb-dc34-415d-8246-0f9d890da3e3"
                         },
                         new
                         {
-                            UserId = "1e7a0c67-e816-44ee-ba7a-506a7c4d5f25",
-                            RoleId = "f0758146-0d4f-4911-9f66-ec93dd5326f2"
+                            UserId = "69aa7955-c335-4fb3-929b-5852de237864",
+                            RoleId = "0fcdfeeb-dc34-415d-8246-0f9d890da3e3"
                         },
                         new
                         {
-                            UserId = "0d44cee7-2a63-44be-b856-c22676e9ae44",
-                            RoleId = "fe01c14c-cdac-4de9-a290-7e49d3fe5d8f"
+                            UserId = "69405185-98c6-4270-ab70-727f5bed536a",
+                            RoleId = "a034bece-26a7-44a3-8124-60e75ba192bc"
                         },
                         new
                         {
-                            UserId = "7b9a41a7-2bdd-4412-b287-0c25c8c8a35d",
-                            RoleId = "fe01c14c-cdac-4de9-a290-7e49d3fe5d8f"
+                            UserId = "31f2c536-54f9-40b8-92b7-beae31f4fa58",
+                            RoleId = "a034bece-26a7-44a3-8124-60e75ba192bc"
                         },
                         new
                         {
-                            UserId = "395bb86a-a0f3-42df-a4d1-efc4c648a502",
-                            RoleId = "6409a216-d91f-40ba-8b60-908d294b3e85"
+                            UserId = "cb2316a6-7ca4-4dc1-aa75-d6e826b04aa0",
+                            RoleId = "36743540-e55f-417e-b3ee-f089a6380188"
                         },
                         new
                         {
-                            UserId = "6a7897b7-2e41-4e78-9ca6-5cdf06d1f175",
-                            RoleId = "6409a216-d91f-40ba-8b60-908d294b3e85"
+                            UserId = "5a284c53-4767-4c01-9f03-2e946cc6bccc",
+                            RoleId = "36743540-e55f-417e-b3ee-f089a6380188"
                         },
                         new
                         {
-                            UserId = "cc1d9934-720d-4315-a4af-180ef4f14f46",
-                            RoleId = "6409a216-d91f-40ba-8b60-908d294b3e85"
+                            UserId = "11fa4a25-941a-4314-9c46-3ae02258ff30",
+                            RoleId = "36743540-e55f-417e-b3ee-f089a6380188"
                         },
                         new
                         {
-                            UserId = "0bce2006-9a70-4967-b707-0d03e836b6da",
-                            RoleId = "6409a216-d91f-40ba-8b60-908d294b3e85"
+                            UserId = "5a37ab74-ff46-419a-b82a-c9149d3df041",
+                            RoleId = "36743540-e55f-417e-b3ee-f089a6380188"
                         });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
@@ -741,46 +735,46 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
                     b.Property<int?>("AdministratorId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("character varying(64)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("character varying(64)");
 
                     b.Property<int?>("StudentId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("SurName")
                         .IsRequired()
                         .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("character varying(64)");
 
                     b.Property<int?>("TeacherId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasDiscriminator().HasValue("AppUser");
 
                     b.HasData(
                         new
                         {
-                            Id = "a71366a7-5ddd-4e5e-858d-0ac4bc82014d",
+                            Id = "05e414a5-3d8f-4355-a754-f0ac9d4bb7c9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0bf7887b-9f60-4636-9a6e-3e1127529ccb",
+                            ConcurrencyStamp = "f81c73f5-e6ed-43b1-8cb9-cc9a80e23d03",
                             Email = "admin@email.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@EMAIL.COM",
                             NormalizedUserName = "ADMIN@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAtjkd31OASuEbhCb4nEvjs7ocxih7/S9ZWhuKfge/TtGm8N1jitfKsU3iy7UvaqRg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELl27w3F/A6iKDAK+a4AiuTgNCMZ+M1OqZUlAPSZZ8NDe0Jme5UV3s/vD3W+/i9mFg==",
                             PhoneNumber = "+xx(xxx)xxx-xx-xx",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "e45495a9-8d66-4e1b-8629-264c80bb9f48",
+                            SecurityStamp = "c2e7cd5d-1ec7-4ec1-ba91-c5e64e92b24a",
                             TwoFactorEnabled = false,
                             UserName = "admin@email.com",
                             AdministratorId = 1,
@@ -790,18 +784,18 @@ namespace FM_MyStat.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = "1e7a0c67-e816-44ee-ba7a-506a7c4d5f25",
+                            Id = "69aa7955-c335-4fb3-929b-5852de237864",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "45d2d4e8-58a1-446a-b948-789f90fa6d6f",
+                            ConcurrencyStamp = "885fc30d-5064-4eac-8ea6-84db7ce8cf7d",
                             Email = "admin1@email.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN1@EMAIL.COM",
                             NormalizedUserName = "ADMIN1@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEN2iOlYYapVNgCqDr5DCCJ1/oqTZiwRKHbf0LRZnzHwWXsmIOq6IjCgNYUpDGiQpog==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBjdql0WUzh4MR9zOr7ACne9G66huVDbzrfkPUBfUC36KDkfvEkGZKWh0iBErlIJdg==",
                             PhoneNumber = "+xx(xxx)xxx-xx-xx",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "dc7b660b-13af-4748-aeef-ee84857527de",
+                            SecurityStamp = "a67236fc-87a3-42de-a441-275012f9cec9",
                             TwoFactorEnabled = false,
                             UserName = "admin1@email.com",
                             AdministratorId = 2,
@@ -811,18 +805,18 @@ namespace FM_MyStat.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = "0d44cee7-2a63-44be-b856-c22676e9ae44",
+                            Id = "69405185-98c6-4270-ab70-727f5bed536a",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "906f0711-a61d-41ca-a49d-5e133ac3ed8f",
+                            ConcurrencyStamp = "1957d1e6-0657-4d04-96c3-af6f03292092",
                             Email = "teacher@email.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "TEACHER@EMAIL.COM",
                             NormalizedUserName = "TEACHER@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEA4Y+n2uyqtXsiSd/Ss9GjDzrJWykLw6rqPNmO0Dpt3lND/KuRNYly8JxPoypl8hpw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEK4hfw7UIxvxLf5XUlK0xg7tvxbK05HPW8H34mCwhSi/LjJYGByfO4qMsdBVOk5XbQ==",
                             PhoneNumber = "+xx(xxx)xxx-xx-xx",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "3d49d342-b4ad-4859-9a68-d51bc9e265d1",
+                            SecurityStamp = "c7449e17-d6fb-460e-81dc-9390b64d121e",
                             TwoFactorEnabled = false,
                             UserName = "teacher@email.com",
                             FirstName = "John",
@@ -832,18 +826,18 @@ namespace FM_MyStat.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = "7b9a41a7-2bdd-4412-b287-0c25c8c8a35d",
+                            Id = "31f2c536-54f9-40b8-92b7-beae31f4fa58",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "39218991-6890-43bf-aedb-8a81aa3d5e6f",
+                            ConcurrencyStamp = "65af5198-8927-4007-adcd-aed7466eaa95",
                             Email = "teacher1@email.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "TEACHER1@EMAIL.COM",
                             NormalizedUserName = "TEACHER1@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEO1mwfbBy9PQttjs4WZXt3DwTuYXcWikMK1MH9Ai2U2Zsc8Wb7IxZ0qItWRn8YoQ5w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKOLoE5exh3KrxGkByFq2JOTV7Q/HkX9ouLpAyNMfksAnsSq03g27L6+BtXCz5TNUg==",
                             PhoneNumber = "+xx(xxx)xxx-xx-xx",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "cfa8f62d-131e-4c92-9218-7c1a8f7c4558",
+                            SecurityStamp = "5c8d38c3-644e-44f1-9e79-fb52008bbb8a",
                             TwoFactorEnabled = false,
                             UserName = "teacher1@email.com",
                             FirstName = "Serhiy",
@@ -853,18 +847,18 @@ namespace FM_MyStat.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = "395bb86a-a0f3-42df-a4d1-efc4c648a502",
+                            Id = "cb2316a6-7ca4-4dc1-aa75-d6e826b04aa0",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b58f0b27-8e09-41b4-814b-3bcdbe2b2910",
+                            ConcurrencyStamp = "8fe93dc6-a2bf-4efa-8ac3-2c7ac79663f0",
                             Email = "student@email.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "STUDENT@EMAIL.COM",
                             NormalizedUserName = "STUDENT@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEH6EJT4gmXibiBL3AOsDNh6t5K4hzrbivfqToPGiP+87TeS0HCgz4/UougBGyZmklg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFlC04SA88jjUSjUBMGRf+BFHizQjmV62hz+Asf1AhTiXPdcpdc5S7m6vFC35DzuQg==",
                             PhoneNumber = "+xx(xxx)xxx-xx-xx",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "907b61d4-cd38-482a-ac65-f893e945345c",
+                            SecurityStamp = "8a0f647c-ea29-4e6f-8c4e-6561ae37dccc",
                             TwoFactorEnabled = false,
                             UserName = "student@email.com",
                             FirstName = "John",
@@ -874,18 +868,18 @@ namespace FM_MyStat.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = "6a7897b7-2e41-4e78-9ca6-5cdf06d1f175",
+                            Id = "5a284c53-4767-4c01-9f03-2e946cc6bccc",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2c79f5d4-6a2a-4703-b840-a78c80dbe4ab",
+                            ConcurrencyStamp = "4e026511-fb06-4795-b83b-e71eeb3c410b",
                             Email = "student1@email.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "STUDENT1@EMAIL.COM",
                             NormalizedUserName = "STUDENT1@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEC+f45mGQ+m67fXopo8MbjfVjDyinHfMI5OK+ShG/FSfAX3Y++KE9P/BkT610wCerw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKkZjq4pEK4IQOZnSVZT2A+LC453bAr4E4MRLMEQ/GI3eJLHJZ/IkDE6kyxL9eYPkQ==",
                             PhoneNumber = "+xx(xxx)xxx-xx-xx",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "0b8dc280-557b-45f4-a7f4-6bfacd9f2bd5",
+                            SecurityStamp = "20e7ff2e-56da-4ea9-b23c-2c6a86807529",
                             TwoFactorEnabled = false,
                             UserName = "student1@email.com",
                             FirstName = "Dima",
@@ -895,18 +889,18 @@ namespace FM_MyStat.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = "cc1d9934-720d-4315-a4af-180ef4f14f46",
+                            Id = "11fa4a25-941a-4314-9c46-3ae02258ff30",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9678a274-a80e-4974-a84f-278ce8f3dcb3",
+                            ConcurrencyStamp = "ffaf1b41-fea3-4652-9ad5-e6df3924eac0",
                             Email = "student2@email.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "STUDENT2@EMAIL.COM",
                             NormalizedUserName = "STUDENT2@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJMv5zHVbSmhSBhU2zEndSZFFO67XkwXxbQREMSEvNlIZ0AivdnLTRUXFGZLbUqjnA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJB18rmPiUGsmNoskLGeURQeaGbR3q3FHdPlnkQsQtPggpt40Ny+7VsF+iZ9Vz+X8A==",
                             PhoneNumber = "+xx(xxx)xxx-xx-xx",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "1a74520a-6eeb-4d26-9469-e21a770506e0",
+                            SecurityStamp = "c48980e3-e4e2-4e6a-bcd9-6895a88e6977",
                             TwoFactorEnabled = false,
                             UserName = "student2@email.com",
                             FirstName = "Yurii",
@@ -916,18 +910,18 @@ namespace FM_MyStat.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = "0bce2006-9a70-4967-b707-0d03e836b6da",
+                            Id = "5a37ab74-ff46-419a-b82a-c9149d3df041",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "aede0707-068d-4bc8-bffc-937e597338a6",
+                            ConcurrencyStamp = "9d5cf4bd-cec2-4393-81c2-e513b862a568",
                             Email = "student3@email.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "STUDENT3@EMAIL.COM",
                             NormalizedUserName = "STUDENT3@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAENRL/BhSCdjQ0LLk1+BePS7YTSh4NbRmdSgRxrNaOWzZjljL742HI1UVh+9Rp+BRdA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKehBeXDN2IcBXinazQVBmkvFQ8tbS18/qlCmciERdZXtJfkJT1uslMBX4oEmGir7w==",
                             PhoneNumber = "+xx(xxx)xxx-xx-xx",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "b78dbad2-7b13-4cda-93bc-c8dc0b84296f",
+                            SecurityStamp = "c6297e8f-e124-438d-9cb8-4304cf32de92",
                             TwoFactorEnabled = false,
                             UserName = "student3@email.com",
                             FirstName = "Pavlo",
