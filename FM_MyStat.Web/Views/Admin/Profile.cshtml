@@ -12,6 +12,81 @@
     var user = await UserManager.GetUserAsync(User);
     var email = await UserManager.GetEmailAsync(user);
 }
+<style>
+    .card-header {
+        background: rgb(92,121,171);
+        background: linear-gradient(38deg, rgba(92,121,171,1) 0%, rgba(52,79,126,1) 57%, rgba(39,39,99,1) 100%, rgba(32,48,76,1) 100%);
+        color: white;
+    }
+
+    .btn-primary {
+        background: rgb(92,121,171);
+        background: linear-gradient(38deg, rgba(92,121,171,1) 0%, rgba(52,79,126,1) 57%, rgba(39,39,99,1) 100%, rgba(32,48,76,1) 100%);
+        color: white;
+    }
+
+    .form__group {
+        position: relative;
+        padding: 15px 0 0;
+        margin-top: 10px;
+        width: 100%;
+    }
+
+    .form__field {
+        font-family: inherit;
+        width: 100%;
+        border: 0;
+        border-bottom: 2px solid #9b9b9b;
+        outline: 0;
+        font-size: 1.3rem;
+        color: black;
+        padding: 7px 0;
+        background: transparent;
+        transition: border-color 0.2s;
+    }
+
+        .form__field::placeholder {
+            color: transparent;
+        }
+
+        .form__field:placeholder-shown ~ .form__label {
+            font-size: 1.3rem;
+            cursor: text;
+            top: 20px;
+        }
+
+    .form__label {
+        position: absolute;
+        top: 0;
+        display: block;
+        transition: 0.2s;
+        font-size: 1rem;
+        color: #9b9b9b;
+    }
+
+    .form__field:focus ~ .form__label {
+        position: absolute;
+        top: 0;
+        display: block;
+        transition: 0.2s;
+        font-size: 1rem;
+        color: linear-gradient(38deg, rgba(92,121,171,1) 0%, rgba(52,79,126,1) 57%, rgba(39,39,99,1) 100%, rgba(32,48,76,1) 100%);
+        font-weight: 700;
+        padding-bottom: 6px;
+        font-weight: 700;
+        border-width: 3px;
+        border-image: linear-gradient(38deg, rgba(92,121,171,1) 0%, rgba(52,79,126,1) 57%, rgba(39,39,99,1) 100%, rgba(32,48,76,1) 100%);
+        border-image-slice: 1;
+    }
+
+    /* Reset input */
+    .form__field:required,
+    .form__field:invalid {
+        box-shadow: none;
+    }
+
+    }
+</style>
 
 <div class="content-wrapper">
     @*<h1>@Model.UserInfo.Email</h1>*@
@@ -36,32 +111,32 @@
                         </div>
                         <form method="post" asp-controller="Admin" asp-action="ChangeProfile">
                             <div class="card-body">
-                                <div Visible="False" class="form-group" ty>
-                                    <label style="display: none;">Id</label>
-                                    <input type="hidden" class="form-control" name="Id" id="Id" placeholder="Enter Id" value="@user.Id">
-                                    <input type="hidden" class="form-control" name="TeacherId" id="TeacherId" placeholder="Enter Id" value="@user.TeacherId">
-                                    <input type="hidden" class="form-control" name="StudentId" id="StudentId" placeholder="Enter Id" value="@user.StudentId">
-                                    <input type="hidden" class="form-control" name="AdministratorId" id="AdministratorId" placeholder="Enter Id" value="@user.AdministratorId">
+                                <div Visible="False" class="form__group field" ty>
+                                    <input type="hidden" class="form__field" name="Id" id="Id" placeholder="Enter Id" value="@user.Id">
+                                    <input type="hidden" class="form__field" name="TeacherId" id="TeacherId" placeholder="Enter Id" value="@user.TeacherId">
+                                    <input type="hidden" class="form__field" name="StudentId" id="StudentId" placeholder="Enter Id" value="@user.StudentId">
+                                    <input type="hidden" class="form__field" name="AdministratorId" id="AdministratorId" placeholder="Enter Id" value="@user.AdministratorId">
+                                    <label style="display: none;" class="form__label">Id</label>
                                 </div>
-                                <div class="form-group">
-                                    <label for="firstNameInput">First Name</label>
-                                    <input type="text" class="form-control" name="FirstName" id="FirstName" placeholder="Enter First Name" value="@user.FirstName">
+                                <div class="form__group field">
+                                    <input type="text" class="form__field" name="FirstName" id="FirstName" placeholder="Enter First Name" value="@user.FirstName">
+                                    <label for="firstNameInput" class="form__label">First Name</label>
                                 </div>
-                                <div class="form-group">
-                                    <label for="lastNameInput">Last Name</label>
-                                    <input type="text" class="form-control" name="LastName" id="LastName" placeholder="Enter Last Name" value="@user.LastName">
+                                <div class="form__group field">
+                                    <input type="text" class="form__field" name="LastName" id="LastName" placeholder="Enter Last Name" value="@user.LastName">
+                                    <label for="lastNameInput" class="form__label">Last Name</label>
                                 </div>
-                                <div class="form-group">
-                                    <label for="firstNameInput">Sur Name</label>
-                                    <input type="text" class="form-control" name="SurName" id="SurName" placeholder="Enter Sur Name" value="@user.SurName">
+                                <div class="form__group field">
+                                    <input type="text" class="form__field" name="SurName" id="SurName" placeholder="Enter Sur Name" value="@user.SurName">
+                                    <label for="firstNameInput" class="form__label">Sur Name</label>
                                 </div>
-                                <div class="form-group">
-                                    <label for="emailInput">Email</label>
-                                    <input type="email" class="form-control" name="Email" id="Email" placeholder="Enter Email" value="@user.Email">
+                                <div class="form__group field">
+                                    <input type="email" class="form__field" name="Email" id="Email" placeholder="Enter Email" value="@user.Email">
+                                    <label for="emailInput" class="form__label">Email</label>
                                 </div>
-                                <div class="form-group">
-                                    <label for="phoneNumberInput">Phone Number</label>
-                                    <input type="text" class="form-control" name="PhoneNumber" id="PhoneNumber" placeholder="Enter Phone Number" value="@user.PhoneNumber">
+                                <div class="form__group field">
+                                    <input type="text" class="form__field" name="PhoneNumber" id="PhoneNumber" placeholder="Enter Phone Number" value="@user.PhoneNumber">
+                                    <label for="phoneNumberInput" class="form__label">Phone Number</label>
                                 </div>
                             </div>
                             <div class="card-footer">
@@ -86,22 +161,22 @@
                         <form method="post" asp-action="Profiles">
                             <div class="card-body">
                                 <input type="hidden" name="Id" asp-for="=@user.Id" value=@user.Id />
-                                <div class="form-group">
-                                    <label for="Password">Old Password</label>
-                                    <input type="password" asp-for="@Model.UserPassword.OldPassword" name="oldPassword" class="form-control" placeholder="Old password" />
+                                <div class="form__group field">
+                                    <input type="password" asp-for="@Model.UserPassword.OldPassword" name="oldPassword" class="form__field" placeholder="Old password" />
+                                    <label for="Password" class="form__label">Old Password</label>
                                 </div>
-                                <div class="form-group">
-                                    <label for="Password">New Password</label>
-                                    <input type="password" asp-for="@Model.UserPassword.NewPassword" name="newPassword" class="form-control" placeholder="New Password">
+                                <div class="form__group field">
+                                    <input type="password" asp-for="@Model.UserPassword.NewPassword" name="newPassword" class="form__field" placeholder="New Password">
+                                    <label for="Password" class="form__label">New Password</label>
                                 </div>
-                                <div class="form-group">
-                                    <label for="ConfirmPassword">Confirm Password</label>
-                                    <input type="password" name="confirmPassword" asp-for="@Model.UserPassword.ConfirmPassword" class="form-control" placeholder="Confirm Password">
+                                <div class="form__group field">
+                                    <input type="password" name="confirmPassword" asp-for="@Model.UserPassword.ConfirmPassword" class="form__field" placeholder="Confirm Password">
+                                    <label for="ConfirmPassword" class="form__label">Confirm Password</label>
                                 </div>
                             </div>
                             <!-- /.card-body -->
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-danger">Update</button>
+                                <button type="submit" class="btn btn-primary">Update</button>
                             </div>
                         </form>
                     </div>
