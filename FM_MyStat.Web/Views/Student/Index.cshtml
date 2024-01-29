@@ -11,14 +11,25 @@
     var user = await UserManager.GetUserAsync(User);
 }
 
+<style>
+    .card{
+        background: linear-gradient(white, white) padding-box, linear-gradient(38deg, rgba(92,121,171,1) 0%, rgba(52,79,126,1) 57%, rgba(39,39,99,1) 100%, rgba(32,48,76,1) 100%) border-box;
+        border: 3px solid transparent;
+    }
 
+    .card-header{
+        background: linear-gradient(white, white) padding-box, linear-gradient(38deg, rgba(92,121,171,1) 0%, rgba(52,79,126,1) 57%, rgba(39,39,99,1) 100%, rgba(32,48,76,1) 100%) border-box;
+        border-bottom: 3px solid transparent;
+    }
+
+    .card-body{
+        background: rgba(118, 152, 255, 0.6);
+    }
+</style>
 
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <div class="container mt-4">
-        <h2>Student Dashboard</h2>
-        <hr>
-
         <div class="row">
             <div class="col-md-4 mb-4">
                 <!-- Rating -->
@@ -27,8 +38,8 @@
                         <h4 class="card-title">Your Rating</h4>
                     </div>
                     <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
+                        <div class="d-flex justify-content-between align-items-center pb-3 pt-3">
+                            <div class="">
                                 <p class="card-text mb-1">Your place in the group:</p>
                                 <h2 class="font-weight-bold">@Model.RatingGroup</h2>
                             </div>
@@ -38,29 +49,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- News -->
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">News academy</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="list-group">
-                            @for (int i = 0; i < Model.NewsList.Count; i++)
-                            {
-                                var news = Model.NewsList[i];
-                                <a href="#" class="list-group-item list-group-item-action">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <h5>@news.Title</h5>
-                                            <h5>@news.Description</h5>
-                                            <h5>@news.Time</h5>
-                                        </div>
-                                    </div>
-                                </a>
-                            }
-                        </div>
-                    </div>
-                </div>
+                
             </div>
 
             <!-- List of Students -->
@@ -130,6 +119,29 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <!-- News -->
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">News academy</h4>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        @for (int i = 0; i < Model.NewsList.Count; i++)
+                        {
+                            var news = Model.NewsList[i];
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h5>@news.Title</h5>
+                                        <h5>@news.Description</h5>
+                                        <h5>@news.Time</h5>
+                                    </div>
+                                </div>
+                            </a>
+                        }
                     </div>
                 </div>
             </div>
