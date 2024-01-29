@@ -113,6 +113,22 @@ namespace FM_MyStat.Core.Services.HomeworkServices
             return map;
         }
 
+        public async Task<List<HomeworkDoneDTO>> GetAllByUserId(string studentId)
+        {
+            var student = await _studentService.GetEditUserDtoByIdAsync(studentId);
+            if (student?.Payload?.StudentId == null)
+            {
+                return new List<HomeworkDoneDTO>();
+            }
+            var stdentId = student.Payload.StudentId ?? 0; // Assuming a default value of 0 if it's null
+            var allHomeworks = await _homeworkDoneRepo.GetListBySpec(new HomeworkDoneSpecification.GetByStudentId(stdentId));
+
+            var mappedHomeworks = allHomeworks.Select(h => _mapper.Map<HomeworkDone, HomeworkDoneDTO>(h)).ToList();
+            return mappedHomeworks;
+
+            /////
+        }
+
 
         public async Task<ServiceResponse> GetByName(HomeworkDoneDTO model)
         {
