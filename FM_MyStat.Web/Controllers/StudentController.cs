@@ -165,7 +165,14 @@ namespace FM_MyStat.Web.Controllers
         {
             var userId = ((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).FirstOrDefault();
             var homeworks = await _homeworkService.GetAllByUserId(userId);
-            return View(homeworks);
+            var homeworksDone =  await _homeworkDoneService.GetAllByUserId(userId);
+            var idH = homeworksDone.Where(c => c.Mark != null).Select(c => c.HomeworkId).ToList();//id homework mark
+            var hd = homeworks.Where(h => !idH.Contains(h.Id)).ToList();
+            HomeworkVM homeworkVM = new HomeworkVM();
+            homeworkVM.homeworkDTOs = hd;
+            var idHomeworkDoneMark = homeworksDone.Where(h => idH.Contains(h.HomeworkId)).ToList();
+            homeworkVM.homeworkDoneDTOs = idHomeworkDoneMark;
+            return View(homeworkVM);
         }
 
         [HttpPost]
