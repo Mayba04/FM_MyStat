@@ -125,6 +125,8 @@ namespace FM_MyStat.Core.Services.HomeworkServices
 
             var mappedHomeworks = allHomeworks.Select(h => _mapper.Map<HomeworkDone, HomeworkDoneDTO>(h)).ToList();
             return mappedHomeworks;
+
+            /////
         }
 
 
