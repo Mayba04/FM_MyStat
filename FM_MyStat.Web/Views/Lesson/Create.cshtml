@@ -3,6 +3,81 @@
 }
 @using FM_MyStat.Core.DTOs.LessonsDTO.Lessons;
 @model CreateLessonsDTO
+<style>
+    .card-header {
+        background: rgb(92,121,171);
+        background: linear-gradient(38deg, rgba(92,121,171,1) 0%, rgba(52,79,126,1) 57%, rgba(39,39,99,1) 100%, rgba(32,48,76,1) 100%);
+        color: white;
+    }
+
+    .btn-primary {
+        background: rgb(92,121,171);
+        background: linear-gradient(38deg, rgba(92,121,171,1) 0%, rgba(52,79,126,1) 57%, rgba(39,39,99,1) 100%, rgba(32,48,76,1) 100%);
+        color: white;
+    }
+
+    .form__group {
+        position: relative;
+        padding: 15px 0 0;
+        margin-top: 10px;
+        width: 100%;
+    }
+
+    .form__field {
+        font-family: inherit;
+        width: 100%;
+        border: 0;
+        border-bottom: 2px solid #9b9b9b;
+        outline: 0;
+        font-size: 1.3rem;
+        color: black;
+        padding: 7px 0;
+        background: transparent;
+        transition: border-color 0.2s;
+    }
+
+        .form__field::placeholder {
+            color: transparent;
+        }
+
+        .form__field:placeholder-shown ~ .form__label {
+            font-size: 1.3rem;
+            cursor: text;
+            top: 20px;
+        }
+
+    .form__label {
+        position: absolute;
+        top: 0;
+        display: block;
+        transition: 0.2s;
+        font-size: 1rem;
+        color: #9b9b9b;
+    }
+
+    .form__field:focus ~ .form__label {
+        position: absolute;
+        top: 0;
+        display: block;
+        transition: 0.2s;
+        font-size: 1rem;
+        color: linear-gradient(38deg, rgba(92,121,171,1) 0%, rgba(52,79,126,1) 57%, rgba(39,39,99,1) 100%, rgba(32,48,76,1) 100%);
+        font-weight: 700;
+        padding-bottom: 6px;
+        font-weight: 700;
+        border-width: 3px;
+        border-image: linear-gradient(38deg, rgba(92,121,171,1) 0%, rgba(52,79,126,1) 57%, rgba(39,39,99,1) 100%, rgba(32,48,76,1) 100%);
+        border-image-slice: 1;
+    }
+
+    /* Reset input */
+    .form__field:required,
+    .form__field:invalid {
+        box-shadow: none;
+    }
+
+    }
+</style>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -21,18 +96,6 @@
         <div class="container-fluid">
             <!-- SELECT2 EXAMPLE -->
             <div class="card card-default">
-                <div class="card-header">
-                    <h3 class="card-title">Create lesson</h3>
-
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-tool" data-card-widget="remove">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                </div>
                 <!-- /.card-header -->
                 <div class="card-body">
                     <div class="row">
@@ -49,33 +112,33 @@
                                 }
                                 <form method="post" asp-action="Create">
                                     <div class="card-body">
-                                        <div class="form-group">
-                                            <label for="lessonName">Lesson name</label>
-                                            <input type="hidden" class="form-control" name="TeacherId" id="TeacherId" value="@ViewBag.IdTeacher" />
-                                            <input type="text" name="Name" class="form-control" id="lessonName" placeholder="Lesson name">
+                                        <div class="form__group field">
+                                            <input type="hidden" class="form__field" name="TeacherId" id="TeacherId" value="@ViewBag.IdTeacher" />
+                                            <input type="text" name="Name" class="form__field" id="lessonName" placeholder="Lesson name">
+                                            <label for="lessonName" class="form__label">Lesson name</label>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="lessonDescription">Description</label>
-                                            <input type="text" name="Description" class="form-control" id="lessonDescription" placeholder="Description">
+                                        <div class="form__group field">
+                                            <input type="text" name="Description" class="form__field" id="lessonDescription" placeholder="Description">
+                                            <label for="lessonDescription" class="form__label">Description</label>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="lessonStart">Start Date</label>
-                                            <input type="datetime-local" name="Start" class="form-control" id="lessonStart">
+                                        <div class="form__group field">
+                                            <input type="datetime-local" name="Start" class="form__field" id="lessonStart">
+                                            <label for="lessonStart" class="form__label">Start Date</label>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="lessonEnd">End Date</label>
-                                            <input type="datetime-local" name="End" class="form-control" id="lessonEnd">
+                                        <div class="form__group field">
+                                            <input type="datetime-local" name="End" class="form__field" id="lessonEnd">
+                                            <label for="lessonEnd" class="form__label">End Date</label>
                                         </div>
                                         <div class="mb-3">
-                                            <div class="form-group">
-                                                <label>Group</label>
-                                                @Html.DropDownList("GroupId", (SelectList)ViewBag.GroupList, "-- Select Group --",  htmlAttributes: new { @class = "form-control" })
+                                            <div class="form__group field">
+                                                @Html.DropDownList("GroupId", (SelectList)ViewBag.GroupList, "-- Select Group --",  htmlAttributes: new { @class = "form__field" })
+                                                <label class="form__label">Group</label>
                                             </div>
                                         </div>
                                             <div class="mb-3">
-                                                <div class="form-group">
-                                            <label>Subject ID</label>
-                                                @Html.DropDownList("SubjectId", (SelectList)ViewBag.SubjectList, "-- Select Subject --",  htmlAttributes: new { @class = "form-control" })
+                                            <div class="form__group field">
+                                                @Html.DropDownList("SubjectId", (SelectList)ViewBag.SubjectList, "-- Select Subject --",  htmlAttributes: new { @class = "form__field" })
+                                                <label class="form__label">Subject ID</label>
                                         </div>
                                         </div>
                                     </div>

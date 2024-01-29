@@ -3,6 +3,81 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 @model CreateNewsDTO;
+<style>
+    .card-header {
+        background: rgb(92,121,171);
+        background: linear-gradient(38deg, rgba(92,121,171,1) 0%, rgba(52,79,126,1) 57%, rgba(39,39,99,1) 100%, rgba(32,48,76,1) 100%);
+        color: white;
+    }
+
+    .btn-primary {
+        background: rgb(92,121,171);
+        background: linear-gradient(38deg, rgba(92,121,171,1) 0%, rgba(52,79,126,1) 57%, rgba(39,39,99,1) 100%, rgba(32,48,76,1) 100%);
+        color: white;
+    }
+
+    .form__group {
+        position: relative;
+        padding: 15px 0 0;
+        margin-top: 10px;
+        width: 100%;
+    }
+
+    .form__field {
+        font-family: inherit;
+        width: 100%;
+        border: 0;
+        border-bottom: 2px solid #9b9b9b;
+        outline: 0;
+        font-size: 1.3rem;
+        color: black;
+        padding: 7px 0;
+        background: transparent;
+        transition: border-color 0.2s;
+    }
+
+        .form__field::placeholder {
+            color: transparent;
+        }
+
+        .form__field:placeholder-shown ~ .form__label {
+            font-size: 1.3rem;
+            cursor: text;
+            top: 20px;
+        }
+
+    .form__label {
+        position: absolute;
+        top: 0;
+        display: block;
+        transition: 0.2s;
+        font-size: 1rem;
+        color: #9b9b9b;
+    }
+
+    .form__field:focus ~ .form__label {
+        position: absolute;
+        top: 0;
+        display: block;
+        transition: 0.2s;
+        font-size: 1rem;
+        color: linear-gradient(38deg, rgba(92,121,171,1) 0%, rgba(52,79,126,1) 57%, rgba(39,39,99,1) 100%, rgba(32,48,76,1) 100%);
+        font-weight: 700;
+        padding-bottom: 6px;
+        font-weight: 700;
+        border-width: 3px;
+        border-image: linear-gradient(38deg, rgba(92,121,171,1) 0%, rgba(52,79,126,1) 57%, rgba(39,39,99,1) 100%, rgba(32,48,76,1) 100%);
+        border-image-slice: 1;
+    }
+
+    /* Reset input */
+    .form__field:required,
+    .form__field:invalid {
+        box-shadow: none;
+    }
+
+    }
+</style>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -21,18 +96,6 @@
         <div class="container-fluid">
             <!-- SELECT2 EXAMPLE -->
             <div class="card card-default">
-                <div class="card-header">
-                    <h3 class="card-title">Create news</h3>
-
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-tool" data-card-widget="remove">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                </div>
                 <!-- /.card-header -->
                 <div class="card-body">
                     <div class="row">
@@ -49,21 +112,21 @@
                                 }
                                 <form method="post" asp-action="Create">
                                     <div class="card-body">
-                                        <div class="form-group">
-                                            <label for="Title">Title</label>
-                                            <input type="text" name="Title" class="form-control" id="Title" placeholder="Title">
+                                        <div class="form__group field">
+                                            <input type="text" name="Title" class="form__field" id="Title" placeholder="Title">
+                                            <label for="Title" class="form__label">Title</label>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="Description">Description</label>
-                                            <input type="text" name="Description" class="form-control" id="Description" placeholder="Description">
+                                        <div class="form__group field">
+                                            <input type="text" name="Description" class="form__field" id="Description" placeholder="Description">
+                                            <label for="Description" class="form__label">Description</label>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="lessonStart">TimePublication</label>
-                                            <input type="datetime-local" name="TimePublication" class="form-control" id="TimePublication">
+                                        <div class="form__group field">
+                                            <input type="datetime-local" name="TimePublication" class="form__field" id="TimePublication">
+                                            <label for="lessonStart" class="form__label">TimePublication</label>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="lessonEnd">Time</label>
-                                            <input type="datetime-local" name="Time" class="form-control" id="Time">
+                                        <div class="form__group field">
+                                            <input type="datetime-local" name="Time" class="form__field" id="Time">
+                                            <label for="lessonEnd" class="form__label">Time</label>
                                         </div>
                                     </div>
                                     <!-- /.card-body -->
