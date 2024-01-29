@@ -251,7 +251,7 @@ namespace FM_MyStat.Web.Controllers
         }
         #endregion
 
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator, Teacher")]
         public async Task<IActionResult> GetByGroupId(int Id)
         {
             

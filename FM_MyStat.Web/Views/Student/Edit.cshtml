@@ -44,12 +44,6 @@
                                 <input asp-for="PhoneNumber" type="tel" class="form-control" placeholder="Phone Number" aria-label="PhoneNumber">
                                 <span class="text-danger" asp-validation-for="PhoneNumber"></span>
                             </div>
-                            @* <div class="mb-3">
-                                <div class="form-group">
-                                    <label>Group</label>
-                                    @Html.DropDownList("GroupId", (SelectList)ViewBag.GroupList, "-- Select Group --",  htmlAttributes: new { @class = "form-control" })
-                                </div>
-                            </div> *@
                             <div class="mb-3">
                                 <div class="form-group">
                                     <label for="GroupId">Group</label>

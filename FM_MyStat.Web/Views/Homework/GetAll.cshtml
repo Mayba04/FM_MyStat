@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="~/dashboard/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="~/dashboard/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 <link rel="stylesheet" href="~/dashboard/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+<link rel="stylesheet" href="~/css/stulescards.css" />
 
 
 @{
@@ -37,72 +38,36 @@ else
                 <div class="col-sm-6">
                     <h1>All Homeworks</h1>
                 </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a asp-controller="Admin" asp-action="Index">Home</a></li>
-                        <li class="breadcrumb-item active">Homeworks</li>
-                    </ol>
-                </div>
             </div>
         </div>
     </section>
     <section class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Homeworks list with minimal information</h3>
+                @foreach (var item in Model)
+                {
+                    <div class="col-md-3 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">@item.Title</h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text"><strong>Description:</strong> @item.Description</p>
+                                <p class="card-text"><strong>Group:</strong> @item.Group</p>
+                                <p class="card-text"><strong>Lesson:</strong> @item.Lesson</p>
+                            </div>
+                            <div class="card-footer">
+                                @if (User.IsInRole("Teacher"))
+                                {
+                                    <a asp-controller="HomeworkDone" asp-action="Homeinspection" asp-route-id="@item.Id" class="button-28">Home inspection</a>
+                                }
+                                <a asp-controller="Homework" asp-action="Update" asp-route-id="@item.Id" class="button-28">Edit</a>
+                                <a asp-controller="Homework" asp-action="Delete" asp-route-id="@item.Id" class="button-28">Delete</a>
+                            </div>
                         </div>
-
-                        <div class="card-body">
-                            <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" aria-describedby="example2_info">
-                                <thead>
-                                    <tr>
-                                        <th>Id</th>
-                                        <th>Title</th>
-                                        <th>Description</th>
-                                        <th>Group</th>
-                                        <th>Lesson</th>
-                                        <th>PathFile</th>
-                                        @if (User.IsInRole("Teacher"))
-                                        {
-                                            <th>HomewoeorkDone</th>
-                                        }
-                                        <th>Edit</th>
-                                        <th>Delete</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var item in Model)
-                                    {
-                                        <tr>
-                                            <td>@item.Id</td>
-                                            <td>@item.Title</td>
-                                            <td>@item.Description</td>
-                                            <td>@item.Group</td>
-                                            <td>@item.Lesson</td>
-                                            <td>@item.PathFile</td>
-                                            @if (User.IsInRole("Teacher"))
-                                            {
-                                                <td><a asp-controller="HomeworkDone" asp-action="Homeinspection" asp-route-id="@item.Id" class="btn btn-block btn-warning btn-sm">Home inspection</a></td>
-                                            }
-                                            <td><a asp-controller="Homework" asp-action="Update" asp-route-id="@item.Id" class="btn btn-block btn-warning btn-sm">Edit</a></td>
-                                            <td><a asp-controller="Homework" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-block btn-danger btn-sm">Delete</a></td>
-                                        </tr>
-                                    }
-                                </tbody>
-
-                            </table>
-                        </div>
-                        <!-- /.card-body -->
                     </div>
-                    <!-- /.card -->
-                </div>
+                }
             </div>
-            <!-- /.col -->
-            <!-- /.row -->
         </div>
-        <!-- /.container-fluid -->
     </section>
 </div>
