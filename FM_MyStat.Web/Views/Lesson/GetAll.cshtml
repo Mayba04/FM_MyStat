@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="~/assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="~/assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="~/assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/css/stulescards.css" />
 }
 
 <!-- Content Wrapper. Contains page content -->
@@ -29,12 +30,6 @@
                 <div class="col-sm-6">
                     <h1>All lessons</h1>
                 </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Lessons</li>
-                    </ol>
-                </div>
             </div>
         </div><!-- /.container-fluid -->
     </section>
@@ -43,63 +38,38 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Lesson schedule</h3>
+                @foreach (var item in Model)
+                {
+                    <div class="col-md-3 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">@item.Name</h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text"><strong>Description:</strong> @item.Description</p>
+                                <p class="card-text"><strong>Start:</strong> @item.Start</p>
+                                <p class="card-text"><strong>End:</strong> @item.End</p>
+                                <p class="card-text"><strong>Group:</strong> @item.Group</p>
+                                <p class="card-text"><strong>Subject:</strong> @item.Subject</p>
+                            </div>
+                            <div class="card-footer">
+                                <a asp-controller="Lesson" asp-action="Edit" asp-route-id="@item.Id" class="button-28">Edit</a>
+                                <a asp-controller="Lesson" asp-action="Delete" asp-route-id="@item.Id" class="button-28">Delete</a>
+                                @if (item.HomeworkId == null)
+                                {
+                                    <a asp-controller="Homework" asp-action="Create" asp-route-LessonId="@item.Id" class="button-28">Add Homework</a>
+                                }
+                                else
+                                {
+                                    <a asp-controller="Homework" asp-action="Update" asp-route-Id="@item.HomeworkId" class="button-28">Edit Homework</a>
+                                }
+                                <a asp-controller="LessonMark" asp-action="SubmitMark" asp-route-id="@item.Id" class="button-28">Marks</a>
+                            </div>
                         </div>
-                        <!-- /.card-header -->
-                        <div class="card-body">
-                            <table id="example2" class="table table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Describtion</th>
-                                        <th>Starts</th>
-                                        <th>Ends</th>
-                                        <th>Group</th>
-                                        <th>Subject</th>
-                                        <th>Homework</th>
-                                        <th>Marks</th>
-                                        <th>Edit</th>
-                                        <th>Delete</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var item in Model)
-                                    {
-                                        <tr>
-                                            <td>@item.Name</td>
-                                            <td>@item.Description</td>
-                                            <td>@item.Start</td>
-                                            <td>@item.End</td>
-                                            <td>@item.Group</td>
-                                            <td>@item.Subject</td>
-                                            @if (item.HomeworkId == null)
-                                            {
-                                                <td><a asp-controller="Homework" asp-action="Create" asp-route-LessonId="@item.Id" class="btn btn-block btn-warning btn-sm">Add</a></td>
-                                            }
-                                            else
-                                            {
-                                                <td><a asp-controller="Homework" asp-action="Update" asp-route-Id="@item.HomeworkId" class="btn btn-block btn-warning btn-sm">Edit</a></td>
-                                            }
-                                            <td><a asp-controller="LessonMark" asp-action="SubmitMark" asp-route-id="@item.Id" class="btn btn-block btn-warning btn-sm">Marks</a></td>
-                                            <td><a asp-controller="Lesson" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-block btn-warning btn-sm">Edit</a></td>
-                                            <td><a asp-controller="Lesson" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-block btn-danger btn-sm">Delete</a></td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- /.card-body -->
                     </div>
-                    <!-- /.card -->
-                </div>
+                }
             </div>
-            <!-- /.col -->
-            <!-- /.row -->
         </div>
-        <!-- /.container-fluid -->
     </section>
 </div>
 <!-- /.content -->
