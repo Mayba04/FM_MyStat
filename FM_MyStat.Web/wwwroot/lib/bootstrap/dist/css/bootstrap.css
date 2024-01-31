@@ -11216,6 +11216,9 @@ textarea.form-control-lg {
   .d-print-none {
     display: none !important;
   }
+    .content-wrepper {
+        background: #e1f1fd
+    }
 }
 
 /*# sourceMappingURL=bootstrap.css.map */

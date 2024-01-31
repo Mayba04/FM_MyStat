@@ -4,8 +4,8 @@
 <head>
     <partial name="./StudentDashboard/_Header.cshtml" />
 </head>
-<body class="hold-transition sidebar-mini">
-    <div>
+<body class="hold-transition sidebar-mini" style="background:#e1f1fd">
+    <div class="wrapper" style="background:#e1f1fd;">
         <partial name="./StudentDashboard/_NavBar.cshtml" />
         <partial name="./StudentDashboard/_SideBar.cshtml" />
         @RenderBody()
@@ -14,4 +14,4 @@
     <partial name="./StudentDashboard/_FooterIncludes.cshtml" />
     @await RenderSectionAsync("Scripts", required: false)
 </body>
-</html>
+</html> 
