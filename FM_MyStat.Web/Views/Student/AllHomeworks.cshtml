@@ -5,20 +5,35 @@
 @model HomeworkVM;
 <head>
     <style>
-        .homework-card {
-            border: 1px solid #dee2e6;
-            margin-bottom: 20px;
-            border-radius: 10px;
-            overflow: hidden;
-            transition: box-shadow 0.3s;
+        /*         .homework-card {
+                    border: 1px solid #dee2e6;
+                    margin-bottom: 20px;
+                    border-radius: 10px;
+                    overflow: hidden;
+                    transition: box-shadow 0.3s;
+                }
+
+                    .homework-card:hover {
+                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                    }
+
+                .card-body {
+                    padding: 20px;
+                } */
+
+        .card-header {
+            background: linear-gradient(38deg, rgba(92,121,171,1) 0%, rgba(52,79,126,1) 57%, rgba(39,39,99,1) 100%, rgba(32,48,76,1) 100%)
         }
 
-            .homework-card:hover {
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            }
+        .card-body, .card {
+            background: #c1d8f0;
+        }
 
-        .card-body {
-            padding: 20px;
+        .card_title {
+            font-weight: bold;
+            font-size: 26px;
+            color: white;
+            -webkit-text-stroke: 0.2px gray;
         }
 
         .info-icon {
@@ -39,7 +54,7 @@
     <div class="container mt-4">
         @if (Model.homeworkDTOs.Any())
         {
-            <h2>Your Homeworks</h2>
+            <h1 class="card_title">Your Homeworks</h1>
             <hr>
             <div class="container">
                 <div class="row">
@@ -47,8 +62,8 @@
                     {
                         <div class="col-md-4">
                             <div class="card homework-card">
-                                <div class="card-header d-flex justify-content-between">
-                                    <h5 class="card-title">@homework.Title</h5>
+                                <div class="card-header d-flex justify-content-between" style="color: white">
+                                    <h5 class="card_title">@homework.Title</h5>
                                     <i class="info-icon fas fa-info-circle" data-toggle="popover" title="Info" data-content="@($"Description: {homework.Description}<br />Lesson: {homework.Lesson}")"></i>
                                 </div>
                                 <div class="card-body d-flex flex-column justify-content-between">
@@ -68,7 +83,7 @@
                                             </button>
                                         </form>
                                         <a asp-controller="Homework" asp-action="Download" asp-route-id="@homework.Id" class="btn btn-primary download-btn ml-2 flex-grow-1" style="height:70px" data-toggle="tooltip" data-placement="bottom" title="Download">
-                                            <i class="fas fa-download"></i>
+                                            <i class="fas fa-download"></i> Download
                                         </a>
                                     </div>
                                 </div>
@@ -83,7 +98,7 @@
         <div class="container mt-4">
             @if (Model.homeworkDoneDTOsNotMark.Any())
             {
-                <h2>On Inspection:</h2>
+                <h1 class="card_title">On Inspection:</h1>
                 <hr>
                 <div class="row">
                     @foreach (var homework in Model.homeworkDoneDTOsNotMark)
@@ -110,21 +125,25 @@
     <div class="container mt-4">
         @if (Model.homeworkDoneDTOs.Any())
         {
-            <h2>Checked: </h2>
+            <h1 class="card_title">Done hometasks</h1>
             <hr>
             <div class="row">
                 @foreach (var homework in Model.homeworkDoneDTOs)
                 {
-                    <div class="col-md-4">
-                        <div class="card homework-card">
+                    <div class="col-md-3">
+                        <div class="card homework-card" style="color: white">
                             <div class="card-header d-flex justify-content-between">
                                 <h5 class="card-title">@homework.Description</h5>
                                 <i class="info-icon fas fa-info-circle" data-toggle="popover" title="Info" data-content="@($"Description: {homework.Description}<br />Mark: {homework.Mark}")"></i>
                             </div>
                             <div class="card-body d-flex flex-column justify-content-between">
                                 <div>
-                                    <!-- Your content goes here if needed -->
+                                    <h1 class="card_title text-center pt-3 pb-3" style="font-size:40px">
+                                        @homework.Mark
+
+                                    </h1>
                                 </div>
+
                             </div>
                         </div>
                     </div>
