@@ -3,12 +3,87 @@
 }
 @using FM_MyStat.Core.DTOs.UsersDTO.User;
 @model EditUserDTO
+<style>
+    .card-header {
+        background: rgb(92,121,171);
+        background: linear-gradient(38deg, rgba(92,121,171,1) 0%, rgba(52,79,126,1) 57%, rgba(39,39,99,1) 100%, rgba(32,48,76,1) 100%);
+        color: white;
+    }
+
+    .btn-primary {
+        background: rgb(92,121,171);
+        background: linear-gradient(38deg, rgba(92,121,171,1) 0%, rgba(52,79,126,1) 57%, rgba(39,39,99,1) 100%, rgba(32,48,76,1) 100%);
+        color: white;
+    }
+
+    .form__group {
+        position: relative;
+        padding: 15px 0 0;
+        margin-top: 10px;
+        width: 100%;
+    }
+
+    .form__field {
+        font-family: inherit;
+        width: 100%;
+        border: 0;
+        border-bottom: 2px solid #9b9b9b;
+        outline: 0;
+        font-size: 1.3rem;
+        color: black;
+        padding: 7px 0;
+        background: transparent;
+        transition: border-color 0.2s;
+    }
+
+        .form__field::placeholder {
+            color: transparent;
+        }
+
+        .form__field:placeholder-shown ~ .form__label {
+            font-size: 1.3rem;
+            cursor: text;
+            top: 20px;
+        }
+
+    .form__label {
+        position: absolute;
+        top: 0;
+        display: block;
+        transition: 0.2s;
+        font-size: 1rem;
+        color: #9b9b9b;
+    }
+
+    .form__field:focus ~ .form__label {
+        position: absolute;
+        top: 0;
+        display: block;
+        transition: 0.2s;
+        font-size: 1rem;
+        color: linear-gradient(38deg, rgba(92,121,171,1) 0%, rgba(52,79,126,1) 57%, rgba(39,39,99,1) 100%, rgba(32,48,76,1) 100%);
+        font-weight: 700;
+        padding-bottom: 6px;
+        font-weight: 700;
+        border-width: 3px;
+        border-image: linear-gradient(38deg, rgba(92,121,171,1) 0%, rgba(52,79,126,1) 57%, rgba(39,39,99,1) 100%, rgba(32,48,76,1) 100%);
+        border-image-slice: 1;
+    }
+
+    /* Reset input */
+    .form__field:required,
+    .form__field:invalid {
+        box-shadow: none;
+    }
+
+    }
+</style>
 <section class="min-vh-100 mb-8">
     <div class="container">
         <div class="row">
             <div class="col-xl-4 col-lg-5 col-md-7 mx-auto">
                 <div class="card z-index-0">
-                    <div class="text-center pt-4">
+                    <div class="text-center card-header">
                         <h5>Edit user information</h5>
                     </div>
                     <div class="card-body">
@@ -17,31 +92,31 @@
                             {
                                 <span class="text-danger">@ViewBag.AuthError</span>
                             }
-                            <div class="mb-3">
+                            <div class="mb-3" class="form__group field">
                                 <label>FirstName</label>
-                                <input asp-for="Id" type="hidden" class="form-control" aria-label="Id" aria-describedby="email-addon" />
-                                <input asp-for="FirstName" type="text" class="form-control" placeholder="FirstName" aria-label="FirstName">
+                                <input asp-for="Id" type="hidden" class="form__field" aria-label="Id" aria-describedby="email-addon" />
+                                <input asp-for="FirstName" type="text" class="form__field" placeholder="FirstName" aria-label="FirstName">
                                 <span class="text-danger" asp-validation-for="FirstName"></span>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3" class="form__group field">
                                 <label>LastName</label>
-                                <input asp-for="Id" type="hidden" class="form-control" aria-label="Id" aria-describedby="email-addon" />
-                                <input asp-for="LastName" type="text" class="form-control" placeholder="LastName" aria-label="LastName">
+                                <input asp-for="Id" type="hidden" class="form__field" aria-label="Id" aria-describedby="email-addon" />
+                                <input asp-for="LastName" type="text" class="form__field" placeholder="LastName" aria-label="LastName">
                                 <span class="text-danger" asp-validation-for="LastName"></span>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3" class="form__group field">
                                 <label>Last name</label>
-                                <input asp-for="SurName" type="text" class="form-control" placeholder="SurName" aria-label="SurName">
+                                <input asp-for="SurName" type="text" class="form__field" placeholder="SurName" aria-label="SurName">
                                 <span class="text-danger" asp-validation-for="SurName"></span>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3" class="form__group field">
                                 <label>Email</label>
-                                <input asp-for="Email" type="email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="email-addon">
+                                <input asp-for="Email" type="email" class="form__field" placeholder="Email" aria-label="Email" aria-describedby="email-addon">
                                 <span class="text-danger" asp-validation-for="Email"></span>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3" class="form__group field">
                                 <label>Phone Number</label>
-                                <input asp-for="PhoneNumber" type="tel" class="form-control" placeholder="Phone Number" aria-label="PhoneNumber">
+                                <input asp-for="PhoneNumber" type="tel" class="form__field" placeholder="Phone Number" aria-label="PhoneNumber">
                                 <span class="text-danger" asp-validation-for="PhoneNumber"></span>
                             </div>
                             <div class="text-center">
