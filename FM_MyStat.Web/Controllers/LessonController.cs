@@ -94,7 +94,10 @@ namespace FM_MyStat.Web.Controllers
                 await _lessonService.Create(model);
                 return RedirectToAction(nameof(GetAll));
             }
-            ViewBag.AuthError = validationResult.Errors.FirstOrDefault();
+            ViewBag.CreateLessonError = validationResult.Errors.FirstOrDefault();
+            await LoadGroups();
+            await LoadSubjects();
+            await LoadTeacher();
             return View();
         }
 

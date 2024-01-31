@@ -70,7 +70,19 @@ namespace FM_MyStat.Core.Services.HomeworkServices
         public async Task Delete(int id)
         {
             var model = await Get(id);
-            if (model == null) return;
+            if (model == null)
+            {
+                return;
+            }
+
+            string webPathRoot = _webHostEnvironment.WebRootPath;
+            string upload = webPathRoot + _configuration.GetValue<string>("FileSettings2:FilePath");
+            string existingFilePath = Path.Combine(upload, model.FilePath);
+
+            if (File.Exists(existingFilePath) && model.FilePath != "Default.txt")
+            {
+                File.Delete(existingFilePath);
+            }
 
             await _homeworkDoneRepo.Delete(model.Id);
             await _homeworkDoneRepo.Save();

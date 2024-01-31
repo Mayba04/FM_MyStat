@@ -67,5 +67,11 @@ namespace FM_MyStat.Web.Controllers
 
             return File(fileContents, contentType, fileName);
         }
+
+        public async Task<IActionResult> DeleteHomework(int Id)
+        {
+            await _homeworkDoneService.Delete(Id);
+            return RedirectToRoute(new { controller = "Student", action = "AllHomeworks" });
+        }
     }
 }

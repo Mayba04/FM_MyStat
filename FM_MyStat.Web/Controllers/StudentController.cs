@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Globalization;
 using System.Security.Claims;
 
 namespace FM_MyStat.Web.Controllers
@@ -164,14 +165,17 @@ namespace FM_MyStat.Web.Controllers
         public async Task<IActionResult> AllHomeworks()
         {
             var userId = ((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).FirstOrDefault();
-            var homeworks = await _homeworkService.GetAllByUserId(userId);
-            var homeworksDone =  await _homeworkDoneService.GetAllByUserId(userId);
-            var idH = homeworksDone.Where(c => c.Mark != null).Select(c => c.HomeworkId).ToList();//id homework mark
-            var hd = homeworks.Where(h => !idH.Contains(h.Id)).ToList();
+            var homeworks = await _homeworkService.GetAllByUserId(userId);// all homework is not submitted
+            var homeworksDone =  await _homeworkDoneService.GetAllByUserId(userId);// all completed homework
+            var idHWmark = homeworksDone.Where(c => c.Mark != null).Select(c => c.HomeworkId).ToList();//graded homework id
+            var idHWNotmark = homeworksDone.Where(c => c.Mark == null).Select(c => c.HomeworkId).ToList();//not mark homework id
+            var HwNotSub = homeworks.Where(h => !idHWmark.Contains(h.Id) && !idHWNotmark.Contains(h.Id)).ToList(); // sorted list of homework assignments
+            var idHomeworkDoneMark = homeworksDone.Where(h => idHWmark.Contains(h.HomeworkId)).ToList();// homework that has been submitted and graded
+            var idHomeworkDoneNotMark = homeworksDone.Where(h => !idHWmark.Contains(h.HomeworkId)).ToList();
             HomeworkVM homeworkVM = new HomeworkVM();
-            homeworkVM.homeworkDTOs = hd;
-            var idHomeworkDoneMark = homeworksDone.Where(h => idH.Contains(h.HomeworkId)).ToList();
+            homeworkVM.homeworkDTOs = HwNotSub;
             homeworkVM.homeworkDoneDTOs = idHomeworkDoneMark;
+            homeworkVM.homeworkDoneDTOsNotMark = idHomeworkDoneNotMark;
             return View(homeworkVM);
         }
 
@@ -196,7 +200,7 @@ namespace FM_MyStat.Web.Controllers
                     return RedirectToAction(nameof(AllHomeworks));
                 }
                 await _homeworkDoneService.Create(model);
-                return RedirectToAction("Index", "Login");
+                return RedirectToAction(nameof(AllHomeworks));
             }
             ViewBag.AuthError = validationResult.Errors.FirstOrDefault();
             return RedirectToAction(nameof(AllHomeworks));

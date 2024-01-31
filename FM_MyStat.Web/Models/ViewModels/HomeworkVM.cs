@@ -8,5 +8,6 @@ namespace FM_MyStat.Web.Models.ViewModels
     {
         public List<HomeworkDoneDTO> homeworkDoneDTOs { get; set; }
         public List<HomeworkDTO> homeworkDTOs { get; set; }
+        public List<HomeworkDoneDTO> homeworkDoneDTOsNotMark { get; set; }
     }
 }
