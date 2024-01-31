@@ -163,11 +163,11 @@ namespace FM_MyStat.Web.Controllers
                 }
 
                 ViewBag.UpdatePasswordError = result.Payload;
-                return View();
+                return View(nameof(Profile));
 
             }
             ViewBag.UpdatePasswordError = validationResult.Errors.FirstOrDefault();
-            return View();
+            return View(nameof(Profile));
         }
 
         [HttpPost]
