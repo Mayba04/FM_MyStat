@@ -1,5 +1,6 @@
 ﻿using FM_MyStat.Core.Entities.Homeworks;
 using FM_MyStat.Core.Entities.Lessons;
+using FM_MyStat.Core.Entities.Tests;
 using FM_MyStat.Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -22,5 +23,6 @@ namespace FM_MyStat.Core.Entities.Users
         public Group? Group { get; set; }
         public IEnumerable<LessonMark> LessonMarks { get; set; }
         public IEnumerable<HomeworkDone> HomeworksDone{ get; set; }
+        public IEnumerable<TestDone> TestDones { get; set; }
     }
 }

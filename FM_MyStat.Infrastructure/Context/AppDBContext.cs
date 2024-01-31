@@ -1,6 +1,7 @@
 ﻿using FM_MyStat.Core.Entities;
 using FM_MyStat.Core.Entities.Homeworks;
 using FM_MyStat.Core.Entities.Lessons;
+using FM_MyStat.Core.Entities.Tests;
 using FM_MyStat.Core.Entities.Users;
 using FM_MyStat.Infrastructure.Initializers;
 using Microsoft.AspNetCore.Identity;
@@ -33,6 +34,14 @@ namespace FM_MyStat.Infrastructure.Context
         public DbSet<LessonMark> LessonMarks { get; set; }
         public DbSet<TeacherSubject> TeachersSubjects { get; set; }
         public DbSet<News> News { get; set; }
+        // Tests
+        public DbSet<GroupSubject> GroupSubjects { get; set; }
+        public DbSet<Test> Tests { get; set; }
+        public DbSet<Question> Questions { get; set; }
+        public DbSet<Answer> Answers { get; set; }
+        public DbSet<TestStudentAnswer> TestStudentAnswers { get; set; }
+        public DbSet<TestDone> TestDones { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -103,6 +112,48 @@ namespace FM_MyStat.Infrastructure.Context
             modelBuilder.Entity<TeacherSubject>()
                 .HasOne(teachersubject => teachersubject.Subject).WithMany(subject => subject.TeachersSubjects)
                 .HasForeignKey(teachersubject => teachersubject.SubjectId);
+
+            // Tests
+
+            modelBuilder.Entity<Group>()
+                .HasMany(group => group.GroupSubjects).WithOne(group_subjects => group_subjects.Group)
+                .HasForeignKey(group_subjects => group_subjects.GroupId);
+
+            modelBuilder.Entity<Subject>()
+                .HasMany(subject => subject.GroupSubjects).WithOne(group_subjects => group_subjects.Subject)
+                .HasForeignKey(group_subjects => group_subjects.SubjectId);
+
+            modelBuilder.Entity<Subject>()
+                .HasMany(subject => subject.Tests).WithOne(test => test.Subject)
+                .HasForeignKey(test => test.SubjectId);
+
+            modelBuilder.Entity<Test>()
+                .HasMany(test => test.Questions).WithOne(question => question.Test)
+                .HasForeignKey(question => question.TestId);
+
+            modelBuilder.Entity<Question>()
+                .HasMany(question => question.Answers).WithOne(answer => answer.Question)
+                .HasForeignKey(answer => answer.QuestionId);
+
+            modelBuilder.Entity<Question>()
+                .HasMany(question => question.TestStudentAnswers).WithOne(test_student_answer => test_student_answer.Question)
+                .HasForeignKey(test_student_answer => test_student_answer.QuestionId);
+
+            modelBuilder.Entity<Answer>()
+                .HasMany(answer => answer.TestStudentAnswers).WithOne(test_student_answer => test_student_answer.Answer)
+                .HasForeignKey(test_student_answer => test_student_answer.AnswerId);
+
+            modelBuilder.Entity<Test>()
+                .HasMany(test => test.TestDones).WithOne(test_done => test_done.Test)
+                .HasForeignKey(test_done => test_done.TestId);
+
+            modelBuilder.Entity<Student>()
+                .HasMany(student => student.TestDones).WithOne(test_done => test_done.Student)
+                .HasForeignKey(test_done => test_done.StudentId);
+
+            modelBuilder.Entity<TestDone>()
+                .HasMany(test_done => test_done.TestStudentAnswers).WithOne(test_student_answer => test_student_answer.TestDone)
+                .HasForeignKey(test_student_answer => test_student_answer.TestDoneId);
 
             modelBuilder.SeedAdministrator();
             modelBuilder.SeedTeacher();

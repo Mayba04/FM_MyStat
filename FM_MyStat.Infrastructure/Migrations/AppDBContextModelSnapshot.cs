@@ -185,10 +185,10 @@ namespace FM_MyStat.Infrastructure.Migrations
                         {
                             Id = 1,
                             Description = "First steps into c# today",
-                            End = new DateTime(2024, 1, 29, 23, 6, 58, 67, DateTimeKind.Utc).AddTicks(9310),
+                            End = new DateTime(2024, 1, 30, 20, 12, 45, 718, DateTimeKind.Utc).AddTicks(1602),
                             GroupId = 1,
                             Name = "C# beginning",
-                            Start = new DateTime(2024, 1, 29, 21, 6, 58, 67, DateTimeKind.Utc).AddTicks(9211),
+                            Start = new DateTime(2024, 1, 30, 18, 12, 45, 718, DateTimeKind.Utc).AddTicks(1594),
                             SubjectId = 1,
                             TeacherId = 1
                         });
@@ -251,40 +251,40 @@ namespace FM_MyStat.Infrastructure.Migrations
                         {
                             Id = 1,
                             Description = "Опис до новини 1",
-                            Time = new DateTime(2024, 1, 30, 20, 6, 58, 67, DateTimeKind.Utc).AddTicks(9837),
-                            TimePublication = new DateTime(2024, 1, 28, 20, 6, 58, 67, DateTimeKind.Utc).AddTicks(9839),
+                            Time = new DateTime(2024, 1, 31, 17, 12, 45, 718, DateTimeKind.Utc).AddTicks(1728),
+                            TimePublication = new DateTime(2024, 1, 29, 17, 12, 45, 718, DateTimeKind.Utc).AddTicks(1730),
                             Title = "Новина 1"
                         },
                         new
                         {
                             Id = 2,
                             Description = "Опис до новини 2",
-                            Time = new DateTime(2024, 1, 31, 20, 6, 58, 67, DateTimeKind.Utc).AddTicks(9856),
-                            TimePublication = new DateTime(2024, 1, 28, 20, 6, 58, 67, DateTimeKind.Utc).AddTicks(9857),
+                            Time = new DateTime(2024, 2, 1, 17, 12, 45, 718, DateTimeKind.Utc).AddTicks(1740),
+                            TimePublication = new DateTime(2024, 1, 29, 17, 12, 45, 718, DateTimeKind.Utc).AddTicks(1740),
                             Title = "Новина 2"
                         },
                         new
                         {
                             Id = 3,
                             Description = "Опис до новини 3",
-                            Time = new DateTime(2024, 2, 1, 20, 6, 58, 67, DateTimeKind.Utc).AddTicks(9900),
-                            TimePublication = new DateTime(2024, 1, 28, 20, 6, 58, 67, DateTimeKind.Utc).AddTicks(9901),
+                            Time = new DateTime(2024, 2, 2, 17, 12, 45, 718, DateTimeKind.Utc).AddTicks(1759),
+                            TimePublication = new DateTime(2024, 1, 29, 17, 12, 45, 718, DateTimeKind.Utc).AddTicks(1759),
                             Title = "Новина 3"
                         },
                         new
                         {
                             Id = 4,
                             Description = "Опис до новини 4",
-                            Time = new DateTime(2024, 2, 2, 20, 6, 58, 67, DateTimeKind.Utc).AddTicks(9913),
-                            TimePublication = new DateTime(2024, 1, 28, 20, 6, 58, 67, DateTimeKind.Utc).AddTicks(9914),
+                            Time = new DateTime(2024, 2, 3, 17, 12, 45, 718, DateTimeKind.Utc).AddTicks(1767),
+                            TimePublication = new DateTime(2024, 1, 29, 17, 12, 45, 718, DateTimeKind.Utc).AddTicks(1768),
                             Title = "Новина 4"
                         },
                         new
                         {
                             Id = 5,
                             Description = "Опис до новини 5",
-                            Time = new DateTime(2024, 2, 3, 20, 6, 58, 67, DateTimeKind.Utc).AddTicks(9924),
-                            TimePublication = new DateTime(2024, 1, 28, 20, 6, 58, 67, DateTimeKind.Utc).AddTicks(9924),
+                            Time = new DateTime(2024, 2, 4, 17, 12, 45, 718, DateTimeKind.Utc).AddTicks(1774),
+                            TimePublication = new DateTime(2024, 1, 29, 17, 12, 45, 718, DateTimeKind.Utc).AddTicks(1774),
                             Title = "Новина 5"
                         });
                 });
@@ -345,6 +345,168 @@ namespace FM_MyStat.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("FM_MyStat.Core.Entities.Tests.Answer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Correct")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("QuestionId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuestionId");
+
+                    b.ToTable("Answers");
+                });
+
+            modelBuilder.Entity("FM_MyStat.Core.Entities.Tests.GroupSubject", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("GroupId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SubjectId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
+
+                    b.HasIndex("SubjectId");
+
+                    b.ToTable("GroupSubjects");
+                });
+
+            modelBuilder.Entity("FM_MyStat.Core.Entities.Tests.Question", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("MaxPoint")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("TestId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TestId");
+
+                    b.ToTable("Questions");
+                });
+
+            modelBuilder.Entity("FM_MyStat.Core.Entities.Tests.Test", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("MaxPoint")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("SubjectId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SubjectId");
+
+                    b.ToTable("Tests");
+                });
+
+            modelBuilder.Entity("FM_MyStat.Core.Entities.Tests.TestDone", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Point")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TestId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StudentId");
+
+                    b.HasIndex("TestId");
+
+                    b.ToTable("TestDones");
+                });
+
+            modelBuilder.Entity("FM_MyStat.Core.Entities.Tests.TestStudentAnswer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AnswerId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("Correct")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("Point")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("QuestionId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TestDoneId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnswerId");
+
+                    b.HasIndex("QuestionId");
+
+                    b.HasIndex("TestDoneId");
+
+                    b.ToTable("TestStudentAnswers");
+                });
+
             modelBuilder.Entity("FM_MyStat.Core.Entities.Users.Administrator", b =>
                 {
                     b.Property<int>("Id")
@@ -367,12 +529,12 @@ namespace FM_MyStat.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            AppUserId = "05e414a5-3d8f-4355-a754-f0ac9d4bb7c9"
+                            AppUserId = "42b391ac-6982-4ca1-83ee-aa26785707a8"
                         },
                         new
                         {
                             Id = 2,
-                            AppUserId = "69aa7955-c335-4fb3-929b-5852de237864"
+                            AppUserId = "df0fc2b2-21b5-45c0-98ba-51446dbc4692"
                         });
                 });
 
@@ -406,28 +568,28 @@ namespace FM_MyStat.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            AppUserId = "cb2316a6-7ca4-4dc1-aa75-d6e826b04aa0",
+                            AppUserId = "6a389353-4070-4d0b-bdb1-48f96de08a78",
                             GroupId = 1,
                             Rating = 0
                         },
                         new
                         {
                             Id = 2,
-                            AppUserId = "5a284c53-4767-4c01-9f03-2e946cc6bccc",
+                            AppUserId = "84815737-5734-4627-84e2-1b04b7d4699a",
                             GroupId = 1,
                             Rating = 0
                         },
                         new
                         {
                             Id = 3,
-                            AppUserId = "11fa4a25-941a-4314-9c46-3ae02258ff30",
+                            AppUserId = "fdd122d4-36bc-46da-b5c9-187a98fd8af6",
                             GroupId = 2,
                             Rating = 0
                         },
                         new
                         {
                             Id = 4,
-                            AppUserId = "5a37ab74-ff46-419a-b82a-c9149d3df041",
+                            AppUserId = "eefe5fba-bdf1-49c1-8c26-d25201be3f86",
                             GroupId = 2,
                             Rating = 0
                         });
@@ -455,12 +617,12 @@ namespace FM_MyStat.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            AppUserId = "69405185-98c6-4270-ab70-727f5bed536a"
+                            AppUserId = "8310cdf0-2fc1-4b9e-abaf-f1e54a2f6c01"
                         },
                         new
                         {
                             Id = 2,
-                            AppUserId = "31f2c536-54f9-40b8-92b7-beae31f4fa58"
+                            AppUserId = "3b3bb786-f404-4b70-b5d1-7972d3e8fbb7"
                         });
                 });
 
@@ -492,19 +654,19 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "0fcdfeeb-dc34-415d-8246-0f9d890da3e3",
+                            Id = "b78784c1-a3c2-4761-8e8a-27a39efab479",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "a034bece-26a7-44a3-8124-60e75ba192bc",
+                            Id = "8fd9018f-e20e-4b14-bfdf-66273391fd74",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
-                            Id = "36743540-e55f-417e-b3ee-f089a6380188",
+                            Id = "a89828b0-9fc5-40f3-b205-ba3ed96ccc0a",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         });
@@ -671,43 +833,43 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "05e414a5-3d8f-4355-a754-f0ac9d4bb7c9",
-                            RoleId = "0fcdfeeb-dc34-415d-8246-0f9d890da3e3"
+                            UserId = "42b391ac-6982-4ca1-83ee-aa26785707a8",
+                            RoleId = "b78784c1-a3c2-4761-8e8a-27a39efab479"
                         },
                         new
                         {
-                            UserId = "69aa7955-c335-4fb3-929b-5852de237864",
-                            RoleId = "0fcdfeeb-dc34-415d-8246-0f9d890da3e3"
+                            UserId = "df0fc2b2-21b5-45c0-98ba-51446dbc4692",
+                            RoleId = "b78784c1-a3c2-4761-8e8a-27a39efab479"
                         },
                         new
                         {
-                            UserId = "69405185-98c6-4270-ab70-727f5bed536a",
-                            RoleId = "a034bece-26a7-44a3-8124-60e75ba192bc"
+                            UserId = "8310cdf0-2fc1-4b9e-abaf-f1e54a2f6c01",
+                            RoleId = "8fd9018f-e20e-4b14-bfdf-66273391fd74"
                         },
                         new
                         {
-                            UserId = "31f2c536-54f9-40b8-92b7-beae31f4fa58",
-                            RoleId = "a034bece-26a7-44a3-8124-60e75ba192bc"
+                            UserId = "3b3bb786-f404-4b70-b5d1-7972d3e8fbb7",
+                            RoleId = "8fd9018f-e20e-4b14-bfdf-66273391fd74"
                         },
                         new
                         {
-                            UserId = "cb2316a6-7ca4-4dc1-aa75-d6e826b04aa0",
-                            RoleId = "36743540-e55f-417e-b3ee-f089a6380188"
+                            UserId = "6a389353-4070-4d0b-bdb1-48f96de08a78",
+                            RoleId = "a89828b0-9fc5-40f3-b205-ba3ed96ccc0a"
                         },
                         new
                         {
-                            UserId = "5a284c53-4767-4c01-9f03-2e946cc6bccc",
-                            RoleId = "36743540-e55f-417e-b3ee-f089a6380188"
+                            UserId = "84815737-5734-4627-84e2-1b04b7d4699a",
+                            RoleId = "a89828b0-9fc5-40f3-b205-ba3ed96ccc0a"
                         },
                         new
                         {
-                            UserId = "11fa4a25-941a-4314-9c46-3ae02258ff30",
-                            RoleId = "36743540-e55f-417e-b3ee-f089a6380188"
+                            UserId = "fdd122d4-36bc-46da-b5c9-187a98fd8af6",
+                            RoleId = "a89828b0-9fc5-40f3-b205-ba3ed96ccc0a"
                         },
                         new
                         {
-                            UserId = "5a37ab74-ff46-419a-b82a-c9149d3df041",
-                            RoleId = "36743540-e55f-417e-b3ee-f089a6380188"
+                            UserId = "eefe5fba-bdf1-49c1-8c26-d25201be3f86",
+                            RoleId = "a89828b0-9fc5-40f3-b205-ba3ed96ccc0a"
                         });
                 });
 
@@ -763,18 +925,18 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "05e414a5-3d8f-4355-a754-f0ac9d4bb7c9",
+                            Id = "42b391ac-6982-4ca1-83ee-aa26785707a8",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f81c73f5-e6ed-43b1-8cb9-cc9a80e23d03",
+                            ConcurrencyStamp = "95b29cf5-9b2a-4f8e-b59b-91b0e3ca5d8b",
                             Email = "admin@email.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@EMAIL.COM",
                             NormalizedUserName = "ADMIN@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAELl27w3F/A6iKDAK+a4AiuTgNCMZ+M1OqZUlAPSZZ8NDe0Jme5UV3s/vD3W+/i9mFg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHiMOJjuCNRAMXnEPCu8bTtOIr+0REjE4vLUGrdlXftzlo98J9lWeIuG68HD0Pe9/A==",
                             PhoneNumber = "+xx(xxx)xxx-xx-xx",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "c2e7cd5d-1ec7-4ec1-ba91-c5e64e92b24a",
+                            SecurityStamp = "8482b872-e07b-4a65-9c0b-276a36ebd63e",
                             TwoFactorEnabled = false,
                             UserName = "admin@email.com",
                             AdministratorId = 1,
@@ -784,18 +946,18 @@ namespace FM_MyStat.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = "69aa7955-c335-4fb3-929b-5852de237864",
+                            Id = "df0fc2b2-21b5-45c0-98ba-51446dbc4692",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "885fc30d-5064-4eac-8ea6-84db7ce8cf7d",
+                            ConcurrencyStamp = "5006c328-306e-4d3e-bd7a-69ebdc4cc309",
                             Email = "admin1@email.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN1@EMAIL.COM",
                             NormalizedUserName = "ADMIN1@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBjdql0WUzh4MR9zOr7ACne9G66huVDbzrfkPUBfUC36KDkfvEkGZKWh0iBErlIJdg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECkvUspLEMoFZXUs86ybdceSWSu0rFSRDPUgzzSydTM62YF0xrUzNa5reEizdSlowQ==",
                             PhoneNumber = "+xx(xxx)xxx-xx-xx",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "a67236fc-87a3-42de-a441-275012f9cec9",
+                            SecurityStamp = "decbd160-5ed8-4bcd-a646-e4270537783f",
                             TwoFactorEnabled = false,
                             UserName = "admin1@email.com",
                             AdministratorId = 2,
@@ -805,18 +967,18 @@ namespace FM_MyStat.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = "69405185-98c6-4270-ab70-727f5bed536a",
+                            Id = "8310cdf0-2fc1-4b9e-abaf-f1e54a2f6c01",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1957d1e6-0657-4d04-96c3-af6f03292092",
+                            ConcurrencyStamp = "27dc7222-b930-4431-bdf4-7bf423eb9525",
                             Email = "teacher@email.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "TEACHER@EMAIL.COM",
                             NormalizedUserName = "TEACHER@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEK4hfw7UIxvxLf5XUlK0xg7tvxbK05HPW8H34mCwhSi/LjJYGByfO4qMsdBVOk5XbQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEC3R0cqjytGfS3Gmki3Hq8v20SVRBfZXfWIKPBQzCQ3I5MUX5FU6FAZOqRzFYytzVw==",
                             PhoneNumber = "+xx(xxx)xxx-xx-xx",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "c7449e17-d6fb-460e-81dc-9390b64d121e",
+                            SecurityStamp = "49f06b59-026b-4f70-b1ed-84bbd3876525",
                             TwoFactorEnabled = false,
                             UserName = "teacher@email.com",
                             FirstName = "John",
@@ -826,18 +988,18 @@ namespace FM_MyStat.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = "31f2c536-54f9-40b8-92b7-beae31f4fa58",
+                            Id = "3b3bb786-f404-4b70-b5d1-7972d3e8fbb7",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "65af5198-8927-4007-adcd-aed7466eaa95",
+                            ConcurrencyStamp = "ed688ec7-d818-4bfa-84ce-331ee404dd7e",
                             Email = "teacher1@email.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "TEACHER1@EMAIL.COM",
                             NormalizedUserName = "TEACHER1@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKOLoE5exh3KrxGkByFq2JOTV7Q/HkX9ouLpAyNMfksAnsSq03g27L6+BtXCz5TNUg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIsjRoP5bR37WTWXbiUEuX8zxcEs6/S3hxTL497n7PTpXdd4S19+BQVJsctULPt20Q==",
                             PhoneNumber = "+xx(xxx)xxx-xx-xx",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "5c8d38c3-644e-44f1-9e79-fb52008bbb8a",
+                            SecurityStamp = "0548bf8c-9b2e-4986-8046-23395b658168",
                             TwoFactorEnabled = false,
                             UserName = "teacher1@email.com",
                             FirstName = "Serhiy",
@@ -847,18 +1009,18 @@ namespace FM_MyStat.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = "cb2316a6-7ca4-4dc1-aa75-d6e826b04aa0",
+                            Id = "6a389353-4070-4d0b-bdb1-48f96de08a78",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8fe93dc6-a2bf-4efa-8ac3-2c7ac79663f0",
+                            ConcurrencyStamp = "9a40a7b1-96d6-45ff-a5b4-1a1d5d38d14c",
                             Email = "student@email.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "STUDENT@EMAIL.COM",
                             NormalizedUserName = "STUDENT@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFlC04SA88jjUSjUBMGRf+BFHizQjmV62hz+Asf1AhTiXPdcpdc5S7m6vFC35DzuQg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFobyvWGeSDZbuHZqB8wH2Qj0JYeNVCQ7pYXkCSjW4tDCPhLKeLSwCLtXaMm7cvKUQ==",
                             PhoneNumber = "+xx(xxx)xxx-xx-xx",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "8a0f647c-ea29-4e6f-8c4e-6561ae37dccc",
+                            SecurityStamp = "8b6ca4dd-05d3-4104-9f33-31b90c6415ea",
                             TwoFactorEnabled = false,
                             UserName = "student@email.com",
                             FirstName = "John",
@@ -868,18 +1030,18 @@ namespace FM_MyStat.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = "5a284c53-4767-4c01-9f03-2e946cc6bccc",
+                            Id = "84815737-5734-4627-84e2-1b04b7d4699a",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4e026511-fb06-4795-b83b-e71eeb3c410b",
+                            ConcurrencyStamp = "08215abc-b5cd-4aa8-8043-98fe1b043b81",
                             Email = "student1@email.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "STUDENT1@EMAIL.COM",
                             NormalizedUserName = "STUDENT1@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKkZjq4pEK4IQOZnSVZT2A+LC453bAr4E4MRLMEQ/GI3eJLHJZ/IkDE6kyxL9eYPkQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFC/LaGgQfGr2d5z6tt/wiJt5jkz2AgDNDHZTWZzHiZhXv0w5aaKJuaZOxWzw622Bw==",
                             PhoneNumber = "+xx(xxx)xxx-xx-xx",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "20e7ff2e-56da-4ea9-b23c-2c6a86807529",
+                            SecurityStamp = "00ae167e-975a-4894-b018-75d04b6b8df7",
                             TwoFactorEnabled = false,
                             UserName = "student1@email.com",
                             FirstName = "Dima",
@@ -889,18 +1051,18 @@ namespace FM_MyStat.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = "11fa4a25-941a-4314-9c46-3ae02258ff30",
+                            Id = "fdd122d4-36bc-46da-b5c9-187a98fd8af6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ffaf1b41-fea3-4652-9ad5-e6df3924eac0",
+                            ConcurrencyStamp = "05265723-3e59-4925-8390-fc374dda2d96",
                             Email = "student2@email.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "STUDENT2@EMAIL.COM",
                             NormalizedUserName = "STUDENT2@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJB18rmPiUGsmNoskLGeURQeaGbR3q3FHdPlnkQsQtPggpt40Ny+7VsF+iZ9Vz+X8A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIeOqdNEJ8uhGOWbWc/m4tLUJQrQoB/bLOsi9xCN1o5Mi8BrHkPTpVUVrbXsVUKe9w==",
                             PhoneNumber = "+xx(xxx)xxx-xx-xx",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "c48980e3-e4e2-4e6a-bcd9-6895a88e6977",
+                            SecurityStamp = "c154c433-f8de-4ba6-a136-6b3981e1176d",
                             TwoFactorEnabled = false,
                             UserName = "student2@email.com",
                             FirstName = "Yurii",
@@ -910,18 +1072,18 @@ namespace FM_MyStat.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = "5a37ab74-ff46-419a-b82a-c9149d3df041",
+                            Id = "eefe5fba-bdf1-49c1-8c26-d25201be3f86",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9d5cf4bd-cec2-4393-81c2-e513b862a568",
+                            ConcurrencyStamp = "d9e3d79e-deb8-452a-aae8-832d430f0ef8",
                             Email = "student3@email.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "STUDENT3@EMAIL.COM",
                             NormalizedUserName = "STUDENT3@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKehBeXDN2IcBXinazQVBmkvFQ8tbS18/qlCmciERdZXtJfkJT1uslMBX4oEmGir7w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEG+C//R7Aml4tbX7Ulzt7gxgTJTMGryfWgJXd572lpXc87/+m0OneWYetz3pq2rD8w==",
                             PhoneNumber = "+xx(xxx)xxx-xx-xx",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "c6297e8f-e124-438d-9cb8-4304cf32de92",
+                            SecurityStamp = "00fe1710-0d8b-4aad-bcb1-014057474c76",
                             TwoFactorEnabled = false,
                             UserName = "student3@email.com",
                             FirstName = "Pavlo",
@@ -1050,6 +1212,104 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.Navigation("Teacher");
                 });
 
+            modelBuilder.Entity("FM_MyStat.Core.Entities.Tests.Answer", b =>
+                {
+                    b.HasOne("FM_MyStat.Core.Entities.Tests.Question", "Question")
+                        .WithMany("Answers")
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Question");
+                });
+
+            modelBuilder.Entity("FM_MyStat.Core.Entities.Tests.GroupSubject", b =>
+                {
+                    b.HasOne("FM_MyStat.Core.Entities.Group", "Group")
+                        .WithMany("GroupSubjects")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FM_MyStat.Core.Entities.Subject", "Subject")
+                        .WithMany("GroupSubjects")
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Group");
+
+                    b.Navigation("Subject");
+                });
+
+            modelBuilder.Entity("FM_MyStat.Core.Entities.Tests.Question", b =>
+                {
+                    b.HasOne("FM_MyStat.Core.Entities.Tests.Test", "Test")
+                        .WithMany("Questions")
+                        .HasForeignKey("TestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Test");
+                });
+
+            modelBuilder.Entity("FM_MyStat.Core.Entities.Tests.Test", b =>
+                {
+                    b.HasOne("FM_MyStat.Core.Entities.Subject", "Subject")
+                        .WithMany("Tests")
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Subject");
+                });
+
+            modelBuilder.Entity("FM_MyStat.Core.Entities.Tests.TestDone", b =>
+                {
+                    b.HasOne("FM_MyStat.Core.Entities.Users.Student", "Student")
+                        .WithMany("TestDones")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FM_MyStat.Core.Entities.Tests.Test", "Test")
+                        .WithMany("TestDones")
+                        .HasForeignKey("TestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Student");
+
+                    b.Navigation("Test");
+                });
+
+            modelBuilder.Entity("FM_MyStat.Core.Entities.Tests.TestStudentAnswer", b =>
+                {
+                    b.HasOne("FM_MyStat.Core.Entities.Tests.Answer", "Answer")
+                        .WithMany("TestStudentAnswers")
+                        .HasForeignKey("AnswerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FM_MyStat.Core.Entities.Tests.Question", "Question")
+                        .WithMany("TestStudentAnswers")
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FM_MyStat.Core.Entities.Tests.TestDone", "TestDone")
+                        .WithMany("TestStudentAnswers")
+                        .HasForeignKey("TestDoneId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Answer");
+
+                    b.Navigation("Question");
+
+                    b.Navigation("TestDone");
+                });
+
             modelBuilder.Entity("FM_MyStat.Core.Entities.Users.Administrator", b =>
                 {
                     b.HasOne("FM_MyStat.Core.Entities.Users.AppUser", "AppUser")
@@ -1140,6 +1400,8 @@ namespace FM_MyStat.Infrastructure.Migrations
 
             modelBuilder.Entity("FM_MyStat.Core.Entities.Group", b =>
                 {
+                    b.Navigation("GroupSubjects");
+
                     b.Navigation("Homeworks");
 
                     b.Navigation("Lessons");
@@ -1162,9 +1424,37 @@ namespace FM_MyStat.Infrastructure.Migrations
 
             modelBuilder.Entity("FM_MyStat.Core.Entities.Subject", b =>
                 {
+                    b.Navigation("GroupSubjects");
+
                     b.Navigation("Lessons");
 
                     b.Navigation("TeachersSubjects");
+
+                    b.Navigation("Tests");
+                });
+
+            modelBuilder.Entity("FM_MyStat.Core.Entities.Tests.Answer", b =>
+                {
+                    b.Navigation("TestStudentAnswers");
+                });
+
+            modelBuilder.Entity("FM_MyStat.Core.Entities.Tests.Question", b =>
+                {
+                    b.Navigation("Answers");
+
+                    b.Navigation("TestStudentAnswers");
+                });
+
+            modelBuilder.Entity("FM_MyStat.Core.Entities.Tests.Test", b =>
+                {
+                    b.Navigation("Questions");
+
+                    b.Navigation("TestDones");
+                });
+
+            modelBuilder.Entity("FM_MyStat.Core.Entities.Tests.TestDone", b =>
+                {
+                    b.Navigation("TestStudentAnswers");
                 });
 
             modelBuilder.Entity("FM_MyStat.Core.Entities.Users.Student", b =>
@@ -1172,6 +1462,8 @@ namespace FM_MyStat.Infrastructure.Migrations
                     b.Navigation("HomeworksDone");
 
                     b.Navigation("LessonMarks");
+
+                    b.Navigation("TestDones");
                 });
 
             modelBuilder.Entity("FM_MyStat.Core.Entities.Users.Teacher", b =>

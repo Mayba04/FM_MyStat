@@ -234,6 +234,28 @@ namespace FM_MyStat.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Tests",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    MaxPoint = table.Column<int>(type: "integer", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    SubjectId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tests", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Tests_Subjects_SubjectId",
+                        column: x => x.SubjectId,
+                        principalTable: "Subjects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Groups",
                 columns: table => new
                 {
@@ -274,6 +296,53 @@ namespace FM_MyStat.Infrastructure.Migrations
                         name: "FK_TeachersSubjects_Teachers_TeacherId",
                         column: x => x.TeacherId,
                         principalTable: "Teachers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Questions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    TestId = table.Column<int>(type: "integer", nullable: false),
+                    MaxPoint = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Questions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Questions_Tests_TestId",
+                        column: x => x.TestId,
+                        principalTable: "Tests",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GroupSubjects",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    GroupId = table.Column<int>(type: "integer", nullable: false),
+                    SubjectId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GroupSubjects", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GroupSubjects_Groups_GroupId",
+                        column: x => x.GroupId,
+                        principalTable: "Groups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GroupSubjects_Subjects_SubjectId",
+                        column: x => x.SubjectId,
+                        principalTable: "Subjects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -333,6 +402,27 @@ namespace FM_MyStat.Infrastructure.Migrations
                         principalTable: "Groups",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Answers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    QuestionId = table.Column<int>(type: "integer", nullable: false),
+                    Correct = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Answers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Answers_Questions_QuestionId",
+                        column: x => x.QuestionId,
+                        principalTable: "Questions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -409,6 +499,33 @@ namespace FM_MyStat.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TestDones",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    StudentId = table.Column<int>(type: "integer", nullable: false),
+                    TestId = table.Column<int>(type: "integer", nullable: false),
+                    Point = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TestDones", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TestDones_Students_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Students",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TestDones_Tests_TestId",
+                        column: x => x.TestId,
+                        principalTable: "Tests",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "LessonMarks",
                 columns: table => new
                 {
@@ -435,14 +552,49 @@ namespace FM_MyStat.Infrastructure.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "TestStudentAnswers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    TestDoneId = table.Column<int>(type: "integer", nullable: false),
+                    QuestionId = table.Column<int>(type: "integer", nullable: false),
+                    AnswerId = table.Column<int>(type: "integer", nullable: false),
+                    Correct = table.Column<bool>(type: "boolean", nullable: false),
+                    Point = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TestStudentAnswers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TestStudentAnswers_Answers_AnswerId",
+                        column: x => x.AnswerId,
+                        principalTable: "Answers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TestStudentAnswers_Questions_QuestionId",
+                        column: x => x.QuestionId,
+                        principalTable: "Questions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TestStudentAnswers_TestDones_TestDoneId",
+                        column: x => x.TestDoneId,
+                        principalTable: "TestDones",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "0fcdfeeb-dc34-415d-8246-0f9d890da3e3", null, "Administrator", "ADMINISTRATOR" },
-                    { "36743540-e55f-417e-b3ee-f089a6380188", null, "Student", "STUDENT" },
-                    { "a034bece-26a7-44a3-8124-60e75ba192bc", null, "Teacher", "TEACHER" }
+                    { "8fd9018f-e20e-4b14-bfdf-66273391fd74", null, "Teacher", "TEACHER" },
+                    { "a89828b0-9fc5-40f3-b205-ba3ed96ccc0a", null, "Student", "STUDENT" },
+                    { "b78784c1-a3c2-4761-8e8a-27a39efab479", null, "Administrator", "ADMINISTRATOR" }
                 });
 
             migrationBuilder.InsertData(
@@ -450,14 +602,14 @@ namespace FM_MyStat.Infrastructure.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "AdministratorId", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "StudentId", "SurName", "TeacherId", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "05e414a5-3d8f-4355-a754-f0ac9d4bb7c9", 0, 1, "f81c73f5-e6ed-43b1-8cb9-cc9a80e23d03", "AppUser", "admin@email.com", true, "John", "Connor", false, null, "ADMIN@EMAIL.COM", "ADMIN@EMAIL.COM", "AQAAAAIAAYagAAAAELl27w3F/A6iKDAK+a4AiuTgNCMZ+M1OqZUlAPSZZ8NDe0Jme5UV3s/vD3W+/i9mFg==", "+xx(xxx)xxx-xx-xx", true, "c2e7cd5d-1ec7-4ec1-ba91-c5e64e92b24a", null, "Johnovych", null, false, "admin@email.com" },
-                    { "11fa4a25-941a-4314-9c46-3ae02258ff30", 0, null, "ffaf1b41-fea3-4652-9ad5-e6df3924eac0", "AppUser", "student2@email.com", true, "Yurii", "Bortnik", false, null, "STUDENT2@EMAIL.COM", "STUDENT2@EMAIL.COM", "AQAAAAIAAYagAAAAEJB18rmPiUGsmNoskLGeURQeaGbR3q3FHdPlnkQsQtPggpt40Ny+7VsF+iZ9Vz+X8A==", "+xx(xxx)xxx-xx-xx", true, "c48980e3-e4e2-4e6a-bcd9-6895a88e6977", 3, "Andriyovich", null, false, "student2@email.com" },
-                    { "31f2c536-54f9-40b8-92b7-beae31f4fa58", 0, null, "65af5198-8927-4007-adcd-aed7466eaa95", "AppUser", "teacher1@email.com", true, "Serhiy", "Stadnyk", false, null, "TEACHER1@EMAIL.COM", "TEACHER1@EMAIL.COM", "AQAAAAIAAYagAAAAEKOLoE5exh3KrxGkByFq2JOTV7Q/HkX9ouLpAyNMfksAnsSq03g27L6+BtXCz5TNUg==", "+xx(xxx)xxx-xx-xx", true, "5c8d38c3-644e-44f1-9e79-fb52008bbb8a", null, "Viacheslavovich", 2, false, "teacher1@email.com" },
-                    { "5a284c53-4767-4c01-9f03-2e946cc6bccc", 0, null, "4e026511-fb06-4795-b83b-e71eeb3c410b", "AppUser", "student1@email.com", true, "Dima", "Shostak", false, null, "STUDENT1@EMAIL.COM", "STUDENT1@EMAIL.COM", "AQAAAAIAAYagAAAAEKkZjq4pEK4IQOZnSVZT2A+LC453bAr4E4MRLMEQ/GI3eJLHJZ/IkDE6kyxL9eYPkQ==", "+xx(xxx)xxx-xx-xx", true, "20e7ff2e-56da-4ea9-b23c-2c6a86807529", 2, "Oleksiyovich", null, false, "student1@email.com" },
-                    { "5a37ab74-ff46-419a-b82a-c9149d3df041", 0, null, "9d5cf4bd-cec2-4393-81c2-e513b862a568", "AppUser", "student3@email.com", true, "Pavlo", "Mayba", false, null, "STUDENT3@EMAIL.COM", "STUDENT3@EMAIL.COM", "AQAAAAIAAYagAAAAEKehBeXDN2IcBXinazQVBmkvFQ8tbS18/qlCmciERdZXtJfkJT1uslMBX4oEmGir7w==", "+xx(xxx)xxx-xx-xx", true, "c6297e8f-e124-438d-9cb8-4304cf32de92", 4, "Ivanovich", null, false, "student3@email.com" },
-                    { "69405185-98c6-4270-ab70-727f5bed536a", 0, null, "1957d1e6-0657-4d04-96c3-af6f03292092", "AppUser", "teacher@email.com", true, "John", "Connor", false, null, "TEACHER@EMAIL.COM", "TEACHER@EMAIL.COM", "AQAAAAIAAYagAAAAEK4hfw7UIxvxLf5XUlK0xg7tvxbK05HPW8H34mCwhSi/LjJYGByfO4qMsdBVOk5XbQ==", "+xx(xxx)xxx-xx-xx", true, "c7449e17-d6fb-460e-81dc-9390b64d121e", null, "Johnovych", 1, false, "teacher@email.com" },
-                    { "69aa7955-c335-4fb3-929b-5852de237864", 0, 2, "885fc30d-5064-4eac-8ea6-84db7ce8cf7d", "AppUser", "admin1@email.com", true, "John", "Connor", false, null, "ADMIN1@EMAIL.COM", "ADMIN1@EMAIL.COM", "AQAAAAIAAYagAAAAEBjdql0WUzh4MR9zOr7ACne9G66huVDbzrfkPUBfUC36KDkfvEkGZKWh0iBErlIJdg==", "+xx(xxx)xxx-xx-xx", true, "a67236fc-87a3-42de-a441-275012f9cec9", null, "Johnovych", null, false, "admin1@email.com" },
-                    { "cb2316a6-7ca4-4dc1-aa75-d6e826b04aa0", 0, null, "8fe93dc6-a2bf-4efa-8ac3-2c7ac79663f0", "AppUser", "student@email.com", true, "John", "Connor", false, null, "STUDENT@EMAIL.COM", "STUDENT@EMAIL.COM", "AQAAAAIAAYagAAAAEFlC04SA88jjUSjUBMGRf+BFHizQjmV62hz+Asf1AhTiXPdcpdc5S7m6vFC35DzuQg==", "+xx(xxx)xxx-xx-xx", true, "8a0f647c-ea29-4e6f-8c4e-6561ae37dccc", 1, "Johnovych", null, false, "student@email.com" }
+                    { "3b3bb786-f404-4b70-b5d1-7972d3e8fbb7", 0, null, "ed688ec7-d818-4bfa-84ce-331ee404dd7e", "AppUser", "teacher1@email.com", true, "Serhiy", "Stadnyk", false, null, "TEACHER1@EMAIL.COM", "TEACHER1@EMAIL.COM", "AQAAAAIAAYagAAAAEIsjRoP5bR37WTWXbiUEuX8zxcEs6/S3hxTL497n7PTpXdd4S19+BQVJsctULPt20Q==", "+xx(xxx)xxx-xx-xx", true, "0548bf8c-9b2e-4986-8046-23395b658168", null, "Viacheslavovich", 2, false, "teacher1@email.com" },
+                    { "42b391ac-6982-4ca1-83ee-aa26785707a8", 0, 1, "95b29cf5-9b2a-4f8e-b59b-91b0e3ca5d8b", "AppUser", "admin@email.com", true, "John", "Connor", false, null, "ADMIN@EMAIL.COM", "ADMIN@EMAIL.COM", "AQAAAAIAAYagAAAAEHiMOJjuCNRAMXnEPCu8bTtOIr+0REjE4vLUGrdlXftzlo98J9lWeIuG68HD0Pe9/A==", "+xx(xxx)xxx-xx-xx", true, "8482b872-e07b-4a65-9c0b-276a36ebd63e", null, "Johnovych", null, false, "admin@email.com" },
+                    { "6a389353-4070-4d0b-bdb1-48f96de08a78", 0, null, "9a40a7b1-96d6-45ff-a5b4-1a1d5d38d14c", "AppUser", "student@email.com", true, "John", "Connor", false, null, "STUDENT@EMAIL.COM", "STUDENT@EMAIL.COM", "AQAAAAIAAYagAAAAEFobyvWGeSDZbuHZqB8wH2Qj0JYeNVCQ7pYXkCSjW4tDCPhLKeLSwCLtXaMm7cvKUQ==", "+xx(xxx)xxx-xx-xx", true, "8b6ca4dd-05d3-4104-9f33-31b90c6415ea", 1, "Johnovych", null, false, "student@email.com" },
+                    { "8310cdf0-2fc1-4b9e-abaf-f1e54a2f6c01", 0, null, "27dc7222-b930-4431-bdf4-7bf423eb9525", "AppUser", "teacher@email.com", true, "John", "Connor", false, null, "TEACHER@EMAIL.COM", "TEACHER@EMAIL.COM", "AQAAAAIAAYagAAAAEC3R0cqjytGfS3Gmki3Hq8v20SVRBfZXfWIKPBQzCQ3I5MUX5FU6FAZOqRzFYytzVw==", "+xx(xxx)xxx-xx-xx", true, "49f06b59-026b-4f70-b1ed-84bbd3876525", null, "Johnovych", 1, false, "teacher@email.com" },
+                    { "84815737-5734-4627-84e2-1b04b7d4699a", 0, null, "08215abc-b5cd-4aa8-8043-98fe1b043b81", "AppUser", "student1@email.com", true, "Dima", "Shostak", false, null, "STUDENT1@EMAIL.COM", "STUDENT1@EMAIL.COM", "AQAAAAIAAYagAAAAEFC/LaGgQfGr2d5z6tt/wiJt5jkz2AgDNDHZTWZzHiZhXv0w5aaKJuaZOxWzw622Bw==", "+xx(xxx)xxx-xx-xx", true, "00ae167e-975a-4894-b018-75d04b6b8df7", 2, "Oleksiyovich", null, false, "student1@email.com" },
+                    { "df0fc2b2-21b5-45c0-98ba-51446dbc4692", 0, 2, "5006c328-306e-4d3e-bd7a-69ebdc4cc309", "AppUser", "admin1@email.com", true, "John", "Connor", false, null, "ADMIN1@EMAIL.COM", "ADMIN1@EMAIL.COM", "AQAAAAIAAYagAAAAECkvUspLEMoFZXUs86ybdceSWSu0rFSRDPUgzzSydTM62YF0xrUzNa5reEizdSlowQ==", "+xx(xxx)xxx-xx-xx", true, "decbd160-5ed8-4bcd-a646-e4270537783f", null, "Johnovych", null, false, "admin1@email.com" },
+                    { "eefe5fba-bdf1-49c1-8c26-d25201be3f86", 0, null, "d9e3d79e-deb8-452a-aae8-832d430f0ef8", "AppUser", "student3@email.com", true, "Pavlo", "Mayba", false, null, "STUDENT3@EMAIL.COM", "STUDENT3@EMAIL.COM", "AQAAAAIAAYagAAAAEG+C//R7Aml4tbX7Ulzt7gxgTJTMGryfWgJXd572lpXc87/+m0OneWYetz3pq2rD8w==", "+xx(xxx)xxx-xx-xx", true, "00fe1710-0d8b-4aad-bcb1-014057474c76", 4, "Ivanovich", null, false, "student3@email.com" },
+                    { "fdd122d4-36bc-46da-b5c9-187a98fd8af6", 0, null, "05265723-3e59-4925-8390-fc374dda2d96", "AppUser", "student2@email.com", true, "Yurii", "Bortnik", false, null, "STUDENT2@EMAIL.COM", "STUDENT2@EMAIL.COM", "AQAAAAIAAYagAAAAEIeOqdNEJ8uhGOWbWc/m4tLUJQrQoB/bLOsi9xCN1o5Mi8BrHkPTpVUVrbXsVUKe9w==", "+xx(xxx)xxx-xx-xx", true, "c154c433-f8de-4ba6-a136-6b3981e1176d", 3, "Andriyovich", null, false, "student2@email.com" }
                 });
 
             migrationBuilder.InsertData(
@@ -465,11 +617,11 @@ namespace FM_MyStat.Infrastructure.Migrations
                 columns: new[] { "Id", "Description", "Time", "TimePublication", "Title" },
                 values: new object[,]
                 {
-                    { 1, "Опис до новини 1", new DateTime(2024, 1, 30, 20, 6, 58, 67, DateTimeKind.Utc).AddTicks(9837), new DateTime(2024, 1, 28, 20, 6, 58, 67, DateTimeKind.Utc).AddTicks(9839), "Новина 1" },
-                    { 2, "Опис до новини 2", new DateTime(2024, 1, 31, 20, 6, 58, 67, DateTimeKind.Utc).AddTicks(9856), new DateTime(2024, 1, 28, 20, 6, 58, 67, DateTimeKind.Utc).AddTicks(9857), "Новина 2" },
-                    { 3, "Опис до новини 3", new DateTime(2024, 2, 1, 20, 6, 58, 67, DateTimeKind.Utc).AddTicks(9900), new DateTime(2024, 1, 28, 20, 6, 58, 67, DateTimeKind.Utc).AddTicks(9901), "Новина 3" },
-                    { 4, "Опис до новини 4", new DateTime(2024, 2, 2, 20, 6, 58, 67, DateTimeKind.Utc).AddTicks(9913), new DateTime(2024, 1, 28, 20, 6, 58, 67, DateTimeKind.Utc).AddTicks(9914), "Новина 4" },
-                    { 5, "Опис до новини 5", new DateTime(2024, 2, 3, 20, 6, 58, 67, DateTimeKind.Utc).AddTicks(9924), new DateTime(2024, 1, 28, 20, 6, 58, 67, DateTimeKind.Utc).AddTicks(9924), "Новина 5" }
+                    { 1, "Опис до новини 1", new DateTime(2024, 1, 31, 17, 12, 45, 718, DateTimeKind.Utc).AddTicks(1728), new DateTime(2024, 1, 29, 17, 12, 45, 718, DateTimeKind.Utc).AddTicks(1730), "Новина 1" },
+                    { 2, "Опис до новини 2", new DateTime(2024, 2, 1, 17, 12, 45, 718, DateTimeKind.Utc).AddTicks(1740), new DateTime(2024, 1, 29, 17, 12, 45, 718, DateTimeKind.Utc).AddTicks(1740), "Новина 2" },
+                    { 3, "Опис до новини 3", new DateTime(2024, 2, 2, 17, 12, 45, 718, DateTimeKind.Utc).AddTicks(1759), new DateTime(2024, 1, 29, 17, 12, 45, 718, DateTimeKind.Utc).AddTicks(1759), "Новина 3" },
+                    { 4, "Опис до новини 4", new DateTime(2024, 2, 3, 17, 12, 45, 718, DateTimeKind.Utc).AddTicks(1767), new DateTime(2024, 1, 29, 17, 12, 45, 718, DateTimeKind.Utc).AddTicks(1768), "Новина 4" },
+                    { 5, "Опис до новини 5", new DateTime(2024, 2, 4, 17, 12, 45, 718, DateTimeKind.Utc).AddTicks(1774), new DateTime(2024, 1, 29, 17, 12, 45, 718, DateTimeKind.Utc).AddTicks(1774), "Новина 5" }
                 });
 
             migrationBuilder.InsertData(
@@ -482,8 +634,8 @@ namespace FM_MyStat.Infrastructure.Migrations
                 columns: new[] { "Id", "AppUserId" },
                 values: new object[,]
                 {
-                    { 1, "05e414a5-3d8f-4355-a754-f0ac9d4bb7c9" },
-                    { 2, "69aa7955-c335-4fb3-929b-5852de237864" }
+                    { 1, "42b391ac-6982-4ca1-83ee-aa26785707a8" },
+                    { 2, "df0fc2b2-21b5-45c0-98ba-51446dbc4692" }
                 });
 
             migrationBuilder.InsertData(
@@ -491,14 +643,14 @@ namespace FM_MyStat.Infrastructure.Migrations
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { "0fcdfeeb-dc34-415d-8246-0f9d890da3e3", "05e414a5-3d8f-4355-a754-f0ac9d4bb7c9" },
-                    { "36743540-e55f-417e-b3ee-f089a6380188", "11fa4a25-941a-4314-9c46-3ae02258ff30" },
-                    { "a034bece-26a7-44a3-8124-60e75ba192bc", "31f2c536-54f9-40b8-92b7-beae31f4fa58" },
-                    { "36743540-e55f-417e-b3ee-f089a6380188", "5a284c53-4767-4c01-9f03-2e946cc6bccc" },
-                    { "36743540-e55f-417e-b3ee-f089a6380188", "5a37ab74-ff46-419a-b82a-c9149d3df041" },
-                    { "a034bece-26a7-44a3-8124-60e75ba192bc", "69405185-98c6-4270-ab70-727f5bed536a" },
-                    { "0fcdfeeb-dc34-415d-8246-0f9d890da3e3", "69aa7955-c335-4fb3-929b-5852de237864" },
-                    { "36743540-e55f-417e-b3ee-f089a6380188", "cb2316a6-7ca4-4dc1-aa75-d6e826b04aa0" }
+                    { "8fd9018f-e20e-4b14-bfdf-66273391fd74", "3b3bb786-f404-4b70-b5d1-7972d3e8fbb7" },
+                    { "b78784c1-a3c2-4761-8e8a-27a39efab479", "42b391ac-6982-4ca1-83ee-aa26785707a8" },
+                    { "a89828b0-9fc5-40f3-b205-ba3ed96ccc0a", "6a389353-4070-4d0b-bdb1-48f96de08a78" },
+                    { "8fd9018f-e20e-4b14-bfdf-66273391fd74", "8310cdf0-2fc1-4b9e-abaf-f1e54a2f6c01" },
+                    { "a89828b0-9fc5-40f3-b205-ba3ed96ccc0a", "84815737-5734-4627-84e2-1b04b7d4699a" },
+                    { "b78784c1-a3c2-4761-8e8a-27a39efab479", "df0fc2b2-21b5-45c0-98ba-51446dbc4692" },
+                    { "a89828b0-9fc5-40f3-b205-ba3ed96ccc0a", "eefe5fba-bdf1-49c1-8c26-d25201be3f86" },
+                    { "a89828b0-9fc5-40f3-b205-ba3ed96ccc0a", "fdd122d4-36bc-46da-b5c9-187a98fd8af6" }
                 });
 
             migrationBuilder.InsertData(
@@ -506,8 +658,8 @@ namespace FM_MyStat.Infrastructure.Migrations
                 columns: new[] { "Id", "AppUserId" },
                 values: new object[,]
                 {
-                    { 1, "69405185-98c6-4270-ab70-727f5bed536a" },
-                    { 2, "31f2c536-54f9-40b8-92b7-beae31f4fa58" }
+                    { 1, "8310cdf0-2fc1-4b9e-abaf-f1e54a2f6c01" },
+                    { 2, "3b3bb786-f404-4b70-b5d1-7972d3e8fbb7" }
                 });
 
             migrationBuilder.InsertData(
@@ -527,17 +679,17 @@ namespace FM_MyStat.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "Lessons",
                 columns: new[] { "Id", "Description", "End", "GroupId", "HomeworkId", "Name", "Start", "SubjectId", "TeacherId" },
-                values: new object[] { 1, "First steps into c# today", new DateTime(2024, 1, 29, 23, 6, 58, 67, DateTimeKind.Utc).AddTicks(9310), 1, null, "C# beginning", new DateTime(2024, 1, 29, 21, 6, 58, 67, DateTimeKind.Utc).AddTicks(9211), 1, 1 });
+                values: new object[] { 1, "First steps into c# today", new DateTime(2024, 1, 30, 20, 12, 45, 718, DateTimeKind.Utc).AddTicks(1602), 1, null, "C# beginning", new DateTime(2024, 1, 30, 18, 12, 45, 718, DateTimeKind.Utc).AddTicks(1594), 1, 1 });
 
             migrationBuilder.InsertData(
                 table: "Students",
                 columns: new[] { "Id", "AppUserId", "GroupId", "Rating" },
                 values: new object[,]
                 {
-                    { 1, "cb2316a6-7ca4-4dc1-aa75-d6e826b04aa0", 1, 0 },
-                    { 2, "5a284c53-4767-4c01-9f03-2e946cc6bccc", 1, 0 },
-                    { 3, "11fa4a25-941a-4314-9c46-3ae02258ff30", 2, 0 },
-                    { 4, "5a37ab74-ff46-419a-b82a-c9149d3df041", 2, 0 }
+                    { 1, "6a389353-4070-4d0b-bdb1-48f96de08a78", 1, 0 },
+                    { 2, "84815737-5734-4627-84e2-1b04b7d4699a", 1, 0 },
+                    { 3, "fdd122d4-36bc-46da-b5c9-187a98fd8af6", 2, 0 },
+                    { 4, "eefe5fba-bdf1-49c1-8c26-d25201be3f86", 2, 0 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -545,6 +697,11 @@ namespace FM_MyStat.Infrastructure.Migrations
                 table: "Administrators",
                 column: "AppUserId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Answers_QuestionId",
+                table: "Answers",
+                column: "QuestionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -587,6 +744,16 @@ namespace FM_MyStat.Infrastructure.Migrations
                 name: "IX_Groups_TeacherId",
                 table: "Groups",
                 column: "TeacherId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GroupSubjects_GroupId",
+                table: "GroupSubjects",
+                column: "GroupId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GroupSubjects_SubjectId",
+                table: "GroupSubjects",
+                column: "SubjectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Homeworks_GroupId",
@@ -640,6 +807,11 @@ namespace FM_MyStat.Infrastructure.Migrations
                 column: "TeacherId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Questions_TestId",
+                table: "Questions",
+                column: "TestId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Students_AppUserId",
                 table: "Students",
                 column: "AppUserId",
@@ -665,6 +837,36 @@ namespace FM_MyStat.Infrastructure.Migrations
                 name: "IX_TeachersSubjects_TeacherId",
                 table: "TeachersSubjects",
                 column: "TeacherId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TestDones_StudentId",
+                table: "TestDones",
+                column: "StudentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TestDones_TestId",
+                table: "TestDones",
+                column: "TestId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tests_SubjectId",
+                table: "Tests",
+                column: "SubjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TestStudentAnswers_AnswerId",
+                table: "TestStudentAnswers",
+                column: "AnswerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TestStudentAnswers_QuestionId",
+                table: "TestStudentAnswers",
+                column: "QuestionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TestStudentAnswers_TestDoneId",
+                table: "TestStudentAnswers",
+                column: "TestDoneId");
         }
 
         /// <inheritdoc />
@@ -689,6 +891,9 @@ namespace FM_MyStat.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "GroupSubjects");
+
+            migrationBuilder.DropTable(
                 name: "HomeworksDone");
 
             migrationBuilder.DropTable(
@@ -701,22 +906,37 @@ namespace FM_MyStat.Infrastructure.Migrations
                 name: "TeachersSubjects");
 
             migrationBuilder.DropTable(
+                name: "TestStudentAnswers");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Lessons");
 
             migrationBuilder.DropTable(
-                name: "Students");
+                name: "Answers");
+
+            migrationBuilder.DropTable(
+                name: "TestDones");
 
             migrationBuilder.DropTable(
                 name: "Homeworks");
 
             migrationBuilder.DropTable(
-                name: "Subjects");
+                name: "Questions");
+
+            migrationBuilder.DropTable(
+                name: "Students");
+
+            migrationBuilder.DropTable(
+                name: "Tests");
 
             migrationBuilder.DropTable(
                 name: "Groups");
+
+            migrationBuilder.DropTable(
+                name: "Subjects");
 
             migrationBuilder.DropTable(
                 name: "Teachers");

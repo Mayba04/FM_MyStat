@@ -1,5 +1,6 @@
 ﻿using FM_MyStat.Core.Entities.Homeworks;
 using FM_MyStat.Core.Entities.Lessons;
+using FM_MyStat.Core.Entities.Tests;
 using FM_MyStat.Core.Entities.Users;
 using FM_MyStat.Core.Interfaces;
 using System;
@@ -22,5 +23,6 @@ namespace FM_MyStat.Core.Entities
         public IEnumerable<Student> Students { get; set; }
         public IEnumerable<Homework> Homeworks { get; set; }
         public IEnumerable<Lesson> Lessons { get; set; }
+        public IEnumerable<GroupSubject> GroupSubjects { get; set; }
     }
 }
