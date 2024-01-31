@@ -109,6 +109,11 @@
                         <div class="card-header">
                             <h3 class="card-title">Quick Example</h3>
                         </div>
+                        @if (@ViewBag.UserUpdateError != null)
+                        {
+                            <span class="text-danger mt-3">@ViewBag.UserUpdateError</span>
+                        }
+
                         <form method="post" asp-controller="Admin" asp-action="ChangeProfile">
                             <div class="card-body">
                                 <div Visible="False" class="form__group field" ty>
