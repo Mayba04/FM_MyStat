@@ -12,18 +12,31 @@
 }
 
 <style>
-    .card{
-        background: linear-gradient(white, white) padding-box, linear-gradient(38deg, rgba(92,121,171,1) 0%, rgba(52,79,126,1) 57%, rgba(39,39,99,1) 100%, rgba(32,48,76,1) 100%) border-box;
+/*     .card{
+        background: red, linear-gradient(38deg, rgba(92,121,171,1) 0%, rgba(52,79,126,1) 57%, rgba(39,39,99,1) 100%, rgba(32,48,76,1) 100%) border-box;
         border: 3px solid transparent;
     }
 
     .card-header{
         background: linear-gradient(white, white) padding-box, linear-gradient(38deg, rgba(92,121,171,1) 0%, rgba(52,79,126,1) 57%, rgba(39,39,99,1) 100%, rgba(32,48,76,1) 100%) border-box;
         border-bottom: 3px solid transparent;
+    } */
+    .card-header{
+        background: linear-gradient(38deg, rgba(92,121,171,1) 0%, rgba(52,79,126,1) 57%, rgba(39,39,99,1) 100%, rgba(32,48,76,1) 100%)
     }
 
-    .card-body{
-        background: rgba(118, 152, 255, 0.6);
+    .card-body, .card{
+        background: #c1d8f0;
+    }
+    .card_title{
+        font-weight:bold;
+        font-size: 26px;
+        color: white;
+        -webkit-text-stroke: 0.2px gray;
+    }
+
+    .block1, .list-group-item {
+        background: #E1EFFB;
     }
 </style>
 
@@ -35,7 +48,7 @@
                 <!-- Rating -->
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Your Rating</h4>
+                        <h4 class="card_title font-weight-bold">Your Rating</h4>
                     </div>
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center pb-3 pt-3">
@@ -49,14 +62,55 @@
                         </div>
                     </div>
                 </div>
-                
+
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card_title font-weight-bold">Homeworks Info</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body block1">
+                                        <h6 class="card-subtitle mb-2 text-muted">Checked</h6>
+                                        <p class="card-text">@Model.HomeworksChecked</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body block1">
+                                        <h6 class="card-subtitle mb-2 text-muted">Current</h6>
+                                        <p class="card-text">@Model.HomeworksCurrent</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body block1">
+                                        <h6 class="card-subtitle mb-2 text-muted">On Inspection</h6>
+                                        <p class="card-text">@Model.HomeworksOnInspection</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body block1 block1">
+                                        <h6 class="card-subtitle mb-2 text-muted">Overdue</h6>
+                                        <p class="card-text">@Model.HomeworksOverdue</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- List of Students -->
             <div class="col-md-4 mb-4">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Group Rating</h4>
+                        <h4 class="card_title font-weight-bold">Group Rating</h4>
                     </div>
                     <div class="card-body">
                         <div class="list-group">
@@ -82,69 +136,29 @@
             <div class="col-md-4 mb-4">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Homeworks Info</h4>
+                        <h4 class="card_title font-weight-bold">News academy</h4>
                     </div>
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h6 class="card-subtitle mb-2 text-muted">Checked</h6>
-                                        <p class="card-text">@Model.HomeworksChecked</p>
+                        <div class="list-group">
+                            @for (int i = 0; i < Model.NewsList.Count; i++)
+                            {
+                                var news = Model.NewsList[i];
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h5>@news.Title</h5>
+                                            <h5>@news.Description</h5>
+                                            <h5>@news.Time</h5>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h6 class="card-subtitle mb-2 text-muted">Current</h6>
-                                        <p class="card-text">@Model.HomeworksCurrent</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h6 class="card-subtitle mb-2 text-muted">On Inspection</h6>
-                                        <p class="card-text">@Model.HomeworksOnInspection</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h6 class="card-subtitle mb-2 text-muted">Overdue</h6>
-                                        <p class="card-text">@Model.HomeworksOverdue</p>
-                                    </div>
-                                </div>
-                            </div>
+                                </a>
+                            }
                         </div>
                     </div>
                 </div>
+
             </div>
             <!-- News -->
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">News academy</h4>
-                </div>
-                <div class="card-body">
-                    <div class="list-group">
-                        @for (int i = 0; i < Model.NewsList.Count; i++)
-                        {
-                            var news = Model.NewsList[i];
-                            <a href="#" class="list-group-item list-group-item-action">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h5>@news.Title</h5>
-                                        <h5>@news.Description</h5>
-                                        <h5>@news.Time</h5>
-                                    </div>
-                                </div>
-                            </a>
-                        }
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>
