@@ -63,6 +63,7 @@ else
                                 }
                                 <form method="post" asp-controller="Homework" asp-action="Update" enctype="multipart/form-data">
                                     <div class="card-body">
+                                        <input type="hidden" class="form__field" name="TeacherId" id="TeacherId" value="@ViewBag.IdTeacher" />
                                         <div class="form-group">
                                             <label>Homework</label>
                                             <input type="text" asp-for="Title" name="title" class="form-control" placeholder="Homework title">

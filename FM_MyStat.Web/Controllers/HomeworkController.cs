@@ -4,6 +4,7 @@ using FM_MyStat.Core.DTOs.HomeworksDTO.Homework;
 using FM_MyStat.Core.DTOs.LessonsDTO.Lessons;
 using FM_MyStat.Core.DTOs.UsersDTO.Teacher;
 using FM_MyStat.Core.DTOs.UsersDTO.User;
+using FM_MyStat.Core.Entities.Lessons;
 using FM_MyStat.Core.Interfaces;
 using FM_MyStat.Core.Services;
 using FM_MyStat.Core.Services.LessonServices;
@@ -88,6 +89,7 @@ namespace FM_MyStat.Web.Controllers
         [Authorize(Roles = "Teacher, Administrator")]
         public async Task<IActionResult> Update(int id)
         {
+            await LoadTeacher();
             var result = await _homeworkService.GetCreateHomeworkDTO(id);
             if (result.Success)
             {

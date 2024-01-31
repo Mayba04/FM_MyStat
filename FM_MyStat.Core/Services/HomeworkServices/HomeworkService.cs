@@ -220,7 +220,7 @@ namespace FM_MyStat.Core.Services.HomeworkServices
             return new ServiceResponse<CreateHomeworkDTO, object>(false, "", errors: new string[] { "Homework not found!" });
         }
 
-        public async Task Update(CreateHomeworkDTO model)
+        private async Task<CreateHomeworkDTO> GGGGG4(CreateHomeworkDTO model)
         {
             var currentHomework = await _homeworkRepo.GetByID(model.Id);
             if (model.File != null)
@@ -244,12 +244,19 @@ namespace FM_MyStat.Core.Services.HomeworkServices
                     files[0].CopyTo(fileStream);
                 }
                 model.PathFile = fileName + extension;
+                return model;
             }
             else
             {
                 model.PathFile = currentHomework.PathFile;
+                return model;
             }
-            var homeworkEntity = _mapper.Map<Homework>(model);
+        }
+
+
+        public async Task Update(CreateHomeworkDTO model)
+        {
+            Homework homeworkEntity = _mapper.Map<CreateHomeworkDTO, Homework>(await GGGGG4(model));
             await _homeworkRepo.Update(homeworkEntity);
             await _homeworkRepo.Save();
         }
