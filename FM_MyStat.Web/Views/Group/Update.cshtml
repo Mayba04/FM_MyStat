@@ -99,8 +99,6 @@
             <!-- SELECT2 EXAMPLE -->
             <div class="card card-default">
                 <div class="card-header">
-                    <h3 class="card-title">Edit group</h3>
-
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                             <i class="fas fa-minus"></i>
@@ -126,26 +124,26 @@
                                 }
                                 <form method="post" asp-controller="Group" asp-action="Update">
                                     <div class="card-body">
-                                        <div class="mb-3">
-                                        <div class="form-group">
-                                            <label>Group</label>
-                                            <input type="text" asp-for="Name" name="name" class="form-control" placeholder="Group name">
+                                        <div class="mb-3 form__group field">
+                                            <div class="form__group field">
+                                            <input type="text" asp-for="Name" name="name" class="form__field" placeholder="Group name">
                                             <span class="text-danger" asp-validation-for="Name"></span>
+                                                <label class="form__label">Group</label>
                                         </div>
                                     </div>
                                     </div>
                                     <!-- /.card-body -->
                                     <div class="card-body">
-                                    <div class="mb-3">
-                                            <label for="TeacherId">Teacher</label>
+                                        <div class="mb-3 form__group field">
                                             @if (ViewBag.TeacherList != null)
                                             {
-                                                @Html.DropDownList("TeacherId", ViewBag.TeacherList as SelectList, "-- Select Teacher --", new { @class = "form-control" })
+                                                @Html.DropDownList("TeacherId", ViewBag.TeacherList as SelectList, "-- Select Teacher --", new { @class = "form__field" })
                                             }
                                             else
                                             {
                                                 <p>Teacher list is not available.</p>
                                             }
+                                            <label for="TeacherId" class="form__label">Teacher</label>
                                         </div>
                                         </div>
                                     <div class="card-footer">
