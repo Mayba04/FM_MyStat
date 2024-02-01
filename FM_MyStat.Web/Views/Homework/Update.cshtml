@@ -16,7 +16,81 @@ else
     ViewData["Title"] = "Homework";
     Layout = "~/Views/Shared/_DefaultLayout.cshtml";
 }
+<style>
+    .card-header {
+        background: rgb(92,121,171);
+        background: linear-gradient(38deg, rgba(92,121,171,1) 0%, rgba(52,79,126,1) 57%, rgba(39,39,99,1) 100%, rgba(32,48,76,1) 100%);
+        color: white;
+    }
 
+    .btn-primary {
+        background: rgb(92,121,171);
+        background: linear-gradient(38deg, rgba(92,121,171,1) 0%, rgba(52,79,126,1) 57%, rgba(39,39,99,1) 100%, rgba(32,48,76,1) 100%);
+        color: white;
+    }
+
+    .form__group {
+        position: relative;
+        padding: 15px 0 0;
+        margin-top: 10px;
+        width: 100%;
+    }
+
+    .form__field {
+        font-family: inherit;
+        width: 100%;
+        border: 0;
+        border-bottom: 2px solid #9b9b9b;
+        outline: 0;
+        font-size: 1.3rem;
+        color: black;
+        padding: 7px 0;
+        background: transparent;
+        transition: border-color 0.2s;
+    }
+
+        .form__field::placeholder {
+            color: transparent;
+        }
+
+        .form__field:placeholder-shown ~ .form__label {
+            font-size: 1.3rem;
+            cursor: text;
+            top: 20px;
+        }
+
+    .form__label {
+        position: absolute;
+        top: 0;
+        display: block;
+        transition: 0.2s;
+        font-size: 1rem;
+        color: #9b9b9b;
+    }
+
+    .form__field:focus ~ .form__label {
+        position: absolute;
+        top: 0;
+        display: block;
+        transition: 0.2s;
+        font-size: 1rem;
+        color: linear-gradient(38deg, rgba(92,121,171,1) 0%, rgba(52,79,126,1) 57%, rgba(39,39,99,1) 100%, rgba(32,48,76,1) 100%);
+        font-weight: 700;
+        padding-bottom: 6px;
+        font-weight: 700;
+        border-width: 3px;
+        border-image: linear-gradient(38deg, rgba(92,121,171,1) 0%, rgba(52,79,126,1) 57%, rgba(39,39,99,1) 100%, rgba(32,48,76,1) 100%);
+        border-image-slice: 1;
+    }
+
+    /* Reset input */
+    .form__field:required,
+    .form__field:invalid {
+        box-shadow: none;
+    }
+
+    }
+</style>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -36,8 +110,6 @@ else
             <!-- SELECT2 EXAMPLE -->
             <div class="card card-default">
                 <div class="card-header">
-                    <h3 class="card-title">Edit homework</h3>
-
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                             <i class="fas fa-minus"></i>
@@ -64,24 +136,24 @@ else
                                 <form method="post" asp-controller="Homework" asp-action="Update" enctype="multipart/form-data">
                                     <div class="card-body">
                                         <input type="hidden" class="form__field" name="TeacherId" id="TeacherId" value="@ViewBag.IdTeacher" />
-                                        <div class="form-group">
-                                            <label>Homework</label>
-                                            <input type="text" asp-for="Title" name="title" class="form-control" placeholder="Homework title">
+                                        <div class="form__group field">
+                                            <input type="text" asp-for="Title" name="title" class="form__field" placeholder="Homework title">
                                             <span class="text-danger" asp-validation-for="Title"></span>
-                                            <input type="hidden" asp-for="GroupId" name="groupid" class="form-control" >
-                                            <input type="hidden" asp-for="LessonId" name="lessonid" class="form-control">
+                                            <input type="hidden" asp-for="GroupId" name="groupid" class="form__field" >
+                                            <input type="hidden" asp-for="LessonId" name="lessonid" class="form__field">
+                                            <label class="form__label">Homework</label>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="description">Description</label>
-                                            <input type="text" asp-for="Description" name="description" class="form-control" id="description" placeholder="Enter Description">
+                                        <div class="form__group field">
+                                            <input type="text" asp-for="Description" name="description" class="form__field" id="description" placeholder="Enter Description">
+                                            <label for="description" class="form__label">Description</label>
                                         </div>
-                                        <div class="form-group">
-                                            <label>File</label>
-                                            <input type="file" class="form-control-file" asp-for="PathFile" id=" file" name="file" />
+                                        <div class="form__group field">
+                                            <input type="file" class="form__field-file" asp-for="PathFile" id=" file" name="file" />
+                                            <label class="form__label">File</label>
                                            
                                             <button type="button" id="removeFileBtn" class="btn btn-danger btn-sm">Remove File</button>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form__group field">
                                            
                                         </div>
                                     </div>
