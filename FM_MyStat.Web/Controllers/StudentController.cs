@@ -254,11 +254,11 @@ namespace FM_MyStat.Web.Controllers
                 {
                     return RedirectToAction(nameof(SignIn));
                 }
-                ViewBag.UpdatePasswordError = result.Errors;
-                return View(new UpdateProfileStudentVM() { StudentInfo = _studentService.GetEditUserDtoByIdAsync(model.Id).Result.Payload });
+                ViewBag.UpdatePasswordError = result.Errors.FirstOrDefault();
+                return View("Profile", new UpdateProfileStudentVM() { StudentInfo = _studentService.GetEditUserDtoByIdAsync(model.Id).Result.Payload });
             }
             ViewBag.UpdatePasswordError = validationResult.Errors.FirstOrDefault();
-            return View(new UpdateProfileStudentVM() { StudentInfo = _studentService.GetEditUserDtoByIdAsync(model.Id).Result.Payload });
+            return View("Profile", new UpdateProfileStudentVM() { StudentInfo = _studentService.GetEditUserDtoByIdAsync(model.Id).Result.Payload });
         }
         #endregion
 
