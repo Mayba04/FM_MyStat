@@ -167,7 +167,7 @@ namespace FM_MyStat.Web.Controllers
                     return RedirectToAction("Home","Index");
                 }
 
-                ViewBag.UpdatePasswordError = result.Payload;
+                ViewBag.UpdatePasswordError = result.Errors.FirstOrDefault();
                 return View(nameof(Profile));
 
             }
