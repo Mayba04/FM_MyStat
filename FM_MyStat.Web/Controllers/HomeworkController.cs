@@ -67,6 +67,7 @@ namespace FM_MyStat.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateHomeworkDTO model)
         {
+            model.GroupId = (await _lessonService.Get(model.LessonId)).GroupId;
             var validator = new CreateHomeworkValidation();
             var validationResult = await validator.ValidateAsync(model);
             if (validationResult.IsValid)
@@ -151,5 +152,7 @@ namespace FM_MyStat.Web.Controllers
             ServiceResponse<TeacherDTO, object> result = await _teacherService.GetTeacherByAppUserIdAsync(userId);
             @ViewBag.IdTeacher = result.Payload.Id;
         }
+
+      
     }
 }
