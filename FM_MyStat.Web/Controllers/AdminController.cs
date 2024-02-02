@@ -1,6 +1,8 @@
 ﻿using FluentValidation.Results;
+using FM_MyStat.Core.DTOs.NewsDTO;
 using FM_MyStat.Core.DTOs.UsersDTO.Admin;
 using FM_MyStat.Core.DTOs.UsersDTO.User;
+using FM_MyStat.Core.Interfaces;
 using FM_MyStat.Core.Services;
 using FM_MyStat.Core.Services.Users;
 using FM_MyStat.Core.Validation.User;
@@ -17,15 +19,19 @@ namespace FM_MyStat.Web.Controllers
     {
         private readonly AdministratorService _administratorService;
         private readonly UserService _userService;
+        private readonly INewsService _newsController;
 
-        public AdminController(AdministratorService administratorService, UserService userService)
+        public AdminController(AdministratorService administratorService, UserService userService, INewsService newsController)
         {
             this._administratorService = administratorService;
             _userService = userService;
+            _newsController = newsController;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var payload = await _newsController.GetAllBySpec();
+            //ServiceResponse<List<NewsDTO>, object> result = await _newsController.GetAll();
+            return View(payload.Payload);
         }
 
         #region Log out page

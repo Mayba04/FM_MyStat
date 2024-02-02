@@ -6,6 +6,7 @@ using FM_MyStat.Core.DTOs.UsersDTO.Student;
 using FM_MyStat.Core.DTOs.UsersDTO.Teacher;
 using FM_MyStat.Core.DTOs.UsersDTO.User;
 using FM_MyStat.Core.Entities.Users;
+using FM_MyStat.Core.Interfaces;
 using FM_MyStat.Core.Services;
 using FM_MyStat.Core.Services.Users;
 using FM_MyStat.Core.Validation.User;
@@ -19,16 +20,19 @@ namespace FM_MyStat.Web.Controllers
     {
         private readonly UserService _userService;
         private readonly TeacherService _teacherService;
+        private readonly INewsService _newsService;
 
-        public TeacherController(TeacherService teacherService, UserService userService)
+        public TeacherController(TeacherService teacherService, UserService userService, INewsService newsService)
         {
             this._teacherService = teacherService;
             this._userService = userService;
+            this._newsService = newsService;
         }
         [Authorize(Roles = "Teacher")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var payload = await _newsService.GetAllBySpec();
+            return View(payload.Payload);
         }
 
         #region Log out page
