@@ -238,7 +238,7 @@ namespace FM_MyStat.Core.Services.Users
             // HomeworksOnInspection
             dashboardStudentInfo.HomeworksOnInspection = 0;
 
-            ServiceResponse<List<NewsDTO>, object> response = await _newsService.GetAllBySpec();
+            ServiceResponse<List<NewsDTO>, object> response = await _newsService.GetAllBySpec(3);
 
             List<NewsDTO> newsList = new List<NewsDTO>();
 

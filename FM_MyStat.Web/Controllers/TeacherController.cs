@@ -31,7 +31,7 @@ namespace FM_MyStat.Web.Controllers
         [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> Index()
         {
-            var payload = await _newsService.GetAllBySpec();
+            var payload = await _newsService.GetAllBySpec(5);
             return View(payload.Payload);
         }
 

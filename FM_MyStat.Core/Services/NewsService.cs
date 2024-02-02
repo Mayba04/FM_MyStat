@@ -50,9 +50,9 @@ namespace FM_MyStat.Core.Services
         }
 
 
-        public async Task<ServiceResponse<List<NewsDTO>, object>> GetAllBySpec()
+        public async Task<ServiceResponse<List<NewsDTO>, object>> GetAllBySpec(int count = 3)
         {
-            var result = await _newsRepo.GetListBySpec(new NewsSpecification.GetByTop3News_Fuhrer_is_not_a_good_person());
+            var result = await _newsRepo.GetListBySpec(new NewsSpecification.GetByTop3News_Fuhrer_is_not_a_good_person(count));
             if (result == null)
             {
                 return new ServiceResponse<List<NewsDTO>, object>(false, "Group exists.");
