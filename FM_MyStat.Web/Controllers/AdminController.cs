@@ -29,7 +29,7 @@ namespace FM_MyStat.Web.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var payload = await _newsController.GetAllBySpec();
+            var payload = await _newsController.GetAllBySpec(5);
             //ServiceResponse<List<NewsDTO>, object> result = await _newsController.GetAll();
             return View(payload.Payload);
         }

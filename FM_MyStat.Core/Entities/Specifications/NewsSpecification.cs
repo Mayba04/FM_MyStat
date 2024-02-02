@@ -13,10 +13,10 @@ namespace FM_MyStat.Core.Entities.Specifications
     {
         public class GetByTop3News_Fuhrer_is_not_a_good_person : Specification<News>
         {
-            public GetByTop3News_Fuhrer_is_not_a_good_person()
+            public GetByTop3News_Fuhrer_is_not_a_good_person(int count)
             {
                 DateTime currentDate = DateTime.UtcNow;
-                Query.Where(news => news.Time > currentDate).OrderBy(news => news.Time).Take(3);
+                Query.Where(news => news.Time > currentDate).OrderBy(news => news.Time).Take(count);
             }
         }
     }
