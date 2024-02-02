@@ -65,10 +65,13 @@ else
                                 <p class="card-text"><strong>Rating:</strong> @item.Rating</p>
                                 <p class="card-text"><strong>Group:</strong> @item.Group</p>
                             </div>
-                            <div class="card-footer">
-                                <a asp-controller="Student" asp-action="Edit" asp-route-id="@item.Id" class="button-28">Edit</a>
-                                <a asp-controller="Student" asp-action="Delete" asp-route-id="@item.Id" class="button-28">Delete</a>
-                            </div>
+                            @if (User.IsInRole("Administrator"))
+                            {
+                                <div class="card-footer">
+                                    <a asp-controller="Student" asp-action="Edit" asp-route-id="@item.Id" class="button-28">Edit</a>
+                                    <a asp-controller="Student" asp-action="Delete" asp-route-id="@item.Id" class="button-28">Delete</a>
+                                </div>
+                            }
                         </div>
                     </div>
                 }

@@ -113,7 +113,7 @@ namespace FM_MyStat.Web.Controllers
                 {
                     return RedirectToAction("Index", "Home");
                 }
-                ViewBag.UpdatePasswordError = result.Errors;
+                ViewBag.UpdatePasswordError = result.Errors.FirstOrDefault();
                 return View("Profile", new UpdateProfileTeacherVM() { TeacherInfo = _teacherService.GetEditUserDtoByIdAsync(model.Id).Result.Payload });
             }
             ViewBag.UpdatePasswordError = validationResult.Errors.FirstOrDefault();

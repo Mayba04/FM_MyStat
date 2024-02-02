@@ -104,9 +104,14 @@ namespace FM_MyStat.Core.Services.HomeworkServices
             }
 
             Lesson lesson = await _lessonRepo.GetByID(model.LessonId);
-            lesson.HomeworkId = null;
-            await _lessonRepo.Update(lesson);
-            await _lessonRepo.Save();
+            if (lesson != null)
+            {
+                lesson.HomeworkId = null;
+                await _lessonRepo.Update(lesson);
+                await _lessonRepo.Save();
+            }
+           
+           
             await _homeworkRepo.Delete(model.Id);
             await _homeworkRepo.Save();
         }
