@@ -234,7 +234,7 @@ namespace FM_MyStat.Web.Controllers
                 {
                     return View("Profile", new UpdateProfileStudentVM() { StudentInfo = model });
                 }
-                ViewBag.UserUpdateError = result.Errors.FirstOrDefault();
+                ViewBag.UserUpdateError = result.Errors?.FirstOrDefault() ?? result.Message?.ToString();
                 return View("Profile", new UpdateProfileStudentVM() { StudentInfo = model });
             }
             ViewBag.UserUpdateError = validationResult.Errors.FirstOrDefault();

@@ -109,30 +109,40 @@
                         <div class="card-header">
                             <h3 class="card-title">Quick Example</h3>
                         </div>
+
+                        @if (@ViewBag.UserUpdateError != null)
+                        {
+                            <span class="text-danger mt-3">@ViewBag.UserUpdateError</span>
+                        }
+
                         <form method="post" asp-controller="Student" asp-action="ChangeMainInfo">
                             <div class="card-body">
-                                <div Visible="False" class="form__group field">
-                                    <input type="hidden" class="form__field" id="idInput" placeholder="Enter Id" value="@user.Id">
+                                <div Visible="False" class="form__group field" ty>
+                                    <input type="hidden" class="form__field" name="Id" id="Id" placeholder="Enter Id" value="@user.Id">
+                                    <input type="hidden" class="form__field" name="TeacherId" id="TeacherId" placeholder="Enter Id" value="@user.TeacherId">
+                                    <input type="hidden" class="form__field" name="StudentId" id="StudentId" placeholder="Enter Id" value="@user.StudentId">
+                                    <input type="hidden" class="form__field" name="AdministratorId" id="AdministratorId" placeholder="Enter Id" value="@user.AdministratorId">
                                     <label style="display: none;" class="form__label">Id</label>
                                 </div>
                                 <div class="form__group field">
-                                    <input type="text" class="form__field" id="firstNameInput" placeholder="Enter First Name" value="@user.FirstName">
+                                    <input type="text" class="form__field" name="FirstName" id="FirstName" placeholder="Enter First Name" value="@user.FirstName">
                                     <label for="firstNameInput" class="form__label">First Name</label>
                                 </div>
                                 <div class="form__group field">
-                                    <input type="text" class="form__field" id="lastNameInput" placeholder="Enter Last Name" value="@user.LastName">
+                                    <input type="text" class="form__field" name="LastName" id="LastName" placeholder="Enter Last Name" value="@user.LastName">
                                     <label for="lastNameInput" class="form__label">Last Name</label>
                                 </div>
                                 <div class="form__group field">
-                                    <input type="text" class="form__field" id="surNameInput" placeholder="Enter Sur Name" value="@user.SurName">
-                                    <label for="firstNameInput" class="form__label">Sur Name</label>
+                                    <input type="text" class="form__field" name="SurName" id="surNameInput" placeholder="Enter Sur Name" value="@user.SurName">
+                                    <label for="SurNameInput" class="form__label">Sur Name</label>
                                 </div>
                                 <div class="form__group field">
-                                    <input type="email" class="form__field" id="emailInput" placeholder="Enter Email" value="@user.Email">
+                                    <input type="email" class="form__field" name="Email" id="Email" placeholder="Enter Email" value="@user.Email">
                                     <label for="emailInput" class="form__label">Email</label>
                                 </div>
+                              
                                 <div class="form__group field">
-                                    <input type="text" class="form__field" id="phoneNumberInput" placeholder="Enter Phone Number" value="@user.PhoneNumber">
+                                    <input type="text" class="form__field" name="PhoneNumber" id="PhoneNumber" placeholder="Enter Phone Number" value="@user.PhoneNumber">
                                     <label for="phoneNumberInput" class="form__label">Phone Number</label>
                                 </div>
                             </div>
