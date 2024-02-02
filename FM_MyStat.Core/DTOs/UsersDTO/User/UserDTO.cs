@@ -18,6 +18,7 @@ namespace FM_MyStat.Core.DTOs.UsersDTO.User
         public string LastName { get; set; } = string.Empty;
         public bool EmailConfirmed { get; set; } = false;
         public string LockedOut { get; set; } = string.Empty;
+        public bool LockoutEnabled { get; set; } 
         public string PhoneNumber { get; set; } = string.Empty;
         public int? StudentId { get; set; }
         public int? TeacherId { get; set; }
